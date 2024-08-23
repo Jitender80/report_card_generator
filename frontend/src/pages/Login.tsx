@@ -23,7 +23,7 @@ const Login = () => {
     console.log(response.data);
 
     localStorage.setItem("authToken", response.data.token);
-    navigate("/home");
+    navigate("/protected/home");
   };
 
   return (

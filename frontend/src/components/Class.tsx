@@ -6,12 +6,18 @@ type Props = {
 import { BASE_URL } from "../app";
 const Class = ({ onClassIdChange }: any) => {
   const [classData, setClassData] = useState({
-    name: "",
-    section: "",
-    tutor: "",
-    year: "",
-    session: "",
-    student: "",
+    level: "",
+    nameOfCourse: "",
+    courseCode: "",
+    creditHours: "",
+    semester: "",
+    academicYear: "",
+    coordinatorGender: "",
+    courseCoordinator: "",
+    totalNoOfQuestion: "",
+    totalNoOfStudentsAttendedExam: "",
+    studentsWithdrawn: "",
+    studentAbsent: "",
   });
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -22,89 +28,131 @@ const Class = ({ onClassIdChange }: any) => {
     e.preventDefault();
     console.log(classData);
     // onClassIdChange("loading");
-    const response = await axios.post(`${BASE_URL}/createClass`, classData);
-    console.log(response.data);
-    onClassIdChange(response.data._id);
+    // TODO: make a post request to create a class
+    // const response = await axios.post(`${BASE_URL}/createClass`, classData);
+    // console.log(response.data);
+    // onClassIdChange(response.data._id);
   };
   return (
     <div className="flex justify-center items-center  ">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col  p-4 border rounded shadow-lg w-full"
+        className="grid grid-cols-2 gap-4 p-4 border rounded shadow-lg w-full"
       >
-        <label className="flex flex-col">
-          Name:
+        <label className="flex flex-col" htmlFor="level">
+          Level:
           <input
             type="text"
-            name="name"
-            value={classData.name}
+            name="level"
+            value={classData.level}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
         </label>
         <label className="flex flex-col">
-          Section:
+          Name of Course:
           <input
             type="text"
-            name="section"
-            value={classData.section}
+            name="nameOfCourse"
+            value={classData.nameOfCourse}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
         </label>
         <label className="flex flex-col">
-          Tutor:
+          Course Code:
           <input
             type="text"
-            name="tutor"
-            value={classData.tutor}
+            name="courseCode"
+            value={classData.courseCode}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
         </label>
         <label className="flex flex-col">
-          Year:
+          creditHours:
           <input
             type="text"
-            name="year"
-            value={classData.year}
+            name="creditHours"
+            value={classData.creditHours}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
         </label>
         {/* <label className="flex flex-col">
-          Year:
+          Semester:
           <input
             type="text"
-            name="year"
-            value={classData.year}
+            name="semester"
+            value={classData.semester}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
         </label> */}
         <label className="flex flex-col">
-          Session:
+          Semester:
           <input
             type="text"
-            name="session"
-            value={classData.session}
+            name="academicYear"
+            value={classData.academicYear}
+            onChange={handleChange}
+            className=" p-2 border rounded"
+          />
+        </label>
+        <label className="flex flex-col">
+          coordinatorGender:
+          <input
+            type="text"
+            name="coordinatorGender"
+            value={classData.coordinatorGender}
             onChange={handleChange}
             className="p-2 border rounded"
           />
         </label>
         <label className="flex flex-col">
-          Students:
+          totalNoOfQuestion:
           <input
             type="text"
-            name="student"
-            value={classData.student}
+            name="totalNoOfQuestion"
+            value={classData.totalNoOfQuestion}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
         </label>
+        <label className="flex flex-col">
+          totalNoOfStudentsAttendedExam:
+          <input
+            type="text"
+            name="totalNoOfStudentsAttendedExam"
+            value={classData.totalNoOfStudentsAttendedExam}
+            onChange={handleChange}
+            className=" p-2 border rounded"
+          />
+        </label>
+        <label className="flex flex-col">
+          studentsWithdrawn:
+          <input
+            type="text"
+            name="studentsWithdrawn"
+            value={classData.studentsWithdrawn}
+            onChange={handleChange}
+            className=" p-2 border rounded"
+          />
+        </label>
+        <label className="flex flex-col">
+          studentAbsent,
+          <input
+            type="text"
+            name="studentAbsent"
+            value={classData.studentAbsent}
+            onChange={handleChange}
+            className=" p-2 border rounded"
+          />
+        </label>
+
         <button
           type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 col-span-2"
         >
           submit
         </button>
