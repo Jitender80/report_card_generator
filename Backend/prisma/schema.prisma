@@ -29,6 +29,8 @@ model Student {
   correctCount Int
   blankCount  Int
   questions   Question[]
+  classId     Int
+  class       Class     @relation(fields: [classId], references: [id])
 }
 
 model Question {
@@ -37,4 +39,14 @@ model Question {
   answer    String
   studentId Int
   student   Student  @relation(fields: [studentId], references: [id])
+}
+
+model Class {
+  id       Int       @id @default(autoincrement())
+  name     String
+  section  String
+  tutor    String
+  year     Int
+  session  String
+  students Student[]
 }

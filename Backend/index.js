@@ -8,10 +8,12 @@ const { PrismaClient } = require("@prisma/client");
 const multer = require('multer');
 const path = require('path');
 const xlsx = require("xlsx");
-const { uploadFile } = require("./controllers/upload");
+const { uploadFile } = require("./controllers/excelFile");
 const prisma = new PrismaClient();
 
 const cors = require("cors");
+const { createClass } = require("./controllers/class");
+const { deleteAllData } = require("./controllers/dev");
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
@@ -21,7 +23,7 @@ app.get("/", (req, res) => {
   res.json({ message: "pong working" });
 });
 
-app.use("/auth", authRoutes);
+
 
 
 const storage = multer.diskStorage({
@@ -37,7 +39,21 @@ const storage = multer.diskStorage({
 // Initialize multer with the configured storage
 const upload = multer({ storage: storage });
 
+app.use("/auth", authRoutes);
+
+// ********************************************************************************************
+// Dev 
+
+app.delete('/cleanClass', deleteAllData)
+// ********************************************************************************************
+
+
+
+app.use('/createClass', createClass)
+
 app.use("/upload", upload.single("file"), uploadFile);
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
