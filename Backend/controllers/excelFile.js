@@ -15,39 +15,27 @@ const errorMessage = '';
 
 exports.uploadFile = async (req, res) => {
   const file = req.file;
+  const workbook = await xlsx.readFile(file.path);
+  const sheetNames = workbook.SheetNames;
 
-  if (!file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
+  // Get sheets at index 0 and 2
+  const sheet1 = workbook.Sheets[sheetNames[0]];
+  const sheet2 = workbook.Sheets[sheetNames[2]];
 
-  // Process the Excel file asynchronously
+  // console.log(sheet1, "---");
+
+  const data = xlsx.utils.sheet_to_json(sheet1);
+  const data2 = xlsx.utils.sheet_to_json(sheet2);
+
+  // Process data in batches or asynchronously
+
   try {
-    const workbook = await xlsx.readFile(file.path);
-const sheetNames = workbook.SheetNames;
-
-const sheet1Name = 'Results Grid'; // Replace with the actual sheet name
-const sheet2Name = 'Item Analysis'; // Replace with the actual sheet name
-
-if (!sheetNames.includes(sheet1Name) || !sheetNames.includes(sheet2Name)) {
-  return res.status(400).json({ error: "Required sheets not found in the Excel file" });
-}
-
-const sheet1 = workbook.Sheets[sheet1Name];
-const sheet2 = workbook.Sheets[sheet2Name];
-console.log(sheet1, sheet2);
-
-return;
-
-    const sheet = workbook.Sheets[sheetName];
-    const data = xlsx.utils.sheet_to_json(sheet);
-
-    // Process data in batches or asynchronously
     const batchSize = 100; // Adjust batch size as needed
     for (let i = 0; i < data.length; i += batchSize) {
       const batch = data.slice(i, i + batchSize);
 
       await Promise.all(
-        batch.map(async (row) => {
+        batch.map(async (row, index) => {
           const {
             StudentName,
             IDNumber,
@@ -82,11 +70,15 @@ return;
               },
             });
           } catch (error) {
-            return { row, error };
+            return { row, error , errorMessage: error.message};                                     
           }
         })
       );
     }
+
+
+
+
 
     res.status(200).json({ message: "File processed successfully" });
   } catch (error) {
