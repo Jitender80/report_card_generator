@@ -23,7 +23,21 @@ exports.uploadFile = async (req, res) => {
   // Process the Excel file asynchronously
   try {
     const workbook = await xlsx.readFile(file.path);
-    const sheetName = workbook.SheetNames[0];
+const sheetNames = workbook.SheetNames;
+
+const sheet1Name = 'Results Grid'; // Replace with the actual sheet name
+const sheet2Name = 'Item Analysis'; // Replace with the actual sheet name
+
+if (!sheetNames.includes(sheet1Name) || !sheetNames.includes(sheet2Name)) {
+  return res.status(400).json({ error: "Required sheets not found in the Excel file" });
+}
+
+const sheet1 = workbook.Sheets[sheet1Name];
+const sheet2 = workbook.Sheets[sheet2Name];
+console.log(sheet1, sheet2);
+
+return;
+
     const sheet = workbook.Sheets[sheetName];
     const data = xlsx.utils.sheet_to_json(sheet);
 
