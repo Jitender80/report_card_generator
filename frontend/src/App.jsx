@@ -10,31 +10,25 @@ import AuthRoute from "./components/AuthRoute";
 const ProtectedLayout = () => {
   return (
     <div>
-
       <Outlet />
     </div>
   );
 };
 
-// export const BASE_URL="https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev"
-export const BASE_URL = "https://127.0.0.1:3000"
+// export const BASE_URL =
+//   "https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev";
+export const BASE_URL = "http://127.0.0.1:3000";
 
 const App = () => {
   return (
-    <Router
-    basename="/"
-
-    >
+    <Router basename="/">
       <Layout>
-        <Routes
-initialRoute="/login"        
-        >
-          <Route path="/login" element={<Login/>} />
+        <Routes initialRoute="/login">
+          <Route path="/login" element={<Login />} />
           {/* <Route path="/protected/*" element={<AuthRoute element={ProtectedLayout} />}> */}
           <Route path="home" element={<Home />} />
-          
-          {/* </Route> */}
 
+          {/* </Route> */}
         </Routes>
       </Layout>
     </Router>

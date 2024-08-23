@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
@@ -17,9 +17,9 @@ const signup = async (req, res) => {
       },
     });
 
-    res.status(201).json({ message: 'User created', newUser });
+    res.status(201).json({ message: "User created", newUser });
   } catch (error) {
-    res.status(400).json({ error: 'User already exists' });
+    res.status(400).json({ error: "User already exists" });
   }
 };
 
@@ -30,20 +30,26 @@ const login = async (req, res) => {
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (!existingUser) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
-
-    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+    console.log(existingUser);
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
 
     if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ userId: existingUser.id }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: existingUser.id }, "your_jwt_secret", {
+      expiresIn: "1h",
+    });
 
-    res.json({ message: 'Login successful', token });
+    res.json({ message: "Login successful", token });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    console.log("error during login", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
