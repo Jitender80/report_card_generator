@@ -20,13 +20,15 @@ model User {
   name     String?
 }
 
-
 model Student {
-  id         Int       @id @default(autoincrement())
-  name       String
-  percentage Float
-  subject    String
-  questions  Question[]
+  id          Int       @id @default(autoincrement())
+  name        String
+  idNumber    Int    
+  percentage  Float
+  score       Float
+  correctCount Int
+  blankCount  Int
+  questions   Question[]
 }
 
 model Question {
