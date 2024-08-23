@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
+import { Button } from "../ui/button";
 
 const Home: React.FC = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleUpload = () => {
+    if (selectedFile) {
+      // Handle the file upload logic here
+      console.log("Uploading file:", selectedFile);
+    } else {
+      console.log("No file selected");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="flex items-center space-x-2">
@@ -19,10 +37,20 @@ const Home: React.FC = () => {
           ></path>
         </svg>
         <span className="text-xl font-semibold">Upload the report card PDF</span>
-
-
       </div>
-
+      <input
+        type="file"
+        className="mt-4 p-2 border border-gray-300 rounded-lg"
+        onChange={handleFileChange}
+      />
+      <Button
+        variant="outline"
+        color="primary"
+        onClick={handleUpload}
+        className="mt-4"
+      >
+        Upload
+      </Button>
     </div>
   );
 };

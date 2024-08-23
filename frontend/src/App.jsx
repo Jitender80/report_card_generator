@@ -16,7 +16,8 @@ const ProtectedLayout = () => {
   );
 };
 
-export const BASE_URL="https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev"
+// export const BASE_URL="https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev"
+export const BASE_URL="https://127.0.0.1:3000"
 
 const App = () => {
   return (
@@ -29,10 +30,10 @@ const App = () => {
 initialRoute="/login"        
         >
           <Route path="/login" element={<Login/>} />
-          <Route path="/protected/*" element={<AuthRoute element={ProtectedLayout} />}>
+          {/* <Route path="/protected/*" element={<AuthRoute element={ProtectedLayout} />}> */}
           <Route path="home" element={<Home />} />
           
-          </Route>
+          {/* </Route> */}
 
         </Routes>
       </Layout>
