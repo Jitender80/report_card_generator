@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
+import axios from "axios";
+import { BASE_URL } from '../App';
+
 
 const Home: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -14,10 +17,18 @@ const Home: React.FC = () => {
     if (selectedFile) {
       // Handle the file upload logic here
       console.log("Uploading file:", selectedFile);
+
+      const res = axios.post(`${BASE_URL}/upload`, selectedFile)
+
+      console.log("🚀 ~ handleUpload ~ res:", res)
+      
+      
     } else {
       console.log("No file selected");
     }
   };
+
+
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">

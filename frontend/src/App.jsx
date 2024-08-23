@@ -17,7 +17,7 @@ const ProtectedLayout = () => {
 };
 
 // export const BASE_URL="https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev"
-export const BASE_URL="https://127.0.0.1:3000"
+export const BASE_URL = "https://127.0.0.1:3000"
 
 const App = () => {
   return (
