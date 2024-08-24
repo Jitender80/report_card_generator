@@ -179,8 +179,13 @@ exports.calculateResult = async (req, res) => {
     }
 
     const variance = calculateSingleValue(studentScores);
+    // =(C27/(C27-1))*(1-(C28/C29))
 
+
+    const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * ( 1 - (QA_PQ_Sum.toFixed(2) / variance.toFixed(2) )))
     res.json({
+      KR20,
+      answerKeys: answerKeys?.length,
       QA_P,
       QA_Q,
       QA_PQ,
