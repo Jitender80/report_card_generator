@@ -12,9 +12,32 @@ exports.uploadFile = async (req, res) => {
   // Get sheets at index 0 and 2
   const sheet1 = workbook.Sheets[sheetNames[0]];
   const sheet2 = workbook.Sheets[sheetNames[2]];
-
+  
   const data = xlsx.utils.sheet_to_json(sheet1);
-  console.log("🚀 ~ exports.uploadFile= ~ data:", data.slice(2));
+
+  const dataSheet2 = xlsx.utils.sheet_to_json(sheet2, { header: 1 });
+
+
+
+
+ const discIndexColumnIndex = dataSheet2[4].indexOf('Disc. Index');
+ const discIndexData = dataSheet2.slice(5)
+ .map(row => row[discIndexColumnIndex])
+ .filter(value => value !== null && value !== undefined);
+
+
+//  console.log("🚀 ~ exports.uploadFile= ~ Disc Index data:", discIndexData);
+
+//  return res.status(200).json({
+//    message: "Data extracted successfully",
+//    discIndexData: discIndexData
+//  });
+
+
+
+  
+
+  // console.log("🚀 ~ exports.uploadFile= ~ data:", data.slice(2));
   const extractQuestionColumns = (row) => {
     const questionColumns = [];
     Object.keys(row).forEach((key) => {
@@ -53,7 +76,7 @@ exports.uploadFile = async (req, res) => {
   };
 
   // Map student data and calculate scores
-  const studentsData = data.slice(2).map((row) => {
+  const studentsData = data.slice(1).map((row) => {
     const studentAnswers = extractQuestionColumns(row);
     const score = calculateScore(studentAnswers, answerKey);
     return {
