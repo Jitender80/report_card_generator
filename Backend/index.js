@@ -15,6 +15,9 @@ const cors = require("cors");
 
 const { deleteAllData } = require("./controllers/dev");
 const connectDB = require("./db");
+const { generate, generateReportCardPDF, generatePdf } = require("./controllers/pdf");
+
+
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
@@ -61,6 +64,12 @@ app.delete("/cleanClass", deleteAllData);
 // app.post("/createClass", );
 
 app.use("/upload", upload.single("file"), uploadFile);
+
+
+
+app.get('/generate', generatePdf);
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
