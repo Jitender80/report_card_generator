@@ -1,17 +1,7 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { PrismaClient, Prisma } = require("@prisma/client");
-const multer = require("multer");
-const xlsx = require("xlsx");
-
-
-const batchSize = 100; // Adjust the batch size as needed
-let hasError = false;
-
-
-const prisma = new PrismaClient();
-
-const errorMessage = '';
+const xlsx = require('xlsx');
+const mongoose = require('mongoose');
+const Student = require('../models/student');
+const Class = require('../models/excelmodel');
 
 exports.uploadFile = async (req, res) => {
   const file = req.file;
@@ -22,67 +12,81 @@ exports.uploadFile = async (req, res) => {
   const sheet1 = workbook.Sheets[sheetNames[0]];
   const sheet2 = workbook.Sheets[sheetNames[2]];
 
-  // console.log(sheet1, "---");
-
   const data = xlsx.utils.sheet_to_json(sheet1);
-  const data2 = xlsx.utils.sheet_to_json(sheet2);
+  console.log("🚀 ~ exports.uploadFile= ~ data:", data.slice(2));
+  const extractQuestionColumns = (row) => {
+    const questionColumns = [];
+    Object.keys(row).forEach((key) => {
+      if (/^Q\s*\d+$/.test(key)) {
+        questionColumns.push({ question: key.replace(/\s/g, ''), answer: row[key] }); // Remove spaces from keys
+      }
+    });
+    return questionColumns;
+  };
+  // Extract answer key from the first row
+  const answerKeyData = data.slice(0, 1)[0];
+  const answerKey = extractQuestionColumns(answerKeyData);
+  console.log("🚀 ~ exports.uploadFile= ~ answerKey:", answerKey);
 
-  // Process data in batches or asynchronously
+  // Function to dynamically extract columns that match a pattern
+  
+
+  // Function to parse percentage strings to numbers
+  const parsePercentage = (percentage) => {
+    if (typeof percentage === 'string') {
+      return parseFloat(percentage.replace('%', ''));
+    }
+    return percentage;
+  };
+
+  // Function to calculate score based on the answer key
+  const calculateScore = (studentAnswers, answerKey) => {
+    let score = 0;
+    studentAnswers.forEach((answer) => {
+      const correctAnswer = answerKey.find((key) => key.question === answer.question);
+      if (correctAnswer && correctAnswer.answer === answer.answer) {
+        score += 1; // Increment score for each correct answer
+      }
+    });
+    return score;
+  };
+
+  // Map student data and calculate scores
+  const studentsData = data.slice(2).map((row) => {
+    const studentAnswers = extractQuestionColumns(row);
+    const score = calculateScore(studentAnswers, answerKey);
+    return {
+      name: row.StudentName,
+      idNumber: row.IDNumber,
+      blankCount: row.BlankCount ? parseInt(row.BlankCount, 10) : 0,
+      correctCount: score,
+      percentage: row.Percentage ? parsePercentage(row.Percentage) : 0,
+      score: score,
+      questions: studentAnswers
+    };
+  });
+
+  // Create a new class with the answer key
+  const newClass = new Class({
+    className: 'Class 1', // You can set this dynamically
+    answerKey: answerKey
+  });
 
   try {
-    const batchSize = 100; // Adjust batch size as needed
-    for (let i = 0; i < data.length; i += batchSize) {
-      const batch = data.slice(i, i + batchSize);
+    // Save the class to get the class ID
+    const savedClass = await newClass.save();
 
-      await Promise.all(
-        batch.map(async (row, index) => {
-          const {
-            StudentName,
-            IDNumber,
-            BlankCount,
-            Correct,
-            Score,
-            Percentage,
-            ...questions
-          } = row;
-          const idNumberStr = IDNumber ? IDNumber.toString() : null;
+    // Save students and get their IDs
+    const savedStudents = await Student.insertMany(studentsData);
 
-          // Validate required fields
-          if (!StudentName || !idNumberStr) {
-            return { row, error: "Missing required fields: StudentName or IDNumber" };
-          }
+    // Update the class with the student IDs
+    savedClass.students = savedStudents.map(student => student._id);
+    await savedClass.save();
 
-          try {
-            await prisma.student.create({
-              data: {
-                name: StudentName,
-                idNumber: IDNumber,
-                blankCount: BlankCount,
-                correctCount: Correct,
-                percentage: Percentage,
-                score: Score,
-                questions: {
-                  create: Object.keys(questions).map((key) => ({
-                    question: key,
-                    answer: questions[key],
-                  })),
-                },
-              },
-            });
-          } catch (error) {
-            return { row, error , errorMessage: error.message};                                     
-          }
-        })
-      );
-    }
-
-
-
-
-
-    res.status(200).json({ message: "File processed successfully" });
+    console.log('Class and students saved successfully');
+    res.status(200).json({ message: "File uploaded successfully", data: savedStudents });
   } catch (error) {
-    console.error("Error processing file:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error saving class and students:', error);
+    res.status(500).json({ message: "Error saving data", error });
   }
 };

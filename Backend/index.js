@@ -4,21 +4,27 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { PrismaClient } = require("@prisma/client");
+
 const multer = require("multer");
 const path = require("path");
 const xlsx = require("xlsx");
 const { uploadFile } = require("./controllers/excelFile");
-const prisma = new PrismaClient();
 
+const mongoose = require('mongoose');
 const cors = require("cors");
-const { createClass } = require("./controllers/class");
+
 const { deleteAllData } = require("./controllers/dev");
+const connectDB = require("./db");
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 app.use(cors());
+
+
+
+connectDB();
+
 app.get("/", (req, res) => {
   res.json({ message: "pong working" });
 });
@@ -47,7 +53,7 @@ app.use("/auth", authRoutes);
 app.delete("/cleanClass", deleteAllData);
 // ********************************************************************************************
 
-app.post("/createClass", createClass);
+// app.post("/createClass", );
 
 app.use("/upload", upload.single("file"), uploadFile);
 
