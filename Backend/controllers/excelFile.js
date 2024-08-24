@@ -2,7 +2,8 @@ const xlsx = require('xlsx');
 const mongoose = require('mongoose');
 const Student = require('../models/student');
 const Class = require('../models/excelmodel');
-
+const math = require('mathjs');
+const simpleStatistics = require('simple-statistics');
 exports.uploadFile = async (req, res) => {
   const file = req.file;
   const workbook = await xlsx.readFile(file.path);
@@ -111,7 +112,7 @@ exports.calculateResult = async (req, res) => {
     const classData = await Class.findById({ _id: "66c998b41052ee69590f4a7b" }).populate("students");
     const answerKeys = classData.answerKey; // Extract answer keys from the class data
 
-    const QA_P = {}; 
+    const QA_P = {};
     const QA_Q = {};
     const QA_PQ = {};
     let QA_PQ_Sum = 0;
@@ -145,11 +146,46 @@ exports.calculateResult = async (req, res) => {
       QA_PQ_Sum += parseFloat(QA_PQ[answerKey.question]);
     }
 
+    const studentScores = {
+      stud_1: 45.00,
+      stud_2: 48.00,
+      stud_3: 44.00,
+      stud_4: 48.00,
+      stud_5: 47.00,
+      stud_6: 46.00,
+      stud_7: 46.00,
+      stud_8: 46.00,
+      stud_9: 44.00,
+      stud_10: 46.00,
+      stud_11: 47.00,
+      stud_12: 45.00,
+      stud_13: 42.00,
+      stud_14: 44.00,
+      stud_15: 31.00,
+      stud_16: 43.00,
+      stud_17: 40.00,
+      stud_18: 43.00
+    };
+
+   
+    function calculateSingleValue(scores) {
+      // Convert the object values to an array
+      const scoreArray = Object.values(scores);
+
+      // Calculate the population variance using simple-statistics
+      const variance = simpleStatistics.variance(scoreArray, { sample: false });
+
+      return variance;
+    }
+
+    const variance = calculateSingleValue(studentScores);
+
     res.json({
       QA_P,
       QA_Q,
       QA_PQ,
-      QA_PQ_Sum,
+      QA_PQ_Sum: QA_PQ_Sum.toFixed(2),
+      variance: variance.toFixed(2),
     });
   } catch (error) {
     console.log(error.message);
