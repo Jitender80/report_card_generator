@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const xlsx = require("xlsx");
-const { uploadFile } = require("./controllers/excelFile");
+const { uploadFile, calculateResult } = require("./controllers/excelFile");
 
 const mongoose = require('mongoose');
 const cors = require("cors");
@@ -44,6 +44,11 @@ const storage = multer.diskStorage({
 
 // Initialize multer with the configured storage
 const upload = multer({ storage: storage });
+
+
+
+
+app.get('/caculate', calculateResult)
 
 app.use("/auth", authRoutes);
 

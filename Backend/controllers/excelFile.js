@@ -83,10 +83,75 @@ exports.uploadFile = async (req, res) => {
     savedClass.students = savedStudents.map(student => student._id);
     await savedClass.save();
 
+
+
+
+
+    // Calculation
+  
+
+
+
+
+
+
+
+
+
     console.log('Class and students saved successfully');
     res.status(200).json({ message: "File uploaded successfully", data: savedStudents });
   } catch (error) {
     console.error('Error saving class and students:', error);
     res.status(500).json({ message: "Error saving data", error });
+  }
+};
+
+exports.calculateResult = async (req, res) => {
+  try {
+    const classData = await Class.findById({ _id: "66c998b41052ee69590f4a7b" }).populate("students");
+    const answerKeys = classData.answerKey; // Extract answer keys from the class data
+
+    const QA_P = {}; 
+    const QA_Q = {};
+    const QA_PQ = {};
+    let QA_PQ_Sum = 0;
+
+    for (const answerKey of answerKeys) {
+      const accuracies = [];
+
+      for (const student of classData.students) {
+        const studentAnswer = student.questions.find(q => q.question === answerKey.question);
+
+        if (studentAnswer) {
+          const isCorrect = studentAnswer.answer === answerKey.answer;
+          accuracies.push(isCorrect ? 1 : 0);
+
+          if (answerKey.question === "Q5") {
+            console.log("Student Key:", student._id);
+            console.log("Student Answer:", studentAnswer.answer);
+          }
+        }
+      }
+
+      const totalStudents = classData.students.length;
+      const questionAccuracyValue = accuracies.reduce((sum, accuracy) => sum + accuracy, 0) / totalStudents;
+
+      const roundedAccuracy = questionAccuracyValue.toFixed(2);
+
+      QA_P[answerKey.question] = roundedAccuracy;
+      QA_Q[answerKey.question] = (1 - questionAccuracyValue).toFixed(2);
+      QA_PQ[answerKey.question] = (roundedAccuracy * (1 - questionAccuracyValue)).toFixed(2);
+
+      QA_PQ_Sum += parseFloat(QA_PQ[answerKey.question]);
+    }
+
+    res.json({
+      QA_P,
+      QA_Q,
+      QA_PQ,
+      QA_PQ_Sum,
+    });
+  } catch (error) {
+    console.log(error.message);
   }
 };
