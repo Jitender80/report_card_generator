@@ -129,6 +129,17 @@ exports.uploadFile = async (req, res) => {
     res.status(500).json({ message: "Error saving data", error });
   }
 };
+function assignGrade(percentage) {
+  if (percentage >= 95) return 'A+';
+  if (percentage >= 90) return 'A';
+  if (percentage >= 85) return 'B+';
+  if (percentage >= 80) return 'B';
+  if (percentage >= 75) return 'C+';
+  if (percentage >= 70) return 'C';
+  if (percentage >= 65) return 'D+';
+  if (percentage >= 60) return 'D';
+  return 'F';
+}
 
 exports.calculateResult = async (req, res) => {
   try {
@@ -190,6 +201,27 @@ exports.calculateResult = async (req, res) => {
       stud_18: 43.00
     };
 
+
+    function calculatePercentagesAndGrades(classData) {
+      const percentages = {};
+  
+      classData.students.forEach(student => {
+          const percentage = student.percentage; // Extract the percentage
+          const grade = assignGrade(percentage); // Assign the grade
+          percentages[student.name] = {
+              percentage: percentage.toFixed(2),
+              grade: grade
+          };
+      });
+  
+      return percentages;
+  }
+
+
+
+
+
+  const studentGrades = calculatePercentagesAndGrades(classData);
    
     function calculateSingleValue(scores) {
       // Convert the object values to an array
@@ -207,6 +239,7 @@ exports.calculateResult = async (req, res) => {
 
     const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * ( 1 - (QA_PQ_Sum.toFixed(2) / variance.toFixed(2) )))
     res.json({
+      studentGrades,
       KR20,
       answerKeys: answerKeys?.length,
       QA_P,
