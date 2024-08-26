@@ -13,8 +13,7 @@ const studentSchema = new mongoose.Schema({
   percentage: Number,
   score: Number,
   questions: [questionSchema],
-  incorrectIndexData: [Number],
-  discIndexData: [Number],
+
 });
 
 const Student = mongoose.model('Student', studentSchema);

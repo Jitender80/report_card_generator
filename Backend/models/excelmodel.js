@@ -4,7 +4,9 @@ const Student = require('./student'); // Assuming the student schema is in stude
 const classSchema = new mongoose.Schema({
   className: { type: String, required: false },
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
-  answerKey: [{ question: String, answer: String }]
+  answerKey: [{ question: String, answer: String }],
+  incorrectIndexData: [Number],
+  discIndexData: [Number],
 });
 
 const Class = mongoose.model('Class', classSchema);

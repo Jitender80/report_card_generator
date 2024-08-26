@@ -51,7 +51,7 @@ const upload = multer({ storage: storage });
 
 
 
-app.get('/caculate', calculateResult)
+app.get('/calculate', calculateResult)
 
 app.use("/auth", authRoutes);
 
