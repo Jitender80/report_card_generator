@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import "./App.css";
 import Login from "./pages/Login";
 import AuthRoute from "./components/AuthRoute";
+import StudentTable from "./pages/Dashboard";
 // import Class from "./components/Class";
 const ProtectedLayout = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
             element={<AuthRoute element={ProtectedLayout} />}
           > */}
             <Route path="home" element={<Home />} />
+            <Route path="studentTable" element={<StudentTable />} />
             {/* {/* <Route path="class" element={<Class />} /> */}
           {/* </Route> */}
         </Routes>

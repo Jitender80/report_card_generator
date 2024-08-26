@@ -3,10 +3,15 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { BASE_URL } from "../App";
 import Class from "../components/Class";
+import StudentTable from "./Dashboard";
+import { Router, useNavigate } from "react-router-dom";
 const Home: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [classId, setClassId] = useState<string>("");
   const [classFormSubmited, setClassFormSubmitted] = useState<boolean>(false);
+
+  // const navigate = useNavigate();
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
@@ -16,6 +21,7 @@ const Home: React.FC = () => {
     setClassId(id);
   };
 
+
   const handleUpload = () => {
     if (selectedFile) {
       // Handle the file upload logic here
@@ -23,7 +29,9 @@ const Home: React.FC = () => {
 
       const res = axios.post(`${BASE_URL}/upload`, selectedFile);
 
+
       console.log("🚀 ~ handleUpload ~ res:", res);
+      // navigate("/studentTable")
     } else {
       console.log("No file selected");
     }
@@ -69,6 +77,8 @@ const Home: React.FC = () => {
           Upload
         </Button>
       </div>
+
+   
     </>
   );
 };

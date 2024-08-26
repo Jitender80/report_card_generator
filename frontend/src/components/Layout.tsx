@@ -9,6 +9,8 @@ const Layout: React.FC = ({ children }) => {
     <main className="flex-grow container mx-auto p-4 overflow-hidden">
       {children}
     </main>
+
+    
   </div>
 );
 
