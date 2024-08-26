@@ -52,6 +52,7 @@ exports.uploadFile = async (req, res) => {
  .map(row => row[discIndexColumnIndex])
  .filter(value => value !== null && value !== undefined);
  
+const correctIndexData = IncorrectIndexData.map(value => 100 - value);
 //  console.log("🚀 ~ exports.uploadFile= ~ IncorrectColumnIndex:", IncorrectColumnIndex)
 //  return res.json({IncorrectIndexData, discIndexData})
 
@@ -124,7 +125,7 @@ exports.uploadFile = async (req, res) => {
   const newClass = new Class({
     className: 'Class 1', // You can set this dynamically
     answerKey: answerKey,
-    incorrectIndexData: IncorrectIndexData ,
+    correctIndexData : correctIndexData ,
     discIndexData: discIndexData,
   });
 
@@ -213,29 +214,46 @@ exports.calculateResult = async (req, res) => {
       QA_PQ_Sum += parseFloat(QA_PQ[answerKey.question]);
     }
 
-const studentScores = await getLatestClassWithStudentScores();
-    return res.status(200).json({ studentScores, QA_P, QA_Q, QA_PQ, QA_PQ_Sum });
+// const studentScores = await getLatestClassWithStudentScores();
+    // return res.status(200).json({ studentScores, QA_P, QA_Q, QA_PQ, QA_PQ_Sum });
+    const getDiscIndexDataAndCorrectPercentage = async (classId) => {
 
-    // const studentScores = {
-    //   stud_1: 45.00,
-    //   stud_2: 48.00,
-    //   stud_3: 44.00,
-    //   stud_4: 48.00,
-    //   stud_5: 47.00,
-    //   stud_6: 46.00,
-    //   stud_7: 46.00,
-    //   stud_8: 46.00,
-    //   stud_9: 44.00,
-    //   stud_10: 46.00,
-    //   stud_11: 47.00,
-    //   stud_12: 45.00,
-    //   stud_13: 42.00,
-    //   stud_14: 44.00,
-    //   stud_15: 31.00,
-    //   stud_16: 43.00,
-    //   stud_17: 40.00,
-    //   stud_18: 43.00
-    // };
+        const discIndexData = classData.discIndexData;
+        const correctIndexData = classData.correctIndexData;
+    
+        // Calculate the correct percentage
+        const correctSum = correctIndexData.reduce((acc, val) => acc + val, 0);
+        const correctPercentage = 100 - correctSum;
+    
+        // Return the discIndexData and correct percentage
+        return {
+          discIndexData,
+          correctPercentage,
+        };
+  
+    };
+    const studentScores = {
+      stud_1: 45.00,
+      stud_2: 48.00,
+      stud_3: 44.00,
+      stud_4: 48.00,
+      stud_5: 47.00,
+      stud_6: 46.00,
+      stud_7: 46.00,
+      stud_8: 46.00,
+      stud_9: 44.00,
+      stud_10: 46.00,
+      stud_11: 47.00,
+      stud_12: 45.00,
+      stud_13: 42.00,
+      stud_14: 44.00,
+      stud_15: 31.00,
+      stud_16: 43.00,
+      stud_17: 40.00,
+      stud_18: 43.00,
+      stud_18: 43.00,
+      stud_18: 43.00
+    };
 
 
     function calculatePercentagesAndGrades(classData) {
@@ -275,6 +293,7 @@ const studentScores = await getLatestClassWithStudentScores();
 
     const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * ( 1 - (QA_PQ_Sum.toFixed(2) / variance.toFixed(2) )))
     res.json({
+      getDiscIndexDataAndCorrectPercentage,
       studentGrades,
       KR20,
       answerKeys: answerKeys?.length,

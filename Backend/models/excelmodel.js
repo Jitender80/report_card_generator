@@ -5,9 +5,10 @@ const classSchema = new mongoose.Schema({
   className: { type: String, required: false },
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
   answerKey: [{ question: String, answer: String }],
-  incorrectIndexData: [Number],
+  correctIndexData: [Number],
   discIndexData: [Number],
 });
+
 
 const Class = mongoose.model('Class', classSchema);
 
