@@ -195,10 +195,10 @@ exports.calculateResult = async (req, res) => {
           const isCorrect = studentAnswer.answer === answerKey.answer;
           accuracies.push(isCorrect ? 1 : 0);
 
-          if (answerKey.question === "Q5") {
-            console.log("Student Key:", student._id);
-            console.log("Student Answer:", studentAnswer.answer);
-          }
+          // if (answerKey.question === "Q5") {
+          //   console.log("Student Key:", student._id);
+          //   console.log("Student Answer:", studentAnswer.answer);
+          // }
         }
       }
 
@@ -214,48 +214,18 @@ exports.calculateResult = async (req, res) => {
       QA_PQ_Sum += parseFloat(QA_PQ[answerKey.question]);
     }
 
-// const studentScores = await getLatestClassWithStudentScores();
-    // return res.status(200).json({ studentScores, QA_P, QA_Q, QA_PQ, QA_PQ_Sum });
-    const getDiscIndexDataAndCorrectPercentage = async (classId) => {
-
-        const discIndexData = classData.discIndexData;
-        const correctIndexData = classData.correctIndexData;
-    
-        // Calculate the correct percentage
-        const correctSum = correctIndexData.reduce((acc, val) => acc + val, 0);
-        const correctPercentage = 100 - correctSum;
-    
-        // Return the discIndexData and correct percentage
-        return {
-          discIndexData,
-          correctPercentage,
-        };
-  
-    };
-    const studentScores = {
-      stud_1: 45.00,
-      stud_2: 48.00,
-      stud_3: 44.00,
-      stud_4: 48.00,
-      stud_5: 47.00,
-      stud_6: 46.00,
-      stud_7: 46.00,
-      stud_8: 46.00,
-      stud_9: 44.00,
-      stud_10: 46.00,
-      stud_11: 47.00,
-      stud_12: 45.00,
-      stud_13: 42.00,
-      stud_14: 44.00,
-      stud_15: 31.00,
-      stud_16: 43.00,
-      stud_17: 40.00,
-      stud_18: 43.00,
-      stud_18: 43.00,
-      stud_18: 43.00
-    };
+    // calculate variance
+    function calculateSingleValue(scores) {
+      const scoreArray = Object.values(scores);
+      const variance = simpleStatistics.variance(scoreArray, { sample: false });
+      return variance;
+    }
+    const studentScores = await getLatestClassWithStudentScores();
+    const variance = await calculateSingleValue(studentScores);
 
 
+
+    // calculate grades
     function calculatePercentagesAndGrades(classData) {
       const percentages = {};
   
@@ -271,35 +241,23 @@ exports.calculateResult = async (req, res) => {
       return percentages;
   }
 
-
-
-
-
   const studentGrades = calculatePercentagesAndGrades(classData);
    
-    function calculateSingleValue(scores) {
-      // Convert the object values to an array
-      const scoreArray = Object.values(scores);
-
-      // Calculate the population variance using simple-statistics
-      const variance = simpleStatistics.variance(scoreArray, { sample: false });
-
-      return variance;
+  const getClassStatistics = async () => {
+      // Assuming both `discIndexData` and `correctIndexData` arrays are of the same length
+      const result = classData.discIndexData.map((discIndex, index) => ({
+        disc_index: discIndex,
+        correctAnswersPercentage: classData.correctIndexData[index] || null, // Ensure we handle cases where lengths differ
+      }));
+      return result;
     }
-
-    const variance = calculateSingleValue(studentScores);
-    // =(C27/(C27-1))*(1-(C28/C29))
-
-
+    const disc_ = await getClassStatistics()
     const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * ( 1 - (QA_PQ_Sum.toFixed(2) / variance.toFixed(2) )))
     res.json({
-      getDiscIndexDataAndCorrectPercentage,
+      disc_,
       studentGrades,
       KR20,
       answerKeys: answerKeys?.length,
-      QA_P,
-      QA_Q,
-      QA_PQ,
       QA_PQ_Sum: QA_PQ_Sum.toFixed(2),
       variance: variance.toFixed(2),
     });
