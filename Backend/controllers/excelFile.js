@@ -242,6 +242,17 @@ exports.calculateResult = async (req, res) => {
   }
 
   const studentGrades = calculatePercentagesAndGrades(classData);
+  console.log("🚀 ~ exports.calculateResult= ~ studentGrade:", studentGrades)
+// Convert studentGrades to an array of objects
+const studentGradesArray = Object.keys(studentGrades).map(name => ({
+  name: name,
+  percentage: parseFloat(studentGrades[name].percentage),
+  grade: studentGrades[name].grade
+}));
+
+const latestId = await Class.find().sort({ createdAt: -1 });
+await Class.findByIdAndUpdate(latestId[0]._id, { studentGrades: studentGradesArray });
+
    
   const getClassStatistics = async () => {
       // Assuming both `discIndexData` and `correctIndexData` arrays are of the same length

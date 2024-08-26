@@ -7,6 +7,11 @@ const classSchema = new mongoose.Schema({
   answerKey: [{ question: String, answer: String }],
   correctIndexData: [Number],
   discIndexData: [Number],
+  studentGrades:  [{
+    name: { type: String, required: true },
+    percentage: { type: Number, required: true },
+    grade: { type: String, required: true }
+  }],
 })
 
 

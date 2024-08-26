@@ -22,7 +22,7 @@ const StudentTable = () => {
       // }
 
       const data = res.data.data.students;
-      console.log("🚀 ~ fetchStudents ~ data:", typeof res.data.data.students)
+      console.log("🚀 ~ fetchStudents ~ data:", res.data.data[0].students)
       const studentsArray = Array.isArray(data) ? data : Object.values(data);
 
       setStudents(studentsArray);
@@ -52,11 +52,7 @@ const StudentTable = () => {
         </tr>
       </thead>
       <tbody>
-        {
-          students.map((s)=>{
-            console.log(s, "---")
-          })
-        }
+     
         {students.map((student, index) => (
 
           <tr key={index}>
