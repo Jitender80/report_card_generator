@@ -32,6 +32,8 @@ const Class = ({ onClassIdChange }: any) => {
     // const response = await axios.post(`${BASE_URL}/createClass`, classData);
     // console.log(response.data);
     // onClassIdChange(response.data._id);
+    // for testing--
+    onClassIdChange("111");
   };
   return (
     <div className="flex justify-center items-center  ">
