@@ -44,7 +44,7 @@ const StudentTable = () => {
   }, []);
 
   return (
-    <div className="container mx-auto overflow-y-auto">
+    <div className="container mx-auto overflow-y-auto overflow-x-auto">
       <table className="min-w-full bg-white">
         <thead>
           <tr>
@@ -68,13 +68,26 @@ const StudentTable = () => {
             //   )}
             // </div>
             <tr key={index}>
-              <td className="py-2 px-4 border-b">{student[1]?.name}</td>
+              <td className="py-2 px-4 border-b">
+                {student[1]?.name || "name"}
+              </td>
               <td className="py-2 px-4 border-b">{student[1]?.idNumber}</td>
               <td className="py-2 px-4 border-b">{student[1]?.blankCount}</td>
               <td className="py-2 px-4 border-b">{student[1]?.correctCount}</td>
               <td className="py-2 px-4 border-b">{student[1]?.percentage}</td>
               <td className="py-2 px-4 border-b">{student[1]?.score}</td>
-              <td className="py-2 px-4 border-b">{student?.questions}</td>
+              <td className="py-2 px-4 border-b">
+                {/* {Object.entries(student).map((student, index) => (
+                  <td key={index}>
+                    <td>{student[1].questions[1].question}</td>
+                  </td>
+                ))} */}
+                {student[1]?.questions.map((question, index) => (
+                  <td key={index}>
+                    <td>{question.question}</td>
+                  </td>
+                ))}
+              </td>
               {/* <td className="py-2 px-4 border-b">
                 {student.incorrectIndexData}
               </td>
