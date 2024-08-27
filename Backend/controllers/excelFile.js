@@ -207,12 +207,12 @@ exports.calculateResult = async (req, res) => {
       const totalStudents = classData.students.length;
       const questionAccuracyValue = accuracies.reduce((sum, accuracy) => sum + accuracy, 0) / totalStudents;
 
-      const roundedAccuracy = questionAccuracyValue.toFixed(2);
+      const roundedAccuracy = questionAccuracyValue;
 
      
   QA_P[answerKey.question] = roundedAccuracy;
-  QA_Q[answerKey.question] = parseFloat((1 - questionAccuracyValue).toFixed(2));
-  QA_PQ[answerKey.question] = parseFloat((roundedAccuracy * (1 - questionAccuracyValue)).toFixed(2));
+  QA_Q[answerKey.question] = parseFloat((1 - questionAccuracyValue));
+  QA_PQ[answerKey.question] = parseFloat((roundedAccuracy * (1 - questionAccuracyValue)));
 
   QA_PQ_Sum += QA_PQ[answerKey.question];
 
@@ -243,7 +243,7 @@ async function calculateSingleValue(scores) {
         const percentage = student.percentage; // Extract the percentage
         const grade = assignGrade(percentage); // Assign the grade
         percentages[student.name] = {
-          percentage: percentage.toFixed(2),
+          percentage: percentage,
           grade: grade
         };
       });
@@ -267,6 +267,7 @@ async function calculateSingleValue(scores) {
     const getClassStatistics = async () => {
       // Assuming both `discIndexData` and `correctIndexData` arrays are of the same length
       const result = classData.discIndexData.map((discIndex, index) => ({
+        questionNumber: classData.answerKey[index].question || index + 1, // Include question number, default to index + 1 if not available
         disc_index: discIndex,
         correctAnswersPercentage: classData.correctIndexData[index] || null, // Ensure we handle cases where lengths differ
       }));
@@ -275,21 +276,57 @@ async function calculateSingleValue(scores) {
 
     const disc_ = await getClassStatistics()
 
-    console.log("🚀 ~ exports.calculateResult= ~ disc_:", QA_PQ_Sum)
+    console.log("🚀 ~ exports.calculateResult= ~ disc_:", disc_)
 
-    const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * (1 - (QA_PQ_Sum.toFixed(2) / variance.toFixed(2))))
-    console.log("🚀 ~ exports.calculateResult= ~ KR20:", KR20)
+    const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * (1 - (QA_PQ_Sum / variance)))
+    // console.log("🚀 ~ exports.calculateResult= ~ KR20:", KR20)
 
     await Class.findByIdAndUpdate(latestId[0]._id, { KR20: KR20 });
+    const newArray = disc_.map((item, index) => {
+      const questionNumber = item.questionNumber || index + 1; // Default to index + 1 if questionNumber is not available
+    
+      if (item.disc_index < 0.3 && item.correctAnswersPercentage >= 99.5) {
+        return {
+          questionNumber: questionNumber,
+          category: "High-performing, low-risk",
+          disc_index: item.disc_index,
+          correctAnswersPercentage: item.correctAnswersPercentage,
+        };
+      } else if (item.disc_index >= 0.3 && item.correctAnswersPercentage >= 99.5) {
+        return {
+          questionNumber: questionNumber,
+          category: "High-performing, moderate-risk",
+          disc_index: item.disc_index,
+          correctAnswersPercentage: item.correctAnswersPercentage,
+        };
+      } else if (item.disc_index < 0.3 && item.correctAnswersPercentage < 99.5) {
+        return {
+          questionNumber: questionNumber,
+          category: "Low-performing, low-risk",
+          disc_index: item.disc_index,
+          correctAnswersPercentage: item.correctAnswersPercentage,
+        };
+      } else {
+        return {
+          questionNumber: questionNumber,
+          category: "Low-performing, moderate-risk",
+          disc_index: item.disc_index,
+          correctAnswersPercentage: item.correctAnswersPercentage,
+        };
+      }
+    });
+
+  console.log("🚀 ~ exports.calculateResult= ~ newArray:", newArray)
 
     res.json({
+      newArray,
       disc_,
       studentGrades,
       KR20,
       pq: QA_PQ,
       answerKeys: answerKeys?.length,
-      QA_PQ_Sum: QA_PQ_Sum.toFixed(2),
-      variance: variance.toFixed(2),
+      QA_PQ_Sum: QA_PQ_Sum,
+      variance: variance,
     });
   } catch (error) {
     console.log(error.message);
