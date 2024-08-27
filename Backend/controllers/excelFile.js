@@ -12,7 +12,7 @@ async function getLatestClassWithStudentScores() {
     }
 
     const idScoreArray = latestClass.students.map(student => ({
-      id: student._id.toString(),
+
       score: student.score,
     }));
 
@@ -32,7 +32,7 @@ exports.uploadFile = async (req, res) => {
   // Get sheets at index 0 and 2
   const sheet1 = workbook.Sheets[sheetNames[0]];
   const sheet2 = workbook.Sheets[sheetNames[2]];
-  
+
   const data = xlsx.utils.sheet_to_json(sheet1);
 
   const dataSheet2 = xlsx.utils.sheet_to_json(sheet2, { header: 1 });
@@ -41,31 +41,31 @@ exports.uploadFile = async (req, res) => {
 
 
   //Getting DIsc INdext data
- const discIndexColumnIndex = dataSheet2[4].indexOf('Disc. Index');
- const discIndexData = dataSheet2.slice(5)
- .map(row => row[discIndexColumnIndex])
- .filter(value => value !== null && value !== undefined);
+  const discIndexColumnIndex = dataSheet2[4].indexOf('Disc. Index');
+  const discIndexData = dataSheet2.slice(5)
+    .map(row => row[discIndexColumnIndex])
+    .filter(value => value !== null && value !== undefined);
 
- const IncorrectColumnIndex = dataSheet2[4].indexOf('Pct. Incorrect');
+  const IncorrectColumnIndex = dataSheet2[4].indexOf('Pct. Incorrect');
 
- const IncorrectIndexData = dataSheet2.slice(5)
- .map(row => row[discIndexColumnIndex])
- .filter(value => value !== null && value !== undefined);
- 
-const correctIndexData = IncorrectIndexData.map(value => 100 - value);
-//  console.log("🚀 ~ exports.uploadFile= ~ IncorrectColumnIndex:", IncorrectColumnIndex)
-//  return res.json({IncorrectIndexData, discIndexData})
+  const IncorrectIndexData = dataSheet2.slice(5)
+    .map(row => row[discIndexColumnIndex])
+    .filter(value => value !== null && value !== undefined);
 
-//  console.log("🚀 ~ exports.uploadFile= ~ Disc Index data:", discIndexData);
+  const correctIndexData = IncorrectIndexData.map(value => 100 - value);
+  //  console.log("🚀 ~ exports.uploadFile= ~ IncorrectColumnIndex:", IncorrectColumnIndex)
+  //  return res.json({IncorrectIndexData, discIndexData})
 
-//  return res.status(200).json({
-//    message: "Data extracted successfully",
-//    discIndexData: discIndexData
-//  });
+  //  console.log("🚀 ~ exports.uploadFile= ~ Disc Index data:", discIndexData);
+
+  //  return res.status(200).json({
+  //    message: "Data extracted successfully",
+  //    discIndexData: discIndexData
+  //  });
 
 
 
-  
+
 
   // console.log("🚀 ~ exports.uploadFile= ~ data:", data.slice(2));
   const extractQuestionColumns = (row) => {
@@ -83,7 +83,7 @@ const correctIndexData = IncorrectIndexData.map(value => 100 - value);
   console.log("🚀 ~ exports.uploadFile= ~ answerKey:", answerKey);
 
   // Function to dynamically extract columns that match a pattern
-  
+
 
   // Function to parse percentage strings to numbers
   const parsePercentage = (percentage) => {
@@ -117,7 +117,7 @@ const correctIndexData = IncorrectIndexData.map(value => 100 - value);
       percentage: row.Percentage ? parsePercentage(row.Percentage) : 0,
       score: score,
       questions: studentAnswers,
-    
+
     };
   });
 
@@ -125,7 +125,7 @@ const correctIndexData = IncorrectIndexData.map(value => 100 - value);
   const newClass = new Class({
     className: 'Class 1', // You can set this dynamically
     answerKey: answerKey,
-    correctIndexData : correctIndexData ,
+    correctIndexData: correctIndexData,
     discIndexData: discIndexData,
   });
 
@@ -146,7 +146,7 @@ const correctIndexData = IncorrectIndexData.map(value => 100 - value);
 
 
     // Calculation
-  
+
 
 
 
@@ -185,6 +185,8 @@ exports.calculateResult = async (req, res) => {
     const QA_PQ = {};
     let QA_PQ_Sum = 0;
 
+
+
     for (const answerKey of answerKeys) {
       const accuracies = [];
 
@@ -207,54 +209,62 @@ exports.calculateResult = async (req, res) => {
 
       const roundedAccuracy = questionAccuracyValue.toFixed(2);
 
-      QA_P[answerKey.question] = roundedAccuracy;
-      QA_Q[answerKey.question] = (1 - questionAccuracyValue).toFixed(2);
-      QA_PQ[answerKey.question] = (roundedAccuracy * (1 - questionAccuracyValue)).toFixed(2);
+     
+  QA_P[answerKey.question] = roundedAccuracy;
+  QA_Q[answerKey.question] = parseFloat((1 - questionAccuracyValue).toFixed(2));
+  QA_PQ[answerKey.question] = parseFloat((roundedAccuracy * (1 - questionAccuracyValue)).toFixed(2));
 
-      QA_PQ_Sum += parseFloat(QA_PQ[answerKey.question]);
+  QA_PQ_Sum += QA_PQ[answerKey.question];
+
+  
     }
 
     // calculate variance
-    function calculateSingleValue(scores) {
-      const scoreArray = Object.values(scores);
-      const variance = simpleStatistics.variance(scoreArray, { sample: false });
-      return variance;
-    }
+// Calculate variance
+async function calculateSingleValue(scores) {
+  const variance = simpleStatistics.variance(scores, { sample: false });
+  return variance;
+}
     const studentScores = await getLatestClassWithStudentScores();
-    const variance = await calculateSingleValue(studentScores);
+    console.log("🚀 ~ exports.calculateResult= ~ studentScores:", studentScores)
+
+    const scores = studentScores.map(student => student.score);
+
+    const variance = await calculateSingleValue(scores);
+    console.log("🚀 ~ exports.calculateResult= ~ variance:", variance)
 
 
 
     // calculate grades
     function calculatePercentagesAndGrades(classData) {
       const percentages = {};
-  
+
       classData.students.forEach(student => {
-          const percentage = student.percentage; // Extract the percentage
-          const grade = assignGrade(percentage); // Assign the grade
-          percentages[student.name] = {
-              percentage: percentage.toFixed(2),
-              grade: grade
-          };
+        const percentage = student.percentage; // Extract the percentage
+        const grade = assignGrade(percentage); // Assign the grade
+        percentages[student.name] = {
+          percentage: percentage.toFixed(2),
+          grade: grade
+        };
       });
-  
+
       return percentages;
-  }
+    }
 
-  const studentGrades = calculatePercentagesAndGrades(classData);
-  console.log("🚀 ~ exports.calculateResult= ~ studentGrade:", studentGrades)
-// Convert studentGrades to an array of objects
-const studentGradesArray = Object.keys(studentGrades).map(name => ({
-  name: name,
-  percentage: parseFloat(studentGrades[name].percentage),
-  grade: studentGrades[name].grade
-}));
+    const studentGrades = calculatePercentagesAndGrades(classData);
+    console.log("🚀 ~ exports.calculateResult= ~ studentGrade:", studentGrades)
+    // Convert studentGrades to an array of objects
+    const studentGradesArray = Object.keys(studentGrades).map(name => ({
+      name: name,
+      percentage: parseFloat(studentGrades[name].percentage),
+      grade: studentGrades[name].grade
+    }));
 
-const latestId = await Class.find().sort({ createdAt: -1 });
-await Class.findByIdAndUpdate(latestId[0]._id, { studentGrades: studentGradesArray });
+    const latestId = await Class.find().sort({ createdAt: -1 });
+    await Class.findByIdAndUpdate(latestId[0]._id, { studentGrades: studentGradesArray });
 
-   
-  const getClassStatistics = async () => {
+
+    const getClassStatistics = async () => {
       // Assuming both `discIndexData` and `correctIndexData` arrays are of the same length
       const result = classData.discIndexData.map((discIndex, index) => ({
         disc_index: discIndex,
@@ -262,12 +272,21 @@ await Class.findByIdAndUpdate(latestId[0]._id, { studentGrades: studentGradesArr
       }));
       return result;
     }
+
     const disc_ = await getClassStatistics()
-    const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * ( 1 - (QA_PQ_Sum.toFixed(2) / variance.toFixed(2) )))
+
+    console.log("🚀 ~ exports.calculateResult= ~ disc_:", QA_PQ_Sum)
+
+    const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * (1 - (QA_PQ_Sum.toFixed(2) / variance.toFixed(2))))
+    console.log("🚀 ~ exports.calculateResult= ~ KR20:", KR20)
+
+    await Class.findByIdAndUpdate(latestId[0]._id, { KR20: KR20 });
+
     res.json({
       disc_,
       studentGrades,
       KR20,
+      pq: QA_PQ,
       answerKeys: answerKeys?.length,
       QA_PQ_Sum: QA_PQ_Sum.toFixed(2),
       variance: variance.toFixed(2),

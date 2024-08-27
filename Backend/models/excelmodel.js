@@ -12,6 +12,8 @@ const classSchema = new mongoose.Schema({
     percentage: { type: Number, required: true },
     grade: { type: String, required: true }
   }],
+
+  kr20: { type: Number, required: false },
 })
 
 
