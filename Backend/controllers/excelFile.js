@@ -26,7 +26,7 @@ async function getLatestClassWithStudentScores() {
 }
 exports.uploadFile = async (req, res) => {
   const file = req.file;
-  const workbook = await xlsx.readFile(file.path);
+  const workbook = xlsx.readFile(file.path);
   const sheetNames = workbook.SheetNames;
 
   // Get sheets at index 0 and 2
@@ -82,7 +82,7 @@ exports.uploadFile = async (req, res) => {
   const answerKey = extractQuestionColumns(answerKeyData);
   console.log("🚀 ~ exports.uploadFile= ~ answerKey:", answerKey);
 
-  // Function to dynamically extract columns that match a pattern
+
 
 
   // Function to parse percentage strings to numbers
@@ -209,22 +209,22 @@ exports.calculateResult = async (req, res) => {
 
       const roundedAccuracy = questionAccuracyValue;
 
-     
-  QA_P[answerKey.question] = roundedAccuracy;
-  QA_Q[answerKey.question] = parseFloat((1 - questionAccuracyValue));
-  QA_PQ[answerKey.question] = parseFloat((roundedAccuracy * (1 - questionAccuracyValue)));
 
-  QA_PQ_Sum += QA_PQ[answerKey.question];
+      QA_P[answerKey.question] = roundedAccuracy;
+      QA_Q[answerKey.question] = parseFloat((1 - questionAccuracyValue));
+      QA_PQ[answerKey.question] = parseFloat((roundedAccuracy * (1 - questionAccuracyValue)));
 
-  
+      QA_PQ_Sum += QA_PQ[answerKey.question];
+
+
     }
 
     // calculate variance
-// Calculate variance
-async function calculateSingleValue(scores) {
-  const variance = simpleStatistics.variance(scores, { sample: false });
-  return variance;
-}
+    // Calculate variance
+    async function calculateSingleValue(scores) {
+      const variance = simpleStatistics.variance(scores, { sample: false });
+      return variance;
+    }
     const studentScores = await getLatestClassWithStudentScores();
     console.log("🚀 ~ exports.calculateResult= ~ studentScores:", studentScores)
 
@@ -280,43 +280,54 @@ async function calculateSingleValue(scores) {
 
     const KR20 = (answerKeys?.length / (answerKeys?.length - 1) * (1 - (QA_PQ_Sum / variance)))
     // console.log("🚀 ~ exports.calculateResult= ~ KR20:", KR20)
-
-    await Class.findByIdAndUpdate(latestId[0]._id, { KR20: KR20 });
     const newArray = disc_.map((item, index) => {
       const questionNumber = item.questionNumber || index + 1; // Default to index + 1 if questionNumber is not available
-    
-      if (item.disc_index < 0.3 && item.correctAnswersPercentage >= 99.5) {
+
+      if (item.disc_index < 0.2) {
         return {
           questionNumber: questionNumber,
-          category: "High-performing, low-risk",
+            category : "Poor (Bad) Questions",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
         };
       } else if (item.disc_index >= 0.3 && item.correctAnswersPercentage >= 99.5) {
         return {
           questionNumber: questionNumber,
-          category: "High-performing, moderate-risk",
+          category : "Difficult Question",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
         };
       } else if (item.disc_index < 0.3 && item.correctAnswersPercentage < 99.5) {
         return {
           questionNumber: questionNumber,
-          category: "Low-performing, low-risk",
-          disc_index: item.disc_index,
+          category : "Good Question",
+          questionNumber: questionNumber,
           correctAnswersPercentage: item.correctAnswersPercentage,
         };
-      } else {
+       } else if (item.correctAnswersPercentage <= 0.8) {
         return {
           questionNumber: questionNumber,
-          category: "Low-performing, moderate-risk",
+          category : "Easy Question",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
+        }
+        
       }
+     else {
+      return {
+        questionNumber: questionNumber,
+        category : "Very Easy Question",
+        questionNumber: questionNumber,
+        correctAnswersPercentage: item.correctAnswersPercentage,
+      };
+    }
+      
     });
 
-  console.log("🚀 ~ exports.calculateResult= ~ newArray:", newArray)
+    await Class.findByIdAndUpdate(latestId[0]._id, { KR20: KR20, questionAnalysis: newArray });
+
+
+
 
     res.json({
       newArray,
@@ -332,6 +343,47 @@ async function calculateSingleValue(scores) {
     console.log(error.message);
   }
 };
+
+
+exports.getResultData = async (req, res) => {
+
+  try {
+
+    const classData = await Class.findOne().sort({ createdAt: -1 }).populate('students').exec();
+    console.log("🚀 ~ exports.getResultData= ~ lassData:", classData.questionAnalysis)
+
+    // Create key-value object for question types
+    const questionTypes = {
+      "Poor (Bad) Questions": [],
+      "Very Difficult Question": [],
+      "Difficult Question": [],
+      "Good Question": [],
+      "Easy Question": [],
+      "Very Easy Question": []
+    };
+
+    classData.questionAnalysis.forEach(item => {
+      if (questionTypes[item.category]) {
+        questionTypes[item.category].push(item.questionNumber);
+      }
+    });
+
+    return res.status(200).json({
+      data: questionTypes,
+      message: "Data fetched successfully"
+    });
+
+  } catch (
+
+  error
+  ) {
+    console.log(error.message);
+
+  }
+
+}
+
+
 
 
 

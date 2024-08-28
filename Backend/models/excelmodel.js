@@ -14,6 +14,12 @@ const classSchema = new mongoose.Schema({
   }],
 
   kr20: { type: Number, required: false },
+  questionAnalysis: [{
+    questionNumber: { type: String, required: true },
+    category: { type: String, required: true },
+    disc_index: { type: Number, required: true },
+    correctAnswersPercentage: { type: Number, required: true }
+  }]
 })
 
 
