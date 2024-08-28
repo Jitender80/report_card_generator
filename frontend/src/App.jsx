@@ -27,7 +27,7 @@ const ProtectedLayout = () => {
 
 //   "https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev";
 // export const BASE_URL = "http://127.0.0.1:3000";
-export const BASE_URL = " https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev";
+export const BASE_URL = "";
 const App = () => {
   return (
     <Router basename="/">

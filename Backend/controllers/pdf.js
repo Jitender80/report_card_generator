@@ -256,17 +256,17 @@ async function generatePdf(req, res) {
     try {
 
         const dbData = await Class.find().sort({createdAt : -1})
+        console.log("🚀 ~ generatePdf ~ dbData:", dbData[0])
 
         const data = {
             name: dbData.className,
             grade: dbData.grade,
             average: dbData.average,
-            items: dbData.questionAnalysis.map(item => ({
-              category: item.category,
-              itemNo: item.questionNumber,
-
-              percentage: item.correctAnswersPercentage,
-              comments: item.comments
+            items: dbData[0].questionAnalysis.map(item => ({
+                category: item.category,
+                itemNo: item.questionNumber,
+                percentage: item.correctAnswersPercentage,
+                comments: item.comments
             })),
             courses:{
               code: dbData.code,
@@ -277,19 +277,46 @@ async function generatePdf(req, res) {
               studentsAttended: dbData.studentsAttended,
               studentsPassed: dbData.studentsPassed,
               grades: {
-                APlus: dbData.grades.APlus,
-                A: dbData.grades.A,
-                BPlus: dbData.grades.BPlus,
-                B: dbData.grades.B,
-                CPlus: dbData.grades.CPlus,
-                C: dbData.grades.C,
-                DPlus: dbData.grades.DPlus,
-                D: dbData.grades.D,
-                F: dbData.grades.F
-              },
-              percentages: dbData.percentages
+                APlus: {
+                  number: dbData.grades.APlus.number,
+                  percentage: dbData.percentages.APlus.percentage
+                },
+                A: {
+                  number: dbData.grades.A.number,
+                  percentage: dbData.percentages.A.percentage
+                },
+                BPlus: {
+                  number: dbData.grades.BPlus.number,
+                  percentage: dbData.percentages.BPlus.percentage
+                },
+                B: {
+                  number: dbData.grades.B.number,
+                  percentage: dbData.percentages.B.percentage
+                },
+                CPlus: {
+                  number: dbData.grades.CPlus.number,
+                  percentage: dbData.percentages.CPlus.percentage
+                },
+                C: {
+                  number: dbData.grades.C.number,
+                  percentage: dbData.percentages.C.percentage
+                },
+                DPlus: {
+                  number: dbData.grades.DPlus.number,
+                  percentage: dbData.percentages.DPlus.percentage
+                },
+                D: {
+                  number: dbData.grades.D.number,
+                  percentage: dbData.percentages.D.percentage
+                },
+                F: {
+                  number: dbData.grades.F.number,
+                  percentage: dbData.percentages.F.percentage
+                }
+              }
             }
           };
+          return res.json(data);
 
 
 

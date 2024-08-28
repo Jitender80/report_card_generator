@@ -7,10 +7,32 @@ const classSchema = new mongoose.Schema({
   answerKey: [{ question: String, answer: String }],
   correctIndexData: [Number],
   discIndexData: [Number],
+  grade:{type:String,required:true
+  },
+  average: { type: String, required: true },
+  code:{type:String,required:true},
+  credit:{type:String,required:true},
+  studentsNumber:{type:String},
+  studentsWithdrawn:{type:String},
+  studentsAbsent:{type:String},
+  studentsAttended:{type:String},
+  studentsPassed:{type:String},
+
   studentGrades:  [{
     name: { type: String, required: true },
     percentage: { type: Number, required: true },
-    grade: { type: String, required: true }
+    // grade: { type: String, required: true },
+    grades: {
+      APlus: { number: { type: Number}, percentage: { type: Number} },
+      A: { number: { type: Number  }, percentage: { type: Number } },
+      BPlus: { number: { type: Number }, percentage: { type: Number} },
+      B: { number: { type: Number }, percentage: { type: Number,  } },
+      CPlus: { number: { type: Number }, percentage: { type: Number } },
+      C: { number: { type: Number}, percentage: { type: Number, } },
+      DPlus: { number: { type: Number, }, percentage: { type: Number, } },
+      D: { number: { type: Number, }, percentage: { type: Number } },
+      F: { number: { type: Number }, percentage: { type: Number } }
+    },
   }],
 
   kr20: { type: Number, required: false },

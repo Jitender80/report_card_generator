@@ -3,7 +3,8 @@ import axios from "axios";
 type Props = {
   onClassIdChange: (id: string) => void;
 };
-import { BASE_URL } from "../app";
+// import { BASE_URL } from "../app.jsx";
+const BASE_URL = "https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev";
 const Class = ({ onClassIdChange }: any) => {
   const [classData, setClassData] = useState({
     level: "",
@@ -29,11 +30,11 @@ const Class = ({ onClassIdChange }: any) => {
     console.log(classData);
     // onClassIdChange("loading");
     // TODO: make a post request to create a class
-    // const response = await axios.post(`${BASE_URL}/createClass`, classData);
-    // console.log(response.data);
+    const response = await axios.post(`${BASE_URL}/createClass`, classData);
+    console.log(response.data);
     // onClassIdChange(response.data._id);
     // for testing--
-    onClassIdChange("111");
+    // onClassIdChange("111");
   };
   return (
     <div className="flex justify-center items-center  ">
