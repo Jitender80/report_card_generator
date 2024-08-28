@@ -2,6 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const htmlPdf = require('html-pdf-node');
+const Class = require('../models/excelmodel');
 
 // Function to generate PDF from HTML
 const data = {
@@ -127,19 +128,54 @@ async function generateReportCardPDF() {
                     <th style="width: 15%;">Percentage</th>
                     <th style="width: 25%;">Comments/Recommendations</th>
                 </tr>
-                ${data.items.map((item, index) => `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.category}</td>
-                        <td>${item.itemNo}</td>
-                        <td>${item.totalItem}</td>
-                        <td>${item.percentage}</td>
-                        <td>${item.comments}</td>
-                    </tr>
-                `).join('')}
+                ${data.items.map((item, index) => {
+                    let comments;
+                    if (item.category === "Poor (Bad) Questions") {
+                        comments = `
+                            ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
+                            ● All the questions should be rejected.
+                        `;
+                    } else if (item.category === "Very Difficult Question") {
+                        comments = `
+                            ● Keys of these items are needed to be checked.
+                            ● Items should be rejected.
+                        `;
+                    } else if (item.category === "Difficult Question") {
+                        comments = `
+                            ● Key of this item is also needed to be checked.
+                        `;
+                    } else if (item.category === "Good Question") {
+                        comments = `
+                            ● Items could be stored in question bank for further use.
+                        `;
+                    } else if (item.category === "Easy Question") {
+                        comments = `
+                            ● Item should be revised before re-use.
+                        `;
+                    } else if (item.category === "Very Easy Question") {
+                        comments = `
+                            ● Items should be rejected Or needed to be revised.
+                        `;
+                    } else {
+                        comments = `
+                            ● No specific comments available.
+                        `;
+                    }
+
+                    return `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.category}</td>
+                            <td>${item.itemNo}</td>
+                            <td>${item.totalItem}</td>
+                            <td>${item.percentage}</td>
+                            <td>${comments}</td>
+                        </tr>
+                    `;
+                }).join('')}
             </table>
         </div>
-        <div class="course-details" style="margin-top: 20px;">
+        <div class="dbData-details" style="margin-top: 20px;">
             <table style="width: 100%;">
                 <tr>
                     <th>Course Code</th>
@@ -159,37 +195,37 @@ async function generateReportCardPDF() {
                     <th>D</th>
                     <th>F</th>
                 </tr>
-                ${data.courses.map(course => `
+                ${data.courses.map(dbData => `
                     <tr>
-                        <td>${course.code}</td>
-                        <td>${course.creditHour}</td>
-                        <td>${course.studentsNumber}</td>
-                        <td>${course.studentsWithdrawn}</td>
-                        <td>${course.studentsAbsent}</td>
-                        <td>${course.studentsAttended}</td>
-                        <td>${course.studentsPassed}</td>
-                        <td>${course.grades.APlus}</td>
-                        <td>${course.grades.A}</td>
-                        <td>${course.grades.BPlus}</td>
-                        <td>${course.grades.B}</td>
-                        <td>${course.grades.CPlus}</td>
-                        <td>${course.grades.C}</td>
-                        <td>${course.grades.DPlus}</td>
-                        <td>${course.grades.D}</td>
-                        <td>${course.grades.F}</td>
+                        <td>${dbData.code}</td>
+                        <td>${dbData.creditHour}</td>
+                        <td>${dbData.studentsNumber}</td>
+                        <td>${dbData.studentsWithdrawn}</td>
+                        <td>${dbData.studentsAbsent}</td>
+                        <td>${dbData.studentsAttended}</td>
+                        <td>${dbData.studentsPassed}</td>
+                        <td>${dbData.grades.APlus}</td>
+                        <td>${dbData.grades.A}</td>
+                        <td>${dbData.grades.BPlus}</td>
+                        <td>${dbData.grades.B}</td>
+                        <td>${dbData.grades.CPlus}</td>
+                        <td>${dbData.grades.C}</td>
+                        <td>${dbData.grades.DPlus}</td>
+                        <td>${dbData.grades.D}</td>
+                        <td>${dbData.grades.F}</td>
                     </tr>
                     <tr>
                         <td colspan="6"></td>
-                        <td>${course.percentages[0]}</td>
-                        <td>${course.percentages[1]}</td>
-                        <td>${course.percentages[2]}</td>
-                        <td>${course.percentages[3]}</td>
-                        <td>${course.percentages[4]}</td>
-                        <td>${course.percentages[5]}</td>
-                        <td>${course.percentages[6]}</td>
-                        <td>${course.percentages[7]}</td>
-                        <td>${course.percentages[8]}</td>
-                        <td>${course.percentages[9]}</td>
+                        <td>${dbData.percentages[0]}</td>
+                        <td>${dbData.percentages[1]}</td>
+                        <td>${dbData.percentages[2]}</td>
+                        <td>${dbData.percentages[3]}</td>
+                        <td>${dbData.percentages[4]}</td>
+                        <td>${dbData.percentages[5]}</td>
+                        <td>${dbData.percentages[6]}</td>
+                        <td>${dbData.percentages[7]}</td>
+                        <td>${dbData.percentages[8]}</td>
+                        <td>${dbData.percentages[9]}</td>
                     </tr>
                 `).join('')}
             </table>
@@ -218,7 +254,44 @@ async function generateReportCardPDF() {
 
 async function generatePdf(req, res) {
     try {
-   
+
+        const dbData = await Class.find().sort({createdAt : -1})
+
+        const data = {
+            name: dbData.className,
+            grade: dbData.grade,
+            average: dbData.average,
+            items: dbData.questionAnalysis.map(item => ({
+              category: item.category,
+              itemNo: item.questionNumber,
+
+              percentage: item.correctAnswersPercentage,
+              comments: item.comments
+            })),
+            courses:{
+              code: dbData.code,
+              creditHour: dbData.creditHour,
+              studentsNumber: dbData.studentsNumber,
+              studentsWithdrawn: dbData.studentsWithdrawn,
+              studentsAbsent: dbData.studentsAbsent,
+              studentsAttended: dbData.studentsAttended,
+              studentsPassed: dbData.studentsPassed,
+              grades: {
+                APlus: dbData.grades.APlus,
+                A: dbData.grades.A,
+                BPlus: dbData.grades.BPlus,
+                B: dbData.grades.B,
+                CPlus: dbData.grades.CPlus,
+                C: dbData.grades.C,
+                DPlus: dbData.grades.DPlus,
+                D: dbData.grades.D,
+                F: dbData.grades.F
+              },
+              percentages: dbData.percentages
+            }
+          };
+
+
 
         const pdfPath = await generateReportCardPDF(data);
 

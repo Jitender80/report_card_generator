@@ -282,7 +282,7 @@ exports.calculateResult = async (req, res) => {
     // console.log("🚀 ~ exports.calculateResult= ~ KR20:", KR20)
     const newArray = disc_.map((item, index) => {
       const questionNumber = item.questionNumber || index + 1; // Default to index + 1 if questionNumber is not available
-
+ 
       if (item.disc_index < 0.2) {
         return {
           questionNumber: questionNumber,
@@ -290,14 +290,23 @@ exports.calculateResult = async (req, res) => {
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
         };
-      } else if (item.disc_index >= 0.3 && item.correctAnswersPercentage >= 99.5) {
+      } else if (item.correctAnswersPercentage <= 0.2 ) {
         return {
           questionNumber: questionNumber,
-          category : "Difficult Question",
+          category : "Very Difficult Question",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
         };
-      } else if (item.disc_index < 0.3 && item.correctAnswersPercentage < 99.5) {
+      
+      } else if (item.correctAnswersPercentage <= 0.3) {
+        return {
+          questionNumber: questionNumber,
+          category : " Difficult Question",
+          disc_index: item.disc_index,
+          correctAnswersPercentage: item.correctAnswersPercentage,
+        };
+      }
+       else if (item.correctAnswersPercentage <= 0.7 ) {
         return {
           questionNumber: questionNumber,
           category : "Good Question",
