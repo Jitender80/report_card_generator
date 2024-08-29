@@ -9,8 +9,6 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      input: '/src/main.tsx', // Ensure this path is correct
-    },
+  
   },
 })
