@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { BASE_URL } from "../App";
@@ -17,8 +17,8 @@ const Home: React.FC = () => {
       setSelectedFile(event.target.files[0]);
     }
   };
-  const handleClassIdChange = (id: string) => {
-    setClassId(id);
+  const handleClassIdChange = async(id: string) => {
+   await  setClassId(id);
     console.log("class id", classId);
     if (classId) {
       setClassSubmitted(true);
@@ -27,6 +27,9 @@ const Home: React.FC = () => {
       console.log("class id not set");
     }
   };
+  useEffect(()=>{
+    console.log("class id", classId);
+  },[classId])
 
   const handleUpload = () => {
     if (selectedFile) {
@@ -45,9 +48,12 @@ const Home: React.FC = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen overflow-y-auto ">
-        <div className="mb-1">
+        {!isClassSubmitted && (
+
+        <div className="mb-15">
           <Class onClassIdChange={handleClassIdChange} />
         </div>
+        )}
         {isClassSubmitted && (
           <div>
             <div className="flex items-center space-x-2">

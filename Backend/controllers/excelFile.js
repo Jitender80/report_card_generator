@@ -4,6 +4,7 @@ const Student = require("../models/student");
 const Class = require("../models/excelmodel");
 const math = require("mathjs");
 const simpleStatistics = require("simple-statistics");
+const { getGrades } = require("./grading");
 async function getLatestClassWithStudentScores() {
   try {
     const latestClass = await Class.findOne()
@@ -204,7 +205,7 @@ function assignGrade(percentage) {
   return "F";
 }
 
-exports.calculateResult = async (req, res) => {
+async function calculateResult() {
   try {
     const classData = await Class.findOne()
       .sort({ createdAt: -1 })
@@ -369,37 +370,28 @@ exports.calculateResult = async (req, res) => {
       questionAnalysis: newArray,
     });
 
-    res.json({
-      newArray,
-      disc_,
-      studentGrades,
-      KR20,
-      pq: QA_PQ,
-      answerKeys: answerKeys?.length,
-      QA_PQ_Sum: QA_PQ_Sum,
-      variance: variance,
-    });
+
   } catch (error) {
     console.log(error.message);
   }
 };
 
-exports.getResultData = async (req, res) => {
+async function getResultData() {
   try {
     const classData = await Class.findOne()
       .sort({ createdAt: -1 })
       .populate("students")
 
 
-      
 
-      // // Ensure studentGrades is an array and log its structure
-      // if (!Array.isArray(classData.studentGrades)) {
-      //   console.error("classData.studentGrades is not an array:", classData.studentGrades);
-      //   return res.status(500).json({ message: "Internal ser403ver error" });
-      // }
-    
-    
+
+    // // Ensure studentGrades is an array and log its structure
+    // if (!Array.isArray(classData.studentGrades)) {
+    //   console.error("classData.studentGrades is not an array:", classData.studentGrades);
+    //   return res.status(500).json({ message: "Internal ser403ver error" });
+    // }
+
+
 
     // Create key-value object for question types
     const questionTypes = {
@@ -425,14 +417,37 @@ exports.getResultData = async (req, res) => {
 
 
 
-    return res.status(200).json({
-      data: questionTypes,
-      message: "Data fetched successfully",
-    });
+    return data
+
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
+exports.getFinalResult = async (req, res) => {
+
+  try {
+
+    const cal = await calculateResult();
+    console.log(cal)
+    const resdata = await getResultData();
+    console.log(resdata)
+    const gra = await getGrades()
+    console.log(gra)
+
+
+
+    res.status(200).json({ message: "Result calculated successfully" });
+
+
+
+
+  } catch (error) {
+    console.log(error.message);
+
+  }
+}
 
 exports.getstudentData = async (req, res) => {
   const classData = await Class.find()

@@ -241,7 +241,7 @@ async function generatePdf(req, res) {
         }
 
         // Send the generated PDF file as a response
-        res.download(pdfPath, `${data.name}_ReportCard.pdf`);
+        res.download(pdfPath, `${dbData.name}_ReportCard.pdf`);
     } catch (err) { // Catch unexpected errors
         console.error('Unexpected error:', err);
         res.status(500).json({ message: 'Internal Server Error' });

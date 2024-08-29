@@ -4,10 +4,10 @@ type Props = {
   onClassIdChange: (id: string) => void;
 };
 // import { BASE_URL } from "../app.jsx";
-const BASE_URL = "https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev";
+const BASE_URL = " https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev";
 const Class = ({ onClassIdChange }: any) => {
   const [classData, setClassData] = useState({
-    level: "",
+    class: "",
     nameOfCourse: "",
     courseCode: "",
     creditHours: "",
@@ -16,9 +16,10 @@ const Class = ({ onClassIdChange }: any) => {
     coordinatorGender: "",
     courseCoordinator: "",
     totalNoOfQuestion: "",
-    totalNoOfStudentsAttendedExam: "",
+    StudentsAttended: "",
     studentsWithdrawn: "",
     studentAbsent: "",
+    studentPassed:"",
   });
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -32,22 +33,26 @@ const Class = ({ onClassIdChange }: any) => {
     // TODO: make a post request to create a class
     const response = await axios.post(`${BASE_URL}/createClass`, classData);
     console.log(response.data);
-    // onClassIdChange(response.data._id);
+    if(response.status === 201){
+      console.log(response.data._id);
+      onClassIdChange(response.data._id);
+      alert("Class created successfully");
+    }
     // for testing--
     // onClassIdChange("111");
   };
   return (
-    <div className="flex justify-center items-center  ">
+    <div className="flex justify-center items-center mb-12  ">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-4 p-4 border rounded shadow-lg w-full"
+        className="grid grid-cols-2 gap-2 p-4 border rounded shadow-lg w-full overflow-y-true"
       >
-        <label className="flex flex-col" htmlFor="level">
+        <label className="flex flex-col" htmlFor="class">
           Level:
           <input
             type="text"
-            name="level"
-            value={classData.level}
+            name="class"
+            value={classData.class}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
@@ -96,6 +101,16 @@ const Class = ({ onClassIdChange }: any) => {
           Semester:
           <input
             type="text"
+            name="semester"
+            value={classData.semester}
+            onChange={handleChange}
+            className=" p-2 border rounded"
+          />
+        </label>
+        <label className="flex flex-col">
+          Academic Year:
+          <input
+            type="text"
             name="academicYear"
             value={classData.academicYear}
             onChange={handleChange}
@@ -108,6 +123,16 @@ const Class = ({ onClassIdChange }: any) => {
             type="text"
             name="coordinatorGender"
             value={classData.coordinatorGender}
+            onChange={handleChange}
+            className="p-2 border rounded"
+          />
+        </label>
+        <label className="flex flex-col">
+          Course coordinator:
+          <input
+            type="text"
+            name="courseCoordinator"
+            value={classData.courseCoordinator}
             onChange={handleChange}
             className="p-2 border rounded"
           />
@@ -126,8 +151,8 @@ const Class = ({ onClassIdChange }: any) => {
           totalNoOfStudentsAttendedExam:
           <input
             type="text"
-            name="totalNoOfStudentsAttendedExam"
-            value={classData.totalNoOfStudentsAttendedExam}
+            name="StudentsAttended"
+            value={classData.StudentsAttended}
             onChange={handleChange}
             className=" p-2 border rounded"
           />
@@ -148,6 +173,16 @@ const Class = ({ onClassIdChange }: any) => {
             type="text"
             name="studentAbsent"
             value={classData.studentAbsent}
+            onChange={handleChange}
+            className=" p-2 border rounded"
+          />
+        </label>
+        <label className="flex flex-col">
+          studentPassed,
+          <input
+            type="text"
+            name="studentPassed"
+            value={classData.studentPassed}
             onChange={handleChange}
             className=" p-2 border rounded"
           />

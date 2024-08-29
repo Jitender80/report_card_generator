@@ -30,21 +30,15 @@ const ProtectedLayout = () => {
 export const BASE_URL = "";
 const App = () => {
   return (
-    <Router basename="/">
-      <Layout>
-        <Routes initialRoute="/login">
-          <Route path="/login" element={<Login />} />
-          {/* <Route
-            path="/protected/*"
-            element={<AuthRoute element={ProtectedLayout} />}
-          > */}
-            <Route path="home" element={<Home />} />
-            <Route path="studentTable" element={<StudentTable />} />
-            {/* {/* <Route path="class" element={<Class />} /> */}
-          {/* </Route> */}
-        </Routes>
-      </Layout>
-    </Router>
+<Router basename="/">
+  <Layout>
+    <Routes initialRoute="home">
+      <Route path="/login" element={<Login />} />
+      <Route path="home" element={<Home />} />
+      <Route path="studentTable" element={<StudentTable />} />
+    </Routes>
+  </Layout>
+</Router>
   );
 };
 

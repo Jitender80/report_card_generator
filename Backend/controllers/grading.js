@@ -1,12 +1,12 @@
 const Class = require("../models/excelmodel");
 
-exports.getGrades = async (req, res) => {
+async function getGrades(){
   try {
     const classData = await Class.findOne().populate('students').sort({ createdAt: -1 });
 
     // Check if classData is not null
     if (!classData) {
-      return res.status(404).json({ message: "No class data found" });
+      return  "No class data found" ;
     }
 
     console.log("🚀 ~ exports.getGrades= ~ classData.students:", classData.students);
@@ -68,13 +68,14 @@ exports.getGrades = async (req, res) => {
 
     // Update the Class document with FinalGrade
     classData.FinalGrade = finalGrade;
-    await classData.save();
+    const resdata = await classData.save();
 
-    console.log("🚀 ~ exports.getGrades= ~ finalGrade:", finalGrade);
-    return res.status(200).json({ data: finalGrade, message: "Data fetched and updated successfully" });
+    // console.log("🚀 ~ exports.getGrades= ~ finalGrade:", finalGrade);
+    return  resdata;
 
   } catch (error) {
     console.error("Error fetching class data:", error);
-    return res.status(500).json({ message: "Internal server error" });
+
   }
 };
+module.exports = { getGrades }; 
