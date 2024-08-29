@@ -7,7 +7,7 @@ import BASE_URL from "../lib/db"
 
 const Class = ({ onClassIdChange }: any) => {
   const [classData, setClassData] = useState({
-    class: "",
+    className: "",
     nameOfCourse: "",
     courseCode: "",
     creditHours: "",
@@ -48,12 +48,12 @@ const Class = ({ onClassIdChange }: any) => {
         onSubmit={handleSubmit}
         className="grid grid-cols-2 gap-2 p-4 border rounded shadow-lg w-full overflow-y-true"
       >
-        <label className="flex flex-col" htmlFor="class">
+        <label className="flex flex-col" htmlFor="className">
           Level:
           <input
             type="text"
-            name="class"
-            value={classData.class}
+            name="className"
+            value={classData.className}
             onChange={handleChange}
             className=" p-2 border rounded"
           />

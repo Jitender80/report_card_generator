@@ -26,10 +26,14 @@ const ProtectedLayout = () => {
 
 const App = () => {
   return (
-    <Router>
+    <Router
+    basename="/"
+    >
       <Layout>
-        <Routes>
-          <Route path="home" element={<Home />} />
+        <Routes
+        initialRoute="/"
+        >
+          <Route path="" element={<Home />} />
           <Route path="studentTable" element={<StudentTable />} />
         </Routes>
       </Layout>

@@ -61,7 +61,7 @@ app.use("/auth", authRoutes);
 app.delete("/cleanClass", deleteAllData);
 // ********************************************************************************************
 
-// app.post("/createClass", createClass );
+app.post("/createClass", createClass );
 
 app.use("/upload", upload.single("file"), uploadFile);
 app.get('/getStudent',getstudentData )
