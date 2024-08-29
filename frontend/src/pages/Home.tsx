@@ -17,18 +17,19 @@ const Home: React.FC = () => {
       setSelectedFile(event.target.files[0]);
     }
   };
-  const handleClassIdChange = async(id: string) => {
-   await  setClassId(id);
-    console.log("class id", classId);
-    if (classId) {
+  const handleClassIdChange = (id: string) => {
+     setClassId(id);
+    // console.log("class id", classId);
+    // if (classId) {
       setClassSubmitted(true);
-    } else {
-      setClassSubmitted(false);
-      console.log("class id not set");
-    }
+    // } else {
+    //   setClassSubmitted(false);
+    //   console.log("class id not set");
+    // }
   };
   useEffect(()=>{
     console.log("class id", classId);
+    
   },[classId])
 
   const handleUpload = () => {

@@ -35,11 +35,12 @@ const Class = ({ onClassIdChange }: any) => {
     console.log(response.data);
     if(response.status === 201){
       console.log(response.data._id);
-      onClassIdChange(response.data._id);
       alert("Class created successfully");
+      onClassIdChange(response.data._id);
     }
     // for testing--
     // onClassIdChange("111");
+    
   };
   return (
     <div className="flex justify-center items-center mb-12  ">
