@@ -79,15 +79,17 @@ exports.createClass = async (req, res) => {
 
   const newClass = new Class({
     className,
-    // nameOfCourse,
-    courseCode:code,
+    nameOfCourse,
+    courseCode,
+    courseCode,
+    creditHours,
    
-    creditHours:credit,
+    creditHours,
     semester,
-    // academicYear,
-    // coordinatorGender,
-    // courseCoordinator,
-    // totalNoOfQuestion,
+    academicYear,
+    coordinatorGender,
+    courseCoordinator,
+    totalNoOfQuestion,
     studentsNumber:totalNoOfQuestion,
  
     studentsWithdrawn,
@@ -104,7 +106,10 @@ exports.createClass = async (req, res) => {
   }
 };
 exports.uploadFile = async (req, res) => {
+  
   const file = req.file;
+  
+  console.log("🚀 ~ exports.uploadFile= ~ file:", file)
   const workbook = xlsx.readFile(file.path);
   const sheetNames = workbook.SheetNames;
 
