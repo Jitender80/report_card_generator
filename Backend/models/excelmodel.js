@@ -15,6 +15,9 @@ const classSchema = new mongoose.Schema({
   studentsAbsent: { type: String },
   studentsAttended: { type: String },
   studentsPassed: { type: String },
+  academicYear: { type: String, required: false },
+  coordinatorGender: { type: String, required: false },
+  courseCoordinator: { type: String, required: false },
 
   FinalGrade: {
 

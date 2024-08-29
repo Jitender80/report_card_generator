@@ -46,12 +46,12 @@ exports.createClass = async (req, res) => {
   // studentsWithdrawn: "",
   // studentAbsent: "",
   // studentPassed:"",
-  \
+  
   // className: { type: String, required: false },
-  // students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
-  // answerKey: [{ question: String, answer: String }],
+
+
   // correctIndexData: [Number],
-  // discIndexData: [Number],
+
   // average: { type: String, required: false },
   // code: { type: String, required: false },
   // credit: { type: String, required: false },
@@ -61,7 +61,7 @@ exports.createClass = async (req, res) => {
   // studentsAttended: { type: String },
   // studentsPassed: { type: String },
   const {
-    class,
+    className,
     nameOfCourse,
     courseCode,
     creditHours,
@@ -78,16 +78,18 @@ exports.createClass = async (req, res) => {
   } = req.body;
 
   const newClass = new Class({
-    class,
-    nameOfCourse,
-    courseCode,
+    className,
+    // nameOfCourse,
+    courseCode:code,
    
-    creditHours,
+    creditHours:credit,
     semester,
-    academicYear,
-    coordinatorGender,
-    courseCoordinator,
-    totalNoOfQuestion,
+    // academicYear,
+    // coordinatorGender,
+    // courseCoordinator,
+    // totalNoOfQuestion,
+    studentsNumber:totalNoOfQuestion,
+ 
     studentsWithdrawn,
     studentsAbsent,
     studentsAttended,
