@@ -3,14 +3,15 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import BASE_URL from "../lib/db"
 import Class from "../components/Class";
-import StudentTable from "./Dashboard";
-import { Router, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 const Home: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [classId, setClassId] = useState<string>("");
   const [classFormSubmited, setClassFormSubmitted] = useState<boolean>(false);
   const [isClassSubmitted, setClassSubmitted] = useState<boolean>(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -32,12 +33,19 @@ const Home: React.FC = () => {
     
   },[classId])
 
-  const handleUpload = () => {
+  const handleUpload = async() => {
     if (selectedFile) {
       // Handle the file upload logic here
       console.log("Uploading file:", selectedFile);
 
-      const res = axios.post(`${BASE_URL}/upload`, selectedFile);
+      const res = await axios.post(`${BASE_URL}/upload`, selectedFile);
+
+      if(res.status === 200){
+        alert("File uploaded successfully");
+        navigate("/studentTable")
+        
+
+      }
 
       console.log("🚀 ~ handleUpload ~ res:", res);
       // navigate("/studentTable")

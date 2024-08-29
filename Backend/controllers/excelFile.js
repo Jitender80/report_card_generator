@@ -31,14 +31,46 @@ async function getLatestClassWithStudentScores() {
 }
 
 exports.createClass = async (req, res) => {
-  const {
-    className,
 
-    grade,
-    average,
-    code,
-    credit,
-    studentsNumber,
+
+  // class: "",
+  // nameOfCourse: "",
+  // courseCode: "",
+  // creditHours: "",
+  // semester: "",
+  // academicYear: "",
+  // coordinatorGender: "",
+  // courseCoordinator: "",
+  // totalNoOfQuestion: "",
+  // StudentsAttended: "",
+  // studentsWithdrawn: "",
+  // studentAbsent: "",
+  // studentPassed:"",
+  \
+  // className: { type: String, required: false },
+  // students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
+  // answerKey: [{ question: String, answer: String }],
+  // correctIndexData: [Number],
+  // discIndexData: [Number],
+  // average: { type: String, required: false },
+  // code: { type: String, required: false },
+  // credit: { type: String, required: false },
+  // studentsNumber: { type: String },
+  // studentsWithdrawn: { type: String },
+  // studentsAbsent: { type: String },
+  // studentsAttended: { type: String },
+  // studentsPassed: { type: String },
+  const {
+    class,
+    nameOfCourse,
+    courseCode,
+    creditHours,
+    semester,
+    academicYear,
+    coordinatorGender,
+    courseCoordinator,
+    totalNoOfQuestion,
+  
     studentsWithdrawn,
     studentsAbsent,
     studentsAttended,
@@ -46,13 +78,16 @@ exports.createClass = async (req, res) => {
   } = req.body;
 
   const newClass = new Class({
-    className,
-
-    grade,
-    average,
-    code,
-    credit,
-    studentsNumber,
+    class,
+    nameOfCourse,
+    courseCode,
+   
+    creditHours,
+    semester,
+    academicYear,
+    coordinatorGender,
+    courseCoordinator,
+    totalNoOfQuestion,
     studentsWithdrawn,
     studentsAbsent,
     studentsAttended,
