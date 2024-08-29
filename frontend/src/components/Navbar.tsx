@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const Navbar: React.FC = () => {
   return (
     <nav className="bg-blue-700 p-4 flex flex-row justify-between items-center">
@@ -12,6 +12,7 @@ const Navbar: React.FC = () => {
         {/* <h2 >Materials</h2>
         <h2>Sessions</h2>
         <h2>Result</h2> */}
+        <Link to="/">home</Link>
       </div>
     </nav>
   );

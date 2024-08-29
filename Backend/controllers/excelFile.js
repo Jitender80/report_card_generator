@@ -72,9 +72,9 @@ exports.createClass = async (req, res) => {
     totalNoOfQuestion,
   
     studentsWithdrawn,
-    studentsAbsent,
-    studentsAttended,
-    studentsPassed,
+    studentAbsent,
+    StudentsAttended,
+    studentPassed,
   } = req.body;
 
   const newClass = new Class({
@@ -89,13 +89,14 @@ exports.createClass = async (req, res) => {
     academicYear,
     coordinatorGender,
     courseCoordinator,
-    totalNoOfQuestion,
+    // totalNoOfQuestion,
     studentsNumber:totalNoOfQuestion,
  
-    studentsWithdrawn,
-    studentsAbsent,
-    studentsAttended,
-    studentsPassed,
+    studentsWithdrawn:studentsWithdrawn,
+    studentsAbsent:studentAbsent,
+    studentsAttended:StudentsAttended,
+    
+    studentsPassed:studentPassed,
   });
 
   try {
@@ -427,11 +428,6 @@ async function getResultData() {
 
 
 
-    // // Ensure studentGrades is an array and log its structure
-    // if (!Array.isArray(classData.studentGrades)) {
-    //   console.error("classData.studentGrades is not an array:", classData.studentGrades);
-    //   return res.status(500).json({ message: "Internal ser403ver error" });
-    // }
 
 
 
@@ -451,7 +447,7 @@ async function getResultData() {
         questionTypes[item.category].push(questionNumber);
       }
     });
-    console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
+    // console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
 
     classData.questionSummary = questionTypes;
     classData.save()
@@ -459,7 +455,7 @@ async function getResultData() {
 
 
 
-    return data
+    return questionTypes;
 
   } catch (error) {
     console.log(error.message);
@@ -472,14 +468,16 @@ exports.getFinalResult = async (req, res) => {
   try {
 
     const cal = await calculateResult();
-    console.log(cal)
+    console.log(cal, "---121")
     const resdata = await getResultData();
-    console.log(resdata)
+    // console.log(resdata)
     const gra = await getGrades()
-    console.log(gra)
+    // console.log(gra)
 
 
-
+    if(!cal || !resdata || !gra){
+      return res.status(500).json({ message: "Internal server error" });
+    } 
     res.status(200).json({ message: "Result calculated successfully" });
 
 
