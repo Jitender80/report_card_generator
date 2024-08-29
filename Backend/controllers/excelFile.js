@@ -413,9 +413,15 @@ exports.getResultData = async (req, res) => {
 
     classData.questionAnalysis.forEach((item) => {
       if (questionTypes[item.category]) {
-        questionTypes[item.category].push(item.questionNumber);
+        const questionNumber = parseInt(item.questionNumber.replace('Q', ''), 10);
+        questionTypes[item.category].push(questionNumber);
       }
     });
+    console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
+
+    classData.questionSummary = questionTypes;
+    classData.save()
+
 
 
 
