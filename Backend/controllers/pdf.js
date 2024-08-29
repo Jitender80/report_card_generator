@@ -12,10 +12,11 @@ async function generateReportCardPDF(dbData) {
     <style>
         .report-card {
             width: 100%;
+            paddingHorizontal: 20px;
             border-collapse: collapse;
         }
         .report-card, .report-card th, .report-card td {
-            border: 1px solid #ddd;
+            border: 1px solid #000;
             padding: 10px;
         }
         .report-card .key {
@@ -38,10 +39,10 @@ async function generateReportCardPDF(dbData) {
                 <tr>
                     <th style="width: 5%;">No</th>
                     <th style="width: 20%;">Item Category</th>
-                    <th style="width: 15%;">Item No</th>
-                    <th style="width: 20%;">Total Item</th>
-                    <th style="width: 15%;">Percentage</th>
-                    <th style="width: 25%;">Comments/Recommendations</th>
+                    <th style="width: 35%;">Item No</th>
+                    <th style="width: 10%;">Total Item</th>
+                    <th style="width: 10%;">Percentage</th>
+                    <th style="width: 20%;">Comments/Recommendations</th>
                 </tr>
                  ${data.items.map((item, index) => {
                     let comments;
@@ -81,8 +82,13 @@ async function generateReportCardPDF(dbData) {
                         <tr>
                             <td>${index + 1}</td>
                             <td>${item.category}</td>
-                            <td>${item.itemNo}</td>
-                            <td>${item.totalItem}</td>
+                            <td
+                            style="word-wrap: break-word;min-width: 160px;max-width: 160px;"
+                            >
+                             ${item.items}
+                            
+                            </td>
+                            <td>${item.numberOfItems}</td>
                             <td>${item.percentage}</td>
                             <td>${comments}</td>
                         </tr>
@@ -130,7 +136,7 @@ async function generateReportCardPDF(dbData) {
         <td>${data.courses.grades.F.number} (${data.courses.grades.F.percentage}%)</td>
     </tr>
     <tr>
-        <td colspan="6"></td>
+        <td colspan="7"></td>
         <td>${data.courses.grades.APlus.number}</td>
         <td>${data.courses.grades.A.number}</td>
         <td>${data.courses.grades.BPlus.number}</td>
@@ -171,17 +177,39 @@ async function generatePdf(req, res) {
 
         const data = await Class.findOne().sort({createdAt : -1})
         console.log("🚀 ~ generatePdf ~ data:", data)
+        let items;
+        let numberOfItems;
+        let percentage;
+
+    
+
+        const result = [];
+        var total =0;
+
+        Object.keys(data.questionSummary).forEach(category => {
+            const items = data.questionSummary[category];
+            console.log("🚀 ~ Object.keys ~ items:", items)
+            const numberOfItems = items.length;
+            total += numberOfItems;
+            const percentage = (numberOfItems / data.questionAnalysis.length) * 100;
+            result.push({
+                items,
+                category,
+                numberOfItems,
+                percentage: percentage.toFixed(2) // Optional: format percentage to 2 decimal places
+            });
+            console.log(`Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage.toFixed(2)}%`);
+        });
+
+
+
+
 
         const dbData = {
             name: data.className,
             grade: data.grade,
             average: data.average,
-            items: data.questionAnalysis.map(item => ({
-                category: item.category,
-                itemNo: item.questionNumber,
-                percentage: item.correctAnswersPercentage,
-                comments: item.comments
-            })),
+            items: result,
             courses:{
               code: data.code,
               creditHour: data.creditHour,
@@ -241,7 +269,7 @@ async function generatePdf(req, res) {
         }
 
         // Send the generated PDF file as a response
-        res.download(pdfPath, `${data.name}_ReportCard.pdf`);
+        res.download(pdfPath, `${dbData.name}_ReportCard.pdf`);
     } catch (err) { // Catch unexpected errors
         console.error('Unexpected error:', err);
         res.status(500).json({ message: 'Internal Server Error' });
