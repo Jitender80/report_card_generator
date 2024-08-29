@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const xlsx = require("xlsx");
-const { uploadFile, calculateResult, getstudentData, getResultData } = require("./controllers/excelFile");
+const { uploadFile, calculateResult, getstudentData, getResultData, createClass } = require("./controllers/excelFile");
 
 const mongoose = require('mongoose');
 const cors = require("cors");
@@ -61,7 +61,7 @@ app.use("/auth", authRoutes);
 app.delete("/cleanClass", deleteAllData);
 // ********************************************************************************************
 
-// app.post("/createClass", );
+app.post("/createClass", createClass );
 
 app.use("/upload", upload.single("file"), uploadFile);
 app.get('/getStudent',getstudentData )
