@@ -211,13 +211,13 @@ async function generatePdf(req, res) {
             average: data.average,
             items: result,
             courses:{
-              code: data.code,
-              creditHour: data.creditHour,
-              studentsNumber: data.studentsNumber,
-              studentsWithdrawn: data.studentsWithdrawn,
-              studentsAbsent: data.studentsAbsent,
-              studentsAttended: data.studentsAttended,
-              studentsPassed: data.studentsPassed,
+              code: data.courseCode,
+              creditHour: data.creditHours,
+              studentsNumber: data.studentsNumber? data.studentsNumber   : "-",
+              studentsWithdrawn: data.studentsWithdrawn? data.studentsWithdrawn   : "-",
+              studentsAbsent: data.studentsAbsent? data.studentsAbsent   : "-",
+              studentsAttended: data.studentsAttended? data.studentsAttended   : "-",
+              studentsPassed: data.studentsPassed ? data.studentsPassed : "-",
               grades: {
                 APlus: {
                   number: data.FinalGrade.APlus.number,
@@ -258,7 +258,9 @@ async function generatePdf(req, res) {
               }
             }
           };
-        //   return res.json(data);
+        console.log("🚀 ~ generatePdf ~ dbData:", dbData)
+
+
 
 
 

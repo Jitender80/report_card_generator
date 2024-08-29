@@ -39,13 +39,49 @@ const StudentTable = () => {
     }
   };
 
+  const calculateResult = async () => {
+
+    try {
+      const res = await axios.get(`${BASE_URL}/calculate`);
+      if(res.status != 200){
+        alert("Error calculating result | Refresh of filll again");
+      }
+      console.log("🚀 ~ file: StudentTable.tsx ~ line 39 ~ calculateResult ~ res", res)
+    } catch (error) {
+      alert("Error calculating result | Refresh of filll again");
+      console.error(error.message);
+    }
+  }
+
   useEffect(() => {
     fetchStudents();
+    calculateResult();
+
+
   }, []);
 
   return (
-    <div className="container mx-auto overflow-y-auto overflow-x-auto">
-      <table className="min-w-full bg-white">
+    <div className=" overflow-y-auto h-screen w-full   overflow-x-auto ">
+
+      <div className="flex justify-center items-center">
+
+<h2>Download PDF</h2>
+    <button
+
+className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+
+    onClick={()=>{window.open(`${BASE_URL}/generate`)}}
+    >
+      Download
+
+
+    </button>
+
+      </div>
+
+
+
+      <table className="min-w-full bg-white border-red-100 border-2 ">
         <thead>
           <tr>
             <th className="py-2 px-4 border-b">Name</th>
@@ -54,12 +90,12 @@ const StudentTable = () => {
             <th className="py-2 px-4 border-b">Correct Count</th>
             <th className="py-2 px-4 border-b">Percentage</th>
             <th className="py-2 px-4 border-b">Score</th>
-            <th className="py-2 px-4 border-b">Questions</th>
+            {/* <th className="py-2 px-4 border-b">Questions</th> */}
             {/* <th className="py-2 px-4 border-b">Incorrect Index Data</th>
             <th className="py-2 px-4 border-b">Disc Index Data</th> */}
           </tr>
         </thead>
-        <tbody className="overflow-y-auto">
+        <tbody className="overflow-y-auto p-5">
           {Object.entries(students).map((student, index) => (
             // <div>
             //   {console.log(
@@ -67,7 +103,7 @@ const StudentTable = () => {
             //     student[1]?.name
             //   )}
             // </div>
-            <tr key={index}>
+            <tr key={index} >
               <td className="py-2 px-4 border-b">
                 {student[1]?.name || "name"}
               </td>
@@ -82,11 +118,11 @@ const StudentTable = () => {
                     <td>{student[1].questions[1].question}</td>
                   </td>
                 ))} */}
-                {student[1]?.questions.map((question, index) => (
+                {/* {student[1]?.questions.map((question, index) => (
                   <td key={index}>
                     <td>{question.question}</td>
                   </td>
-                ))}
+                ))} */}
               </td>
               {/* <td className="py-2 px-4 border-b">
                 {student.incorrectIndexData}

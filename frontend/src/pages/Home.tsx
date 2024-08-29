@@ -36,9 +36,12 @@ const Home: React.FC = () => {
   const handleUpload = async() => {
     if (selectedFile) {
       // Handle the file upload logic here
-      console.log("Uploading file:", selectedFile);
+      console.log("Uploading file____>:", selectedFile);
 
-      const res = await axios.post(`${BASE_URL}/upload`, selectedFile);
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const res = await axios.post(`${BASE_URL}/upload`,formData);
 
       if(res.status === 200){
         alert("File uploaded successfully");
