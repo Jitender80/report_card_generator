@@ -3,8 +3,8 @@ import axios from "axios";
 type Props = {
   onClassIdChange: (id: string) => void;
 };
-// import { BASE_URL } from "../app.jsx";
-const BASE_URL = " https://fictional-space-sniffle-94pgrxqq9qwfxg54-3000.app.github.dev";
+import BASE_URL from "../lib/db"
+
 const Class = ({ onClassIdChange }: any) => {
   const [classData, setClassData] = useState({
     class: "",

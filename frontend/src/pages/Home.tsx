@@ -1,7 +1,7 @@
 import React, { useState,useEffect} from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
-import { BASE_URL } from "../App";
+import BASE_URL from "../lib/db"
 import Class from "../components/Class";
 import StudentTable from "./Dashboard";
 import { Router, useNavigate } from "react-router-dom";
@@ -77,6 +77,8 @@ const Home: React.FC = () => {
               </span>
             </div>
             <input
+                id="file-upload"
+                placeholder="Upload the report card PDF"
               type="file"
               className="mt-4 p-2 border border-gray-300 rounded-lg"
               onChange={handleFileChange}
