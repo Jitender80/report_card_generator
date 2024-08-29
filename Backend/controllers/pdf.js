@@ -4,103 +4,19 @@ const fs = require('fs');
 const htmlPdf = require('html-pdf-node');
 const Class = require('../models/excelmodel');
 
-// Function to generate PDF from HTML
-const data = {
-    name: "John Doe",
-    grade: "A",
-    average: "90%",
-    items: [
-        {
-            category: "Poor (Bad) Questions",
-            itemNo: "7, 31, 36, 44, 59, 61, 64, 78, 79",
-            totalItem: "9",
-            percentage: "11%",
-            comments: `
-                ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
-                ● All the questions should be rejected.
-            `
-        },
-        {
-            category: "Very Difficult Question",
-            itemNo: "8, 30",
-            totalItem: "2",
-            percentage: "2%",
-            comments: `
-                ● Keys of these items are needed to be checked.
-                ● Items should be rejected.
-            `
-        },
-        {
-            category: "Difficult Question",
-            itemNo: "47, 53, 62",
-            totalItem: "3",
-            percentage: "4%",
-            comments: `
-                ● Key of this item is also needed to be checked.
-            `
-        },
-        {
-            category: "Good Question",
-            itemNo: "3, 10, 18, 33, 34, 38, 41, 43, 45, 48, 50, 54, 66, 69, 70, 72, 74, 75, 76, 77",
-            totalItem: "20",
-            percentage: "25%",
-            comments: `
-                ● Items could be stored in question bank for further use.
-            `
-        },
-        {
-            category: "Easy Question",
-            itemNo: "2, 6, 15, 22, 23, 26, 37, 51, 56, 71, 80",
-            totalItem: "11",
-            percentage: "14%",
-            comments: `
-                ● Item should be revised before re-use.
-            `
-        },
-        {
-            category: "Very Easy Question",
-            itemNo: "1, 4, 5, 9, 11, 12, 13, 14, 16, 17, 19, 20, 21, 24, 25, 27, 28, 29, 32, 35, 39, 40, 42, 46, 49, 52, 55, 57, 58, 60, 63, 65, 67, 68, 73",
-            totalItem: "35",
-            percentage: "44%",
-            comments: `
-                ● Items should be rejected Or needed to be revised.
-            `
-        }
-    ],
-    courses: [
-        {
-            code: "CS101",
-            creditHour: "3",
-            studentsNumber: "11",
-            studentsWithdrawn: "0",
-            studentsAbsent: "0",
-            studentsAttended: "2",
-            studentsPassed: "3",
-            grades: {
-                APlus: "2",
-                A: "1",
-                BPlus: "5",
-                B: "0",
-                CPlus: "2",
-                C: "1",
-                DPlus: "5",
-                D: "0",
-                F: "2"
-            },
-            percentages: ["0%", "0%", "18%", "27%", "18%", "9%", "45%", "0%", "18%"]
-        }
-        // Add more courses as needed
-    ]
-};
-async function generateReportCardPDF() {
+
+async function generateReportCardPDF(dbData) {
+    const data = dbData;
+    console.log("🚀 ~ generateReportCardPDF ~ data:", data)
     const reportCardHtml = `
     <style>
         .report-card {
             width: 100%;
+            paddingHorizontal: 20px;
             border-collapse: collapse;
         }
         .report-card, .report-card th, .report-card td {
-            border: 1px solid #ddd;
+            border: 1px solid #000;
             padding: 10px;
         }
         .report-card .key {
@@ -123,12 +39,12 @@ async function generateReportCardPDF() {
                 <tr>
                     <th style="width: 5%;">No</th>
                     <th style="width: 20%;">Item Category</th>
-                    <th style="width: 15%;">Item No</th>
-                    <th style="width: 20%;">Total Item</th>
-                    <th style="width: 15%;">Percentage</th>
-                    <th style="width: 25%;">Comments/Recommendations</th>
+                    <th style="width: 35%;">Item No</th>
+                    <th style="width: 10%;">Total Item</th>
+                    <th style="width: 10%;">Percentage</th>
+                    <th style="width: 20%;">Comments/Recommendations</th>
                 </tr>
-                ${data.items.map((item, index) => {
+                 ${data.items.map((item, index) => {
                     let comments;
                     if (item.category === "Poor (Bad) Questions") {
                         comments = `
@@ -166,8 +82,13 @@ async function generateReportCardPDF() {
                         <tr>
                             <td>${index + 1}</td>
                             <td>${item.category}</td>
-                            <td>${item.itemNo}</td>
-                            <td>${item.totalItem}</td>
+                            <td
+                            style="word-wrap: break-word;min-width: 160px;max-width: 160px;"
+                            >
+                             ${item.items}
+                            
+                            </td>
+                            <td>${item.numberOfItems}</td>
                             <td>${item.percentage}</td>
                             <td>${comments}</td>
                         </tr>
@@ -175,7 +96,7 @@ async function generateReportCardPDF() {
                 }).join('')}
             </table>
         </div>
-        <div class="dbData-details" style="margin-top: 20px;">
+        <div class="data-details" style="margin-top: 20px;">
             <table style="width: 100%;">
                 <tr>
                     <th>Course Code</th>
@@ -195,39 +116,38 @@ async function generateReportCardPDF() {
                     <th>D</th>
                     <th>F</th>
                 </tr>
-                ${data.courses.map(dbData => `
-                    <tr>
-                        <td>${dbData.code}</td>
-                        <td>${dbData.creditHour}</td>
-                        <td>${dbData.studentsNumber}</td>
-                        <td>${dbData.studentsWithdrawn}</td>
-                        <td>${dbData.studentsAbsent}</td>
-                        <td>${dbData.studentsAttended}</td>
-                        <td>${dbData.studentsPassed}</td>
-                        <td>${dbData.grades.APlus}</td>
-                        <td>${dbData.grades.A}</td>
-                        <td>${dbData.grades.BPlus}</td>
-                        <td>${dbData.grades.B}</td>
-                        <td>${dbData.grades.CPlus}</td>
-                        <td>${dbData.grades.C}</td>
-                        <td>${dbData.grades.DPlus}</td>
-                        <td>${dbData.grades.D}</td>
-                        <td>${dbData.grades.F}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="6"></td>
-                        <td>${dbData.percentages[0]}</td>
-                        <td>${dbData.percentages[1]}</td>
-                        <td>${dbData.percentages[2]}</td>
-                        <td>${dbData.percentages[3]}</td>
-                        <td>${dbData.percentages[4]}</td>
-                        <td>${dbData.percentages[5]}</td>
-                        <td>${dbData.percentages[6]}</td>
-                        <td>${dbData.percentages[7]}</td>
-                        <td>${dbData.percentages[8]}</td>
-                        <td>${dbData.percentages[9]}</td>
-                    </tr>
-                `).join('')}
+
+              <tr>
+        <td>${data.courses.code}</td>
+        <td>${data.courses.creditHour}</td>
+        <td>${data.courses.studentsNumber}</td>
+        <td>${data.courses.studentsWithdrawn}</td>
+        <td>${data.courses.studentsAbsent}</td>
+        <td>${data.courses.studentsAttended}</td>
+        <td>${data.courses.studentsPassed}</td>
+        <td>${data.courses.grades.APlus.number} (${data.courses.grades.APlus.percentage}%)</td>
+        <td>${data.courses.grades.A.number} (${data.courses.grades.A.percentage}%)</td>
+        <td>${data.courses.grades.BPlus.number} (${data.courses.grades.BPlus.percentage}%)</td>
+        <td>${data.courses.grades.B.number} (${data.courses.grades.B.percentage}%)</td>
+        <td>${data.courses.grades.CPlus.number} (${data.courses.grades.CPlus.percentage}%)</td>
+        <td>${data.courses.grades.C.number} (${data.courses.grades.C.percentage}%)</td>
+        <td>${data.courses.grades.DPlus.number} (${data.courses.grades.DPlus.percentage}%)</td>
+        <td>${data.courses.grades.D.number} (${data.courses.grades.D.percentage}%)</td>
+        <td>${data.courses.grades.F.number} (${data.courses.grades.F.percentage}%)</td>
+    </tr>
+    <tr>
+        <td colspan="7"></td>
+        <td>${data.courses.grades.APlus.number}</td>
+        <td>${data.courses.grades.A.number}</td>
+        <td>${data.courses.grades.BPlus.number}</td>
+        <td>${data.courses.grades.B.number}</td>
+        <td>${data.courses.grades.CPlus.number}</td>
+        <td>${data.courses.grades.C.number}</td>
+        <td>${data.courses.grades.DPlus.number}</td>
+        <td>${data.courses.grades.D.number}</td>
+        <td>${data.courses.grades.F.number}</td>
+    </tr>
+
             </table>
         </div>
     </div>
@@ -255,52 +175,101 @@ async function generateReportCardPDF() {
 async function generatePdf(req, res) {
     try {
 
-        const dbData = await Class.find().sort({createdAt : -1})
+        const data = await Class.findOne().sort({createdAt : -1})
+        console.log("🚀 ~ generatePdf ~ data:", data)
+        let items;
+        let numberOfItems;
+        let percentage;
 
-        const data = {
-            name: dbData.className,
-            grade: dbData.grade,
-            average: dbData.average,
-            items: dbData.questionAnalysis.map(item => ({
-              category: item.category,
-              itemNo: item.questionNumber,
+    
 
-              percentage: item.correctAnswersPercentage,
-              comments: item.comments
-            })),
+        const result = [];
+        var total =0;
+
+        Object.keys(data.questionSummary).forEach(category => {
+            const items = data.questionSummary[category];
+            console.log("🚀 ~ Object.keys ~ items:", items)
+            const numberOfItems = items.length;
+            total += numberOfItems;
+            const percentage = (numberOfItems / data.questionAnalysis.length) * 100;
+            result.push({
+                items,
+                category,
+                numberOfItems,
+                percentage: percentage.toFixed(2) // Optional: format percentage to 2 decimal places
+            });
+            console.log(`Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage.toFixed(2)}%`);
+        });
+
+
+
+
+
+        const dbData = {
+            name: data.className,
+            grade: data.grade,
+            average: data.average,
+            items: result,
             courses:{
-              code: dbData.code,
-              creditHour: dbData.creditHour,
-              studentsNumber: dbData.studentsNumber,
-              studentsWithdrawn: dbData.studentsWithdrawn,
-              studentsAbsent: dbData.studentsAbsent,
-              studentsAttended: dbData.studentsAttended,
-              studentsPassed: dbData.studentsPassed,
+              code: data.code,
+              creditHour: data.creditHour,
+              studentsNumber: data.studentsNumber,
+              studentsWithdrawn: data.studentsWithdrawn,
+              studentsAbsent: data.studentsAbsent,
+              studentsAttended: data.studentsAttended,
+              studentsPassed: data.studentsPassed,
               grades: {
-                APlus: dbData.grades.APlus,
-                A: dbData.grades.A,
-                BPlus: dbData.grades.BPlus,
-                B: dbData.grades.B,
-                CPlus: dbData.grades.CPlus,
-                C: dbData.grades.C,
-                DPlus: dbData.grades.DPlus,
-                D: dbData.grades.D,
-                F: dbData.grades.F
-              },
-              percentages: dbData.percentages
+                APlus: {
+                  number: data.FinalGrade.APlus.number,
+                  percentage: data.FinalGrade.APlus.percentage
+                },
+                A: {
+                  number: data.FinalGrade.A.number,
+                  percentage: data.FinalGrade.A.percentage
+                },
+                BPlus: {
+                  number: data.FinalGrade.BPlus.number,
+                  percentage: data.FinalGrade.BPlus.percentage
+                },
+                B: {
+                  number: data.FinalGrade.B.number,
+                  percentage: data.FinalGrade.B.percentage
+                },
+                CPlus: {
+                  number: data.FinalGrade.CPlus.number,
+                  percentage: data.FinalGrade.CPlus.percentage
+                },
+                C: {
+                  number: data.FinalGrade.C.number,
+                  percentage: data.FinalGrade.C.percentage
+                },
+                DPlus: {
+                  number: data.FinalGrade.DPlus.number,
+                  percentage: data.FinalGrade.DPlus.percentage
+                },
+                D: {
+                  number: data.FinalGrade.D.number,
+                  percentage: data.FinalGrade.D.percentage
+                },
+                F: {
+                  number: data.FinalGrade.F.number,
+                  percentage: data.FinalGrade.F.percentage
+                }
+              }
             }
           };
+        //   return res.json(data);
 
 
 
-        const pdfPath = await generateReportCardPDF(data);
+        const pdfPath = await generateReportCardPDF(dbData);
 
         if (pdfPath.error) { // Handle error from generateReportCardPDF
             return res.status(500).json({ message: 'Error generating PDF', error: pdfPath.error });
         }
 
         // Send the generated PDF file as a response
-        res.download(pdfPath, `${data.name.replace(/\s+/g, '_')}_ReportCard.pdf`);
+        res.download(pdfPath, `${dbData.name}_ReportCard.pdf`);
     } catch (err) { // Catch unexpected errors
         console.error('Unexpected error:', err);
         res.status(500).json({ message: 'Internal Server Error' });

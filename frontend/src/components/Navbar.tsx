@@ -9,9 +9,9 @@ const Navbar: React.FC = () => {
 
       </div>
       <div className=" flex flex-row gap-10 justify-around text-white text-2xl">
-        <h2 >Materials</h2>
+        {/* <h2 >Materials</h2>
         <h2>Sessions</h2>
-        <h2>Result</h2>
+        <h2>Result</h2> */}
       </div>
     </nav>
   );

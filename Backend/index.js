@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const xlsx = require("xlsx");
-const { uploadFile, calculateResult, getstudentData, getResultData } = require("./controllers/excelFile");
+const { uploadFile,  getstudentData,  createClass, getFinalResult } = require("./controllers/excelFile");
 
 const mongoose = require('mongoose');
 const cors = require("cors");
@@ -16,6 +16,7 @@ const cors = require("cors");
 const { deleteAllData } = require("./controllers/dev");
 const connectDB = require("./db");
 const { generate, generateReportCardPDF, generatePdf } = require("./controllers/pdf");
+const { getGrades } = require("./controllers/grading");
 
 
 const app = express();
@@ -51,7 +52,6 @@ const upload = multer({ storage: storage });
 
 
 
-app.get('/calculate', calculateResult)
 
 app.use("/auth", authRoutes);
 
@@ -61,14 +61,18 @@ app.use("/auth", authRoutes);
 app.delete("/cleanClass", deleteAllData);
 // ********************************************************************************************
 
-// app.post("/createClass", );
+app.post("/createClass", createClass );
 
 app.use("/upload", upload.single("file"), uploadFile);
 app.get('/getStudent',getstudentData )
 
+// app.get('/calculate', calculateResult)
 
-app.get('/getResultData', getResultData);
+// app.get('/getResultData', getResultData);
 
+// app.get('/finalgrade', getGrades)
+
+app.get('/calculate', getFinalResult)
 
 app.get('/generate', generatePdf);
 

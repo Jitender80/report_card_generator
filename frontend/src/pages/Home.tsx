@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
-import { BASE_URL } from "../App";
+import BASE_URL from "../lib/db"
 import Class from "../components/Class";
 import StudentTable from "./Dashboard";
 import { Router, useNavigate } from "react-router-dom";
@@ -18,15 +18,19 @@ const Home: React.FC = () => {
     }
   };
   const handleClassIdChange = (id: string) => {
-    setClassId(id);
-    console.log("class id", classId);
-    if (classId) {
+     setClassId(id);
+    // console.log("class id", classId);
+    // if (classId) {
       setClassSubmitted(true);
-    } else {
-      setClassSubmitted(false);
-      console.log("class id not set");
-    }
+    // } else {
+    //   setClassSubmitted(false);
+    //   console.log("class id not set");
+    // }
   };
+  useEffect(()=>{
+    console.log("class id", classId);
+    
+  },[classId])
 
   const handleUpload = () => {
     if (selectedFile) {
@@ -45,9 +49,12 @@ const Home: React.FC = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen overflow-y-auto ">
-        <div className="mb-1">
+        {!isClassSubmitted && (
+
+        <div className="mb-15">
           <Class onClassIdChange={handleClassIdChange} />
         </div>
+        )}
         {isClassSubmitted && (
           <div>
             <div className="flex items-center space-x-2">
@@ -70,6 +77,8 @@ const Home: React.FC = () => {
               </span>
             </div>
             <input
+                id="file-upload"
+                placeholder="Upload the report card PDF"
               type="file"
               className="mt-4 p-2 border border-gray-300 rounded-lg"
               onChange={handleFileChange}

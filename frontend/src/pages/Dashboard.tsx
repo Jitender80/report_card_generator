@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import { BASE_URL } from "../App.jsx";
+import BASE_URL from "../lib/db"
 import { ConstructionIcon } from "lucide-react";
 
 const StudentTable = () => {
