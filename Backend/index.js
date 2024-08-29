@@ -16,6 +16,7 @@ const cors = require("cors");
 const { deleteAllData } = require("./controllers/dev");
 const connectDB = require("./db");
 const { generate, generateReportCardPDF, generatePdf } = require("./controllers/pdf");
+const { getGrades } = require("./controllers/grading");
 
 
 const app = express();
@@ -72,6 +73,7 @@ app.get('/getResultData', getResultData);
 
 app.get('/generate', generatePdf);
 
+app.get('/finalgrade', getGrades)
 
 
 app.listen(port, () => {

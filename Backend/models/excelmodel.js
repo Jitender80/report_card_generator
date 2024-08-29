@@ -18,11 +18,11 @@ const classSchema = new mongoose.Schema({
   studentsAttended:{type:String},
   studentsPassed:{type:String},
 
-  studentGrades:  [{
-    name: { type: String, required: true },
-    percentage: { type: Number, required: true },
-    // grade: { type: String, required: true },
-    grades: {
+  FinalGrade:  {
+
+
+
+
       APlus: { number: { type: Number}, percentage: { type: Number} },
       A: { number: { type: Number  }, percentage: { type: Number } },
       BPlus: { number: { type: Number }, percentage: { type: Number} },
@@ -32,8 +32,8 @@ const classSchema = new mongoose.Schema({
       DPlus: { number: { type: Number, }, percentage: { type: Number, } },
       D: { number: { type: Number, }, percentage: { type: Number } },
       F: { number: { type: Number }, percentage: { type: Number } }
-    },
-  }],
+    ,
+  },
 
   kr20: { type: Number, required: false },
   questionAnalysis: [{

@@ -389,11 +389,17 @@ exports.getResultData = async (req, res) => {
     const classData = await Class.findOne()
       .sort({ createdAt: -1 })
       .populate("students")
-      .exec();
-    console.log(
-      "🚀 ~ exports.getResultData= ~ lassData:",
-      classData.questionAnalysis
-    );
+
+
+      
+
+      // // Ensure studentGrades is an array and log its structure
+      // if (!Array.isArray(classData.studentGrades)) {
+      //   console.error("classData.studentGrades is not an array:", classData.studentGrades);
+      //   return res.status(500).json({ message: "Internal ser403ver error" });
+      // }
+    
+    
 
     // Create key-value object for question types
     const questionTypes = {
@@ -410,6 +416,8 @@ exports.getResultData = async (req, res) => {
         questionTypes[item.category].push(item.questionNumber);
       }
     });
+
+
 
     return res.status(200).json({
       data: questionTypes,
