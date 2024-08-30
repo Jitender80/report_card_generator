@@ -68,15 +68,18 @@ const StudentTable = () => {
 <h2>Download PDF</h2>
     <button
 
-className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+className="bg-blue-500 hover:bg-blue-700 space-x-3 text-white font-bold py-2 px-4 rounded"
 
     onClick={()=>{window.open(`${BASE_URL}/generate`)}}
     >
-      Download
+      Download 
 
 
     </button>
 
+<i>
+  if download not working, please refresh the page and try again
+</i>
       </div>
 
 
