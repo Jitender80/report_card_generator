@@ -117,7 +117,10 @@ exports.createClass = async (req, res) => {
 
   try {
     const savedClass = await newClass.save();
-    res.status(201).json(savedClass);
+    res.status(201).json({
+      data:savedClass,
+      message:"Class Create Successfully"
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -178,7 +181,7 @@ exports.uploadFile = async (req, res) => {
   };
   // Extract answer key from the first row
   const answerKeyData = data.slice(0, 1)[0];
-  const answerKey = extractQuestionColumns(answerKeyData);
+  const answerKey =   extractQuestionColumns(answerKeyData);
   console.log("🚀 ~ exports.uploadFile= ~ answerKey:", answerKey);
 
   // Function to parse percentage strings to numbers
@@ -221,6 +224,12 @@ exports.uploadFile = async (req, res) => {
   // Create a new class with the answer key
 
   const latestClass = await Class.findOne().sort({ createdAt: -1 }).exec();
+
+  if(!latestClass){
+    return res.status(401).json({
+      message: "NO class present"
+    })
+  }
 
   latestClass.answerKey = answerKey;
   latestClass.correctIndexData = correctIndexData;
