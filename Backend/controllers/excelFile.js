@@ -30,6 +30,18 @@ async function getLatestClassWithStudentScores() {
   }
 }
 
+
+exports.handleCollegeSubmit = (req, res) => {
+  const { collegeName, universityName } = req.body;
+
+  if (!collegeName || !universityName) {
+    return res.status(400).json({ message: 'Both collegeName and universityName are required' });
+  }
+
+  // Perform any necessary processing, e.g., save to database
+
+  res.status(200).json({ message: 'College and University names submitted successfully', data: { collegeName, universityName } });
+};
 exports.createClass = async (req, res) => {
 
 
@@ -61,6 +73,8 @@ exports.createClass = async (req, res) => {
   // studentsAttended: { type: String },
   // studentsPassed: { type: String },
   const {
+    college,
+    univerity,
     className,
     nameOfCourse,
     courseCode,
@@ -78,6 +92,8 @@ exports.createClass = async (req, res) => {
   } = req.body;
 
   const newClass = new Class({
+    college,
+    univerity,
     className,
     nameOfCourse,
     courseCode,

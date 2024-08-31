@@ -11,7 +11,31 @@ const ItemAnalysis: React.FC = () => {
   const [classFormSubmited, setClassFormSubmitted] = useState<boolean>(false);
   const [isClassSubmitted, setClassSubmitted] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [collegeName, setCollegeName] = useState('');
+  const [universityName, setUniversityName] = useState('');
 
+  const handleCollegeNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setCollegeName(event.target.value);
+  };
+
+  const handleUniversityNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setUniversityName(event.target.value);
+  };
+
+  const handleCollegeSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const res = await  axios.post(`${BASE_URL}/initializeClass`, {
+          collegeName,
+          universityName
+      });
+
+      if(res.status === 200){
+        alert("College details submitted successfully");
+      }else{
+        alert('College not created')
+      }
+
+    }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -56,10 +80,44 @@ const ItemAnalysis: React.FC = () => {
       console.log("No file selected");
     }
   };
+  
 
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen overflow-y-auto ">
+
+      <form onSubmit={handleCollegeSubmit} className="
+      border border-gray-300 p-4 rounded-lg w-1/2
+      flex flex-row gap-4
+
+      ">
+            <div
+            className="    flex flex-row gap-5"
+            >
+                <label htmlFor="collegeName">College Name:</label>
+                <input
+                className="border border-gray-300 p-2 rounded-lg"
+                    type="text"
+                    id="collegeName"
+                    value={collegeName}
+                    onChange={handleCollegeNameChange}
+                />
+            </div>
+            <div className="
+            flex flex-row gap-5
+            ">
+                <label htmlFor="universityName">University Name:</label>
+                <input
+                className="border border-gray-300 p-2 rounded-lg"
+                    type="text"
+                    id="universityName"
+                    value={universityName}
+                    onChange={handleUniversityNameChange}
+                />
+            </div>
+            <button type="submit" className="bg-blue-300 self-center p-5 rounded-md ">Submit</button>
+        </form>
+        
         {!isClassSubmitted && (
 
         <div className="mb-15">

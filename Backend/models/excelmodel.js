@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Student = require("./student");
 
 const classSchema = new mongoose.Schema({
+  college : {type: String, required: true},
+  university : {type: String, required: true}, 
   className: { type: Number, required: false },
   courseCode: { type: String, required: false },
   creditHours: { type: String, required: false },
