@@ -63,7 +63,7 @@ app.post("/createClass", createClass );
 app.use("/upload", upload.single("file"), uploadFile);
 app.get('/getStudent',getstudentData )
 
-// app.get('/calculate', calculateResult)
+// app.get('/calculateRes', calculateResult)
 
 // app.get('/getResultData', getResultData);
 

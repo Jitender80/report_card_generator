@@ -307,9 +307,12 @@ async function calculateResult() {
       QA_PQ[answerKey.question] = parseFloat(
         roundedAccuracy * (1 - questionAccuracyValue)
       );
-
+      
       QA_PQ_Sum += QA_PQ[answerKey.question];
     }
+    console.log("🚀 ~ calculateResult ~ QA_P:", QA_P)
+    console.log("🚀 ~ calculateResult ~ QA_Q:", QA_Q)
+    console.log("🚀 ~ calculateResult ~ QA_PQ_Sum:", QA_PQ_Sum)
 
     // calculate variance
     // Calculate variance
@@ -424,10 +427,12 @@ async function calculateResult() {
       }
     });
 
-    await Class.findByIdAndUpdate(latestId[0]._id, {
+    const resdata = await Class.findByIdAndUpdate(latestId[0]._id, {
       KR20: KR20,
       questionAnalysis: newArray,
     });
+
+    return resdata
 
 
   } catch (error) {
@@ -486,15 +491,18 @@ exports.getFinalResult = async (req, res) => {
     const cal = await calculateResult();
     console.log(cal, "---121")
     const resdata = await getResultData();
-    // console.log(resdata)
-    const gra = await getGrades()
-    // console.log(gra)
+    console.log(resdata)
+    const grades = await getGrades()
+    console.log(grades)
 
 
     if(!cal || !resdata || !gra){
       return res.status(500).json({ message: "Internal server error" });
     } 
-    res.status(200).json({ message: "Result calculated successfully" });
+    res.status(200).json({ message: "Result calculated successfully", calculateResult: cal,
+      getResultData : resdata, 
+      getGrades: grades
+     });
 
 
 
