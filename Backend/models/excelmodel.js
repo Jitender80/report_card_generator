@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const Student = require("./student");
 
 const classSchema = new mongoose.Schema({
-  college : {type: String, required: true},
-  university : {type: String, required: true}, 
+  college : {type: String, required: false},
+  university : {type: String, required: false}, 
   className: { type: Number, required: false },
   courseCode: { type: String, required: false },
   creditHours: { type: String, required: false },
   semester: { type: String, required: false },
-  academicYear: { type: Number, required: false },
-  coordinatorGender: { type: String, required: false ,enum:["male","female"]},
+  academicYear: { type:String, required: false },
+  coordinatorGender: { type: String, required: false ,enum:["Male","Female"]},
   courseCoordinator: { type: String, required: false },
   totalNoOfQuestion: { type: Number, required: false },
   studentsNumber: { type: Number, required: false },
