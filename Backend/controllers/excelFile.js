@@ -505,7 +505,7 @@ exports.getFinalResult = async (req, res) => {
     console.log(grades)
 
 
-    if(!cal || !resdata || !gra){
+    if(!cal || !resdata || !grades){
       return res.status(500).json({ message: "Internal server error" });
     } 
     res.status(200).json({ message: "Result calculated successfully", calculateResult: cal,
