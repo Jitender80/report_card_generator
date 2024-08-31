@@ -12,7 +12,8 @@ import "./App.css";
 import Login from "./pages/Login";
 import AuthRoute from "./components/AuthRoute";
 import StudentTable from "./pages/Dashboard";
-// import Class from "./components/Class";
+import ItemAnalysis from "./pages/ItemAnalysis";
+
 const ProtectedLayout = () => {
   return (
     <div>
@@ -34,6 +35,7 @@ const App = () => {
         initialRoute="/"
         >
           <Route path="" element={<Home />} />
+          <Route path="itemanalysis" element={<ItemAnalysis />} />
           <Route path="studentTable" element={<StudentTable />} />
         </Routes>
       </Layout>

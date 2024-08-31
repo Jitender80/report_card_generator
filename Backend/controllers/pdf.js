@@ -12,7 +12,7 @@ async function generateReportCardPDF(dbData) {
     <style>
         .report-card {
             width: 100%;
-            paddingHorizontal: 20px;
+            padding: 20px;
             border-collapse: collapse;
         }
         .report-card, .report-card th, .report-card td {
@@ -29,10 +29,36 @@ async function generateReportCardPDF(dbData) {
         .report-card .items-table th, .report-card .items-table td {
             text-align: left;
         }
+        .header-box, .info-box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .info-box {
+            display: flex;
+            justify-content: space-between;
+        }
+        .info-box .column {
+            width: 48%;
+        }
     </style>
     <div class="report-card">
-        <div class="student-details">
-      
+        <div class="header-box">
+            <img src="path/to/university-logo.png" alt="University Logo" style="width: 50px; height: 50px;">
+            <h1>University Name</h1>
+        </div>
+        <div class="info-box">
+            <div class="column">
+                <p>Course Name : ${data.className}</p>
+                <p>Level : ${data.academicYear}</p>
+                <p>Credit Hours : ${data.creditHours}</p>
+            </div>
+            <div class="column">
+                <p>Course Code : ${data.courseCode}</p>
+                <p>Semester : ${data.semester}</p>
+                <p>Item : ${data.courseCoordinator}</p>
+            </div>
         </div>
         <div class="items-table">
             <table style="width: 100%;">

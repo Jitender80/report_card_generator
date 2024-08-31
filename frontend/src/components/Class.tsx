@@ -7,19 +7,19 @@ import BASE_URL from "../lib/db"
 
 const Class = ({ onClassIdChange }: any) => {
   const [classData, setClassData] = useState({
-    className: "",
+    className: 0,
     nameOfCourse: "",
     courseCode: "",
     creditHours: "",
     semester: "",
-    academicYear: "",
+    academicYear:0 ,
     coordinatorGender: "",
     courseCoordinator: "",
-    totalNoOfQuestion: "",
-    StudentsAttended: "",
-    studentsWithdrawn: "",
-    studentAbsent: "",
-    studentPassed:"",
+    totalNoOfQuestion: 0,
+    StudentsAttended: 0,
+    studentsWithdrawn: 0,
+    studentAbsent: 0,
+    studentPassed:0,
   });
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -43,7 +43,7 @@ const Class = ({ onClassIdChange }: any) => {
     
   };
   return (
-    <div className="flex justify-center items-center mb-12  ">
+    <div className="flex justify-center items-center mb-12 border border-black ">
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-2 gap-2 p-4 border rounded shadow-lg w-full overflow-y-true"
@@ -51,7 +51,7 @@ const Class = ({ onClassIdChange }: any) => {
         <label className="flex flex-col" htmlFor="className">
           Level:
           <input
-            type="text"
+            type="Number"
             name="className"
             value={classData.className}
             onChange={handleChange}
@@ -111,7 +111,7 @@ const Class = ({ onClassIdChange }: any) => {
         <label className="flex flex-col">
           Academic Year:
           <input
-            type="text"
+            type="Number"
             name="academicYear"
             value={classData.academicYear}
             onChange={handleChange}
@@ -120,13 +120,30 @@ const Class = ({ onClassIdChange }: any) => {
         </label>
         <label className="flex flex-col">
           coordinatorGender:
+          <div>
+          <label>
           <input
-            type="text"
+            type="radio"
             name="coordinatorGender"
-            value={classData.coordinatorGender}
+            value="male"
+            checked={classData.coordinatorGender === "male"}
             onChange={handleChange}
             className="p-2 border rounded"
           />
+          Male
+          </label>
+          <label>
+          <input
+            type="radio"
+            name="coordinatorGender"
+            value="female"
+            checked={classData.coordinatorGender === "female"}
+            onChange={handleChange}
+            className="p-2 border rounded"
+          />
+          Female
+          </label>
+            </div>
         </label>
         <label className="flex flex-col">
           Course coordinator:

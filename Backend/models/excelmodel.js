@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 const Student = require("./student");
 
 const classSchema = new mongoose.Schema({
-  className: { type: String, required: false },
+  className: { type: Number, required: false },
   courseCode: { type: String, required: false },
   creditHours: { type: String, required: false },
   semester: { type: String, required: false },
-  academicYear: { type: String, required: false },
-  coordinatorGender: { type: String, required: false },
+  academicYear: { type: Number, required: false },
+  coordinatorGender: { type: String, required: false ,enum:["male","female"]},
   courseCoordinator: { type: String, required: false },
-  totalNoOfQuestion: { type: String, required: false },
-  studentsNumber: { type: String, required: false },
-  studentsWithdrawn: { type: String, required: false },
+  totalNoOfQuestion: { type: Number, required: false },
+  studentsNumber: { type: Number, required: false },
+  studentsWithdrawn: { type: Number, required: false },
 
   answerKey: [{ question: String, answer: String }],
   correctIndexData: [Number],
@@ -20,8 +20,8 @@ const classSchema = new mongoose.Schema({
   code: { type: String, required: false },
   credit: { type: String, required: false },
 
-  studentsAbsent: { type: String },
-  studentsAttended: { type: String },
+  studentsAbsent: { type: Number },
+  studentsAttended: { type: Number },
   studentsPassed: { type: String },
 
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
