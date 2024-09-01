@@ -83,87 +83,87 @@ const ItemAnalysis: React.FC = () => {
   
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center h-screen overflow-y-auto ">
+    <div className="flex flex-col items-center justify-center h-full overflow-y-auto mt-0 ">
+      <form
+        onSubmit={handleCollegeSubmit}
+        className="border border-gray-600 p-2 rounded-lg w-11/12 flex flex-row gap-4
+  justify-around
+  items-center
 
-      <form onSubmit={handleCollegeSubmit} className="
-      border border-gray-300 p-4 rounded-lg w-1/2
-      flex flex-row gap-4
+        "
+      >
+        <div className="flex flex-row gap-5 w-96">
+          <label htmlFor="collegeName">College Name:</label>
+          <input
+            className="border border-gray-300 p-2 rounded-lg"
+            type="text"
+            id="collegeName"
+            value={collegeName}
+            onChange={handleCollegeNameChange}
+          />
+        </div>
+        <div className="flex flex-row gap-5">
+          <label htmlFor="universityName">University Name:</label>
+          <input
+            className="border border-gray-300 p-2 rounded-lg"
+            type="text"
+            id="universityName"
+            value={universityName}
+            onChange={handleUniversityNameChange}
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-300 self-center p-2 rounded-md"
+        >
+          Submit
+        </button>
+      </form>
 
-      ">
-            <div
-            className="    flex flex-row gap-5"
-            >
-                <label htmlFor="collegeName">College Name:</label>
-                <input
-                className="border border-gray-300 p-2 rounded-lg"
-                    type="text"
-                    id="collegeName"
-                    value={collegeName}
-                    onChange={handleCollegeNameChange}
-                />
-            </div>
-            <div className="
-            flex flex-row gap-5
-            ">
-                <label htmlFor="universityName">University Name:</label>
-                <input
-                className="border border-gray-300 p-2 rounded-lg"
-                    type="text"
-                    id="universityName"
-                    value={universityName}
-                    onChange={handleUniversityNameChange}
-                />
-            </div>
-            <button type="submit" className="bg-blue-300 self-center p-5 rounded-md ">Submit</button>
-        </form>
-        
-        {!isClassSubmitted && (
-
-        <div className="mb-15">
+      {!isClassSubmitted && (
+        <div className="mb-5">
           <Class onClassIdChange={handleClassIdChange} />
         </div>
-        )}
-        {isClassSubmitted && (
-          <div>
-            <div className="flex items-center space-x-2">
-              <svg
-                className="w-6 h-6 text-blue-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M16 12l-4-4m0 0l-4 4m4-4v12"
-                ></path>
-              </svg>
-              <span className="text-xl font-semibold">
-                Upload the report card PDF
-              </span>
-            </div>
-            <input
-                id="file-upload"
-                placeholder="Upload the report card PDF"
-              type="file"
-              className="mt-4 p-2 border border-gray-300 rounded-lg"
-              onChange={handleFileChange}
-            />
-            <Button
-              variant="outline"
-              color="primary"
-              onClick={handleUpload}
-              className="mt-4"
+      )}
+      {isClassSubmitted && (
+        <div>
+          <div className="flex items-center space-x-2">
+            <svg
+              className="w-6 h-6 text-blue-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Upload
-            </Button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M16 12l-4-4m0 0l-4 4m4-4v12"
+              ></path>
+            </svg>
+            <span className="text-xl font-semibold">
+              Upload the report card PDF
+            </span>
           </div>
-        )}
-      </div>
-    </>
+          <input
+            id="file-upload"
+            placeholder="Upload the report card PDF"
+            type="file"
+            className="mt-4 p-2 border border-gray-300 rounded-lg"
+            onChange={handleFileChange}
+          />
+          <Button
+            variant="outline"
+            color="primary"
+            onClick={handleUpload}
+            className="mt-4"
+          >
+            Upload
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 
