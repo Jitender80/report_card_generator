@@ -129,6 +129,9 @@ async function generateReportCardPDF(dbData) {
     .roww{
     
     background-color: #fff;}
+    .spac{
+    margin:4px;
+    }
   </style>
   
   <div class="report-card">
@@ -144,8 +147,9 @@ async function generateReportCardPDF(dbData) {
        
       
       
-          <img src="${data.logo
-    }" alt="University Logo" style="width: 80px; height: 80px;">
+          <img src="${
+            data.logo
+          }" alt="University Logo" style="width: 80px; height: 80px;">
    <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap:2" >
           <ul option>
           <li>المملكة العربية السعودية</li>
@@ -181,78 +185,79 @@ async function generateReportCardPDF(dbData) {
                   <th>Comments/Recommendation</th>
               </tr>
               ${data.items
-      .map((item, index) => {
-        let comments = "";
+                .map((item, index) => {
+                  let comments = "";
 
-        if (item.numberOfItems > 0) {
-          if (item.category === "Poor (Bad) Questions") {
-            comments = `
+                  if (item.numberOfItems > 0) {
+                    if (item.category === "Poor (Bad) Questions") {
+                      comments = `
                                   ●Discrimination value of this items are negative in value.
 ● Discrimination value of this items are less than 0.20
 ● All the items should be rejected.
 
                               `;
-          } else if (item.category === "Very Difficult Question") {
-            comments = `
+                    } else if (item.category === "Very Difficult Question") {
+                      comments = `
                                 Keys of these items are needed to be checked.
 ● Items should be rejected.
                               `;
-          } else if (item.category === "Difficult Question") {
-            comments = `
+                    } else if (item.category === "Difficult Question") {
+                      comments = `
                                  ● Key of this item is also needed to be checked.
                               `;
-          } else if (item.category === "Good Question") {
-            comments = `
+                    } else if (item.category === "Good Question") {
+                      comments = `
                                  ● Discrimination value of first raw items is accepted good
 ● Items could be stored in question bank for further use.
                               `;
-          } else if (item.category === "Easy Question") {
-            comments = `
+                    } else if (item.category === "Easy Question") {
+                      comments = `
 
 ● Item should be revised before re-use.
                               `;
-          } else if (item.category === "Very Easy Question") {
-            comments = `
+                    } else if (item.category === "Very Easy Question") {
+                      comments = `
 ● Items should be rejected or needed to be revised
                               `;
-          } else {
-            comments = `
+                    } else {
+                      comments = `
                                   ● No specific comments available.
                               `;
-          }
-          if (item.category == "Reliability") {
-            comments = getReliabilityDescription(item.numberOfItems);
-          }
-        }
-        if (item.category === "Reliability") {
-          return `
+                    }
+                    if (item.category == "Reliability") {
+                      comments = getReliabilityDescription(item.numberOfItems);
+                    }
+                  }
+                  if (item.category === "Reliability") {
+                    return `
                             <tr>
                                 <td class="white"> ${index + 1}</td>
                                 <td class="white">${item.category}</td>
-                               <td colspan="3" style=" white word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems
-            }</td>
+                               <td colspan="3" style=" white word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
+                                 item.numberOfItems
+                               }</td>
 
                                 <td class="white" > ●  ${comments}</td>
                             </tr>
                         `;
-        } else {
-          return `
+                  } else {
+                    return `
                             <tr>
                                 <td class="white" >${index + 1}</td>
                                 <td class="white">${item.category}</td>
                              <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
-  <div style="display: flex; flex-wrap: wrap; gap: 10px;"> <!-- Adjust gap as needed -->
-    ${item.items.map(subItem => `<span>${subItem}</span>`).join('')}
-  </div>
+
+    ${item.items.map(subItem => `<span class="spac">${subItem}</span>`).join('')}
+
 </td>
                                 <td>${item.numberOfItems}</td>
                                 <td>${item.percentage}</td>
                                 <td>${comments}</td>
                             </tr>
                         `;
-        }
-      })
-      .join("")}
+                  }
+                })
+                .join("")}
           </table>
       </div>
       <div class="data-details maintable" style="margin-top: 20px;">
@@ -384,7 +389,7 @@ async function generatePdf(req, res) {
     const dbData = {
       college: data.college,
       university: data.university,
-      name: data.className,
+      name:data.className,
 
       level: data.level,
 
