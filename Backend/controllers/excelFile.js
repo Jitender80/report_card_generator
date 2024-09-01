@@ -128,13 +128,17 @@ exports.uploadFile = async (req, res) => {
     .filter((value) => value !== null && value !== undefined);
 
   const IncorrectColumnIndex = dataSheet2[4].indexOf("Pct. Incorrect");
+  console.log("🚀 ~ exports.uploadFile= ~ IncorrectColumnIndex:", IncorrectColumnIndex)
 
   const IncorrectIndexData = dataSheet2
     .slice(5)
-    .map((row) => row[discIndexColumnIndex])
-    .filter((value) => value !== null && value !== undefined);
+    .map((row) => row[IncorrectColumnIndex])
 
-  const correctIndexData = IncorrectIndexData.map((value) => 100 - value);
+  console.log("🚀 ~ exports.uploadFile= ~ IncorrectIndexData:", IncorrectIndexData)
+
+  const correctIndexData = IncorrectIndexData.map((value) => parseFloat((100 - (value * 100)).toFixed(2)));
+  console.log("🚀 ~ exports.uploadFile= ~ correctIndexData:", correctIndexData)
+
 
   const extractQuestionColumns = (row) => {
     const questionColumns = [];
@@ -347,6 +351,7 @@ async function calculateResult() {
 
     const disc_ = await getClassStatistics();
 
+
     console.log("🚀 ~ exports.calculateResult= ~ disc_:", disc_);
 
     const KR20 =
@@ -356,8 +361,8 @@ async function calculateResult() {
     const newArray = disc_.map((item, index) => {
       const questionNumber = item.questionNumber || index + 1; // Default to index + 1 if questionNumber is not available
 
-      console.log("🚀 ~ newArray ~ item.disc_index :", item.disc_index )
-      console.log("🚀 ~ newArray ~ item.correctAnswersPercentage:", item.correctAnswersPercentage)
+      // console.log("🚀 ~ newArray ~ item.disc_index :", item.disc_index )
+      // console.log("🚀 ~ newArray ~ item.correctAnswersPercentage:", item.correctAnswersPercentage)
       if (item.disc_index < 0.2 && item.correctAnswersPercentage >= 0 ) {
         return {
           questionNumber: questionNumber,
