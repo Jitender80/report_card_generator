@@ -34,192 +34,209 @@ async function generateReportCardPDF(dbData) {
   const data = dbData;
   console.log("🚀 ~ generateReportCardPDF ~ data:", data);
   const reportCardHtml = `
- <style>
-    .report-card {
-        height: 1920px;
-        width: 1080px;
-        padding: 20px;
-        border-collapse: collapse;
-        background-color: rgb(149, 203, 241);
-    }
-    .report-card table {
-        width: 100%;
-        border-collapse: collapse; /* Ensures borders are collapsed */
-        border-spacing: 0; /* Removes gaps between cells */
-    }
-    .report-card th, .report-card td {
-        border: 2px solid #000; /* Adds borders */
-        padding: 10px;
-    }
-    .report-card .key {
-        font-weight: bold;
-        background-color: #f9f9f9;
-    }
-    .report-card .student-details {
-        margin-bottom: 20px;
-    }
-    .report-card .items-table th, .report-card .items-table td {
-        text-align: left;
-    }
-    .header-box, .info-box {
-        padding: 10px;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-    .info-box {
-    border: 1px solid #000;
-        display: flex;
-        justify-content: space-between;
-    }
-    .info-box .column {
-        width: 48%;
-    }
-    .data-details td {
-        font-size: 12px; 
-        text-align: center;
-    }
-    .data-details th {
-        font-size: 14px; 
-    }
-</style>
-
-<div class="report-card">
-    <div class="header-box">
-        <img src="path/to/university-logo.png" alt="University Logo" style="width: 50px; height: 50px;">
-        <h1>${data?.college}</h1>
-        <h1>${data?.university}</h1>
-    </div>
-    <div class="info-box">
-        <div class="column">
-            <p>Course Name : ${data.className}</p>
-            <p>Level : ${data.academicYear}</p>
-            <p>Credit Hours : ${data.creditHours}</p>
-        </div>
-        <div class="column">
-            <p>Course Code : ${data.courseCode}</p>
-            <p>Semester : ${data.semester}</p>
-            <p>Item : ${data.courseCoordinator}</p>
-        </div>
-    </div>
-    <div class="items-table">
-        <table>
-            <tr>
-                <th>#</th>
-                <th>Category</th>
-                <th>Items</th>
-                <th>Number of Items</th>
-                <th>Percentage</th>
-                <th>Comments</th>
-            </tr>
-            ${data.items
-                .map((item, index) => {
-                    let comments = "";
-
-                    if(item.category === "Reliability") {
-                        comments = getReliabilityDescription(item.numberOfItems);
-                    }
-                    if (item.numberOfItems > 0) {
-                        if (item.category === "Poor (Bad) Questions") {
-                            comments = `
-                                ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
-                                ● All the questions should be rejected.
-                            `;
-                        } else if (item.category === "Very Difficult Question") {
-                            comments = `
-                                ● Keys of these items are needed to be checked.
-                                ● Items should be rejected.
-                            `;
-                        } else if (item.category === "Difficult Question") {
-                            comments = `
-                                ● Key of this item is also needed to be checked.
-                            `;
-                        } else if (item.category === "Good Question") {
-                            comments = `
-                                ● Items could be stored in question bank for further use.
-                            `;
-                        } else if (item.category === "Easy Question") {
-                            comments = `
-                                ● Item should be revised before re-use.
-                            `;
-                        } else if (item.category === "Very Easy Question") {
-                            comments = `
-                                ● Items should be rejected Or needed to be revised.
-                            `;
-                        } else {
-                            comments = `
-                                ● No specific comments available.
-                            `;
-                        }
-                    }
-                    return `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${item.category}</td>
-                            <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">${item.items}</td>
-                            <td>${item.numberOfItems}</td>
-                            <td>${item.percentage}</td>
-                            <td>${comments}</td>
-                        </tr>
-                    `;
-                })
-                .join("")}
-        </table>
-    </div>
-    <div class="data-details" style="margin-top: 20px;">
-        <table>
-            <tr>
-                <th>Course Code</th>
-                <th>Credit Hour</th>
-                <th>Students Number</th>
-                <th>Students Withdrawn</th>
-                <th>Students Absent</th>
-                <th>Students Attended</th>
-                <th>Students Passed</th>
-                <th>A+</th>
-                <th>A</th>
-                <th>B+</th>
-                <th>B</th>
-                <th>C+</th>
-                <th>C</th>
-                <th>D+</th>
-                <th>D</th>
-                <th>F</th>
-            </tr>
-            <tr>
-                <td>${data.courses.code}</td>
-                <td>${data.courses.creditHour}</td>
-                <td>${data.courses.studentsNumber}</td>
-                <td>${data.courses.studentsWithdrawn}</td>
-                <td>${data.courses.studentsAbsent}</td>
-                <td>${data.courses.studentsAttended}</td>
-                <td>${data.courses.studentsPassed.number}</td>
-                <td>${data.courses.grades.APlus.number.toFixed(0)}</td>
-                <td>${data.courses.grades.A.number.toFixed(0)}</td>
-                <td>${data.courses.grades.BPlus.number.toFixed(0)}</td>
-                <td>${data.courses.grades.B.number.toFixed(0)}</td>
-                <td>${data.courses.grades.CPlus.number.toFixed(0)}</td>
-                <td>${data.courses.grades.C.number.toFixed(0)}</td>
-                <td>${data.courses.grades.DPlus.number.toFixed(0)}</td>
-                <td>${data.courses.grades.D.number.toFixed(0)}</td>
-                <td>${data.courses.grades.F.number.toFixed(0)}</td>
-            </tr>
-            <tr>
-                <td colspan="6"></td>
-                <td>(${data.courses.studentsPassed.percentage}%)</td>
-                <td>(${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.A.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.BPlus.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.B.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.CPlus.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.C.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.DPlus.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.D.percentage.toFixed(0)}%)</td>
-                <td>(${data.courses.grades.F.percentage.toFixed(0)}%)</td>
-            </tr>
-        </table>
-    </div>
-</div>
-`;
+  <style>
+      .report-card {
+          height: 1920px;
+          width: 1080px;
+          padding: 20px;
+          background-color: #fff;
+          -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
+      }
+  
+      .report-card table {
+          width: 100%;
+          border-collapse: collapse; /* Ensures borders are collapsed */
+          border-spacing: 0; /* Removes gaps between cells */
+      }
+  
+      .report-card th, .report-card td {
+          border: 2px solid #000; /* Adds borders */
+          padding: 10px;
+      }
+  
+      .report-card th {
+          background-color: #d3e0ea !important; /* Light blue color for headers */
+          color: #000 !important; /* Ensures text color is black */
+          font-weight: bold;
+      }
+  
+      .report-card .key {
+          font-weight: bold;
+          background-color: #f9f9f9;
+      }
+  
+      .report-card .student-details {
+          margin-bottom: 20px;
+      }
+  
+      .report-card .items-table th, .report-card .items-table td {
+          text-align: left;
+      }
+  
+      .header-box, .info-box {
+          padding: 10px;
+          margin-bottom: 20px;
+          text-align: center;
+      }
+  
+      .info-box {
+          border: 1px solid #000;
+          display: flex;
+          justify-content: space-between;
+      }
+  
+      .info-box .column {
+          width: 48%;
+      }
+  
+      .data-details td {
+          font-size: 12px; 
+          text-align: center;
+      }
+  
+      .data-details th {
+          font-size: 14px; 
+      }
+  </style>
+  
+  <div class="report-card">
+      <div class="header-box">
+          <img src="path/to/university-logo.png" alt="University Logo" style="width: 50px; height: 50px;">
+          <h1>${data?.college}</h1>
+          <h1>${data?.university}</h1>
+      </div>
+      <div class="info-box">
+          <div class="column">
+              <p>Course Name : ${data.className}</p>
+              <p>Level : ${data.academicYear}</p>
+              <p>Credit Hours : ${data.creditHours}</p>
+          </div>
+          <div class="column">
+              <p>Course Code : ${data.courseCode}</p>
+              <p>Semester : ${data.semester}</p>
+              <p>Item : ${data.courseCoordinator}</p>
+          </div>
+      </div>
+      <div class="items-table">
+          <table>
+              <tr>
+                  <th>#</th>
+                  <th>Category</th>
+                  <th>Items</th>
+                  <th>Number of Items</th>
+                  <th>Percentage</th>
+                  <th>Comments</th>
+              </tr>
+              ${data.items
+                  .map((item, index) => {
+                      let comments = "";
+  
+                      if(item.category === "Reliability") {
+                          comments = getReliabilityDescription(item.numberOfItems);
+                      }
+                      if (item.numberOfItems > 0) {
+                          if (item.category === "Poor (Bad) Questions") {
+                              comments = `
+                                  ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
+                                  ● All the questions should be rejected.
+                              `;
+                          } else if (item.category === "Very Difficult Question") {
+                              comments = `
+                                  ● Keys of these items are needed to be checked.
+                                  ● Items should be rejected.
+                              `;
+                          } else if (item.category === "Difficult Question") {
+                              comments = `
+                                  ● Key of this item is also needed to be checked.
+                              `;
+                          } else if (item.category === "Good Question") {
+                              comments = `
+                                  ● Items could be stored in question bank for further use.
+                              `;
+                          } else if (item.category === "Easy Question") {
+                              comments = `
+                                  ● Item should be revised before re-use.
+                              `;
+                          } else if (item.category === "Very Easy Question") {
+                              comments = `
+                                  ● Items should be rejected Or needed to be revised.
+                              `;
+                          } else {
+                              comments = `
+                                  ● No specific comments available.
+                              `;
+                          }
+                      }
+                      return `
+                          <tr>
+                              <td>${index + 1}</td>
+                              <td>${item.category}</td>
+                              <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">${item.items}</td>
+                              <td>${item.numberOfItems}</td>
+                              <td>${item.percentage}</td>
+                              <td>${comments}</td>
+                          </tr>
+                      `;
+                  })
+                  .join("")}
+          </table>
+      </div>
+      <div class="data-details" style="margin-top: 20px;">
+          <table>
+              <tr>
+                  <th>Course Code</th>
+                  <th>Credit Hour</th>
+                  <th>Students Number</th>
+                  <th>Students Withdrawn</th>
+                  <th>Students Absent</th>
+                  <th>Students Attended</th>
+                  <th>Students Passed</th>
+                  <th>A+</th>
+                  <th>A</th>
+                  <th>B+</th>
+                  <th>B</th>
+                  <th>C+</th>
+                  <th>C</th>
+                  <th>D+</th>
+                  <th>D</th>
+                  <th>F</th>
+              </tr>
+              <tr>
+                  <td>${data.courses.code}</td>
+                  <td>${data.courses.creditHour}</td>
+                  <td>${data.courses.studentsNumber}</td>
+                  <td>${data.courses.studentsWithdrawn}</td>
+                  <td>${data.courses.studentsAbsent}</td>
+                  <td>${data.courses.studentsAttended}</td>
+                  <td>${data.courses.studentsPassed.number}</td>
+                  <td>${data.courses.grades.APlus.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.A.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.BPlus.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.B.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.CPlus.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.C.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.DPlus.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.D.number.toFixed(0)}</td>
+                  <td>${data.courses.grades.F.number.toFixed(0)}</td>
+              </tr>
+              <tr>
+                  <td colspan="6"></td>
+                  <td>(${data.courses.studentsPassed.percentage}%)</td>
+                  <td>(${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.A.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.BPlus.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.B.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.CPlus.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.C.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.DPlus.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.D.percentage.toFixed(0)}%)</td>
+                  <td>(${data.courses.grades.F.percentage.toFixed(0)}%)</td>
+              </tr>
+          </table>
+      </div>
+  </div>
+  `;
+  
 
   const options = { format: "A4" };
   const file = { content: reportCardHtml };
