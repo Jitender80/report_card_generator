@@ -4,7 +4,6 @@ const fs = require("fs");
 const htmlPdf = require("html-pdf-node");
 const Class = require("../models/excelmodel");
 
-//KR20 Comments
 
 function getReliabilityDescription(score) {
   if (score > 0.9) {
@@ -32,7 +31,8 @@ function getReliabilityDescription(score) {
 
 async function generateReportCardPDF(dbData) {
   const data = dbData;
-  console.log("🚀 ~ generateReportCardPDF ~ data:", data);
+  data.logo = "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
+
   const reportCardHtml = `
   <style>
       .report-card {
@@ -77,6 +77,11 @@ async function generateReportCardPDF(dbData) {
           padding: 10px;
           margin-bottom: 20px;
           text-align: center;
+          display: flex;
+          flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
       }
   
       .info-box {
@@ -101,39 +106,39 @@ async function generateReportCardPDF(dbData) {
   
   <div class="report-card">
       <div class="header-box">
-          <img src="path/to/university-logo.png" alt="University Logo" style="width: 50px; height: 50px;">
+          <img src="${data.logo}" alt="University Logo" style="width: 80px; height: 80px;">
+          <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;">
           <h1>${data?.college}</h1>
-          <h1>${data?.university}</h1>
+          <h1>${data?.university ? data.university || "Najran University"}</h1>
+          </div>
       </div>
       <div class="info-box">
           <div class="column">
-              <p>Course Name : ${data.className}</p>
-              <p>Level : ${data.academicYear}</p>
+              <p>Course Name : ${data.name}</p>
+              <p>Level : ${data.level}</p>
               <p>Credit Hours : ${data.creditHours}</p>
           </div>
           <div class="column">
-              <p>Course Code : ${data.courseCode}</p>
+              <p>Course Code : ${data.courses.code}</p>
               <p>Semester : ${data.semester}</p>
-              <p>Item : ${data.courseCoordinator}</p>
+              <p>Course Coordinator  : ${data.courseCoordinator}</p>
           </div>
       </div>
       <div class="items-table">
           <table>
               <tr>
-                  <th>#</th>
-                  <th>Category</th>
-                  <th>Items</th>
-                  <th>Number of Items</th>
-                  <th>Percentage</th>
-                  <th>Comments</th>
+                  <th>Serial No.</th>
+                  <th>Item Category</th>
+                  <th>Question No</th>
+                  <th>Total Questions</th>
+                  <th>%</th>
+                  <th>Comments/Recommendation</th>
               </tr>
               ${data.items
                   .map((item, index) => {
                       let comments = "";
   
-                      if(item.category === "Reliability") {
-                          comments = getReliabilityDescription(item.numberOfItems);
-                      }
+                  
                       if (item.numberOfItems > 0) {
                           if (item.category === "Poor (Bad) Questions") {
                               comments = `
@@ -166,17 +171,32 @@ async function generateReportCardPDF(dbData) {
                                   ● No specific comments available.
                               `;
                           }
+                          if(item.category == "Reliability") {
+                            comments = getReliabilityDescription(item.numberOfItems);
+                        }
                       }
-                      return `
-                          <tr>
-                              <td>${index + 1}</td>
-                              <td>${item.category}</td>
-                              <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">${item.items}</td>
-                              <td>${item.numberOfItems}</td>
-                              <td>${item.percentage}</td>
-                              <td>${comments}</td>
-                          </tr>
-                      `;
+                      if (item.category === "Reliability") {
+                        return `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.category}</td>
+                               <td colspan="3" style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems}</td>
+
+                                <td> ●  ${comments}</td>
+                            </tr>
+                        `;
+                    } else {
+                        return `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.category}</td>
+                                <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">${item.items}</td>
+                                <td>${item.numberOfItems}</td>
+                                <td>${item.percentage}</td>
+                                <td>${comments}</td>
+                            </tr>
+                        `;
+                    }
                   })
                   .join("")}
           </table>
@@ -314,9 +334,16 @@ async function generatePdf(req, res) {
       college: data.college,
       university: data.university,
 
-      name: data.className,
+        level: data.level,
+
+
+      creditHours: data.creditHours,
       grade: data.grade,
       average: data.average,
+
+        courseCoordinator: data.courseCoordinator,
+
+    semester: data.semester,
       items: result,
       courses: {
         code: data.courseCode,
