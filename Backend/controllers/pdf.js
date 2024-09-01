@@ -11,7 +11,8 @@ async function generateReportCardPDF(dbData) {
     const reportCardHtml = `
     <style>
         .report-card {
-            width: 100%;
+            height:1508px;
+            width: 1280px;
             padding: 20px;
             border-collapse: collapse;
             background-color:"rgb(149, 203, 241)"
@@ -47,7 +48,8 @@ async function generateReportCardPDF(dbData) {
     <div class="report-card">
         <div class="header-box">
             <img src="path/to/university-logo.png" alt="University Logo" style="width: 50px; height: 50px;">
-            <h1>University Name</h1>
+            <h1>${data.college}</h1>
+            <h1>${data.college}</h1>
         </div>
         <div class="info-box">
             <div class="column">
@@ -147,7 +149,8 @@ ${data.items.map((item, index) => {
         <td>${data.courses.studentsWithdrawn}</td>
         <td>${data.courses.studentsAbsent}</td>
         <td>${data.courses.studentsAttended}</td>
-        <td>${data.courses.studentsPassed}</td>
+        <td>${data.courses.studentsPassed.number}</td>
+
         <td>${data.courses.grades.APlus.number} (${data.courses.grades.APlus.percentage}%)</td>
         <td>${data.courses.grades.A.number} (${data.courses.grades.A.percentage}%)</td>
         <td>${data.courses.grades.BPlus.number} (${data.courses.grades.BPlus.percentage}%)</td>
@@ -159,7 +162,11 @@ ${data.items.map((item, index) => {
         <td>${data.courses.grades.F.number} (${data.courses.grades.F.percentage}%)</td>
     </tr>
     <tr>
-        <td colspan="7"></td>
+        <td colspan="6"></td>
+
+        <td>${data.courses.studentsPassed.percentage}</td>
+
+
         <td>${data.courses.grades.APlus.number}</td>
         <td>${data.courses.grades.A.number}</td>
         <td>${data.courses.grades.BPlus.number}</td>
@@ -224,11 +231,17 @@ async function generatePdf(req, res) {
             console.log(`Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage.toFixed(2)}%`);
         });
 
-
-
+        let passedCount = data.courses.grades.APlus.number + data.courses.grades.A.number + data.courses.grades.BPlus.number + data.courses.grades.B.number + data.courses.grades.CPlus.number +  data.courses.grades.C.number + data.courses.grades.DPlus.number + data.courses.grades.D.number ;
+        let failedCount = + data.courses.grades.F.number;
+        let totalStudents = passedCount + failedCount;
+      
+        
 
 
         const dbData = {
+            college: data.college,  
+            university: data.university,
+
             name: data.className,
             grade: data.grade,
             average: data.average,
@@ -240,7 +253,7 @@ async function generatePdf(req, res) {
                 studentsWithdrawn: data.studentsWithdrawn ? data.studentsWithdrawn : "-",
                 studentsAbsent: data.studentsAbsent ? data.studentsAbsent : "-",
                 studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
-                studentsPassed: data.studentsPassed ? data.studentsPassed : "-",
+                studentsPassed: { number : passedCount ? passedCount : "-" , percentage : ((passedCount / totalStudents) * 100).toFixed(2) },
                 grades: {
                     APlus: {
                         number: data.FinalGrade.APlus.number,
