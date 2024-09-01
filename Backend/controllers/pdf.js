@@ -14,6 +14,7 @@ async function generateReportCardPDF(dbData) {
             width: 100%;
             padding: 20px;
             border-collapse: collapse;
+            background-color:"rgb(149, 203, 241)"
         }
         .report-card, .report-card th, .report-card td {
             border: 1px solid #000;
@@ -62,66 +63,62 @@ async function generateReportCardPDF(dbData) {
         </div>
         <div class="items-table">
             <table style="width: 100%;">
-                <tr>
-                    <th style="width: 5%;">No</th>
-                    <th style="width: 20%;">Item Category</th>
-                    <th style="width: 35%;">Item No</th>
-                    <th style="width: 10%;">Total Item</th>
-                    <th style="width: 10%;">Percentage</th>
-                    <th style="width: 20%;">Comments/Recommendations</th>
-                </tr>
-                 ${data.items.map((item, index) => {
-                    let comments;
-                    if (item.category === "Poor (Bad) Questions") {
-                        comments = `
-                            ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
-                            ● All the questions should be rejected.
-                        `;
-                    } else if (item.category === "Very Difficult Question") {
-                        comments = `
-                            ● Keys of these items are needed to be checked.
-                            ● Items should be rejected.
-                        `;
-                    } else if (item.category === "Difficult Question") {
-                        comments = `
-                            ● Key of this item is also needed to be checked.
-                        `;
-                    } else if (item.category === "Good Question") {
-                        comments = `
-                            ● Items could be stored in question bank for further use.
-                        `;
-                    } else if (item.category === "Easy Question") {
-                        comments = `
-                            ● Item should be revised before re-use.
-                        `;
-                    } else if (item.category === "Very Easy Question") {
-                        comments = `
-                            ● Items should be rejected Or needed to be revised.
-                        `;
-                    } else {
-                        comments = `
-                            ● No specific comments available.
-                        `;
-                    }
+         </tr>
+${data.items.map((item, index) => {
+        let comments = '';
 
-                    return `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${item.category}</td>
-                            <td
-                            style="word-wrap: break-word;min-width: 160px;max-width: 160px;"
-                            >
-                             ${item.items}
-                            
-                            </td>
-                            <td>${item.numberOfItems}</td>
-                            <td>${item.percentage}</td>
-                            <td>${comments}</td>
-                        </tr>
-                    `;
-                }).join('')}
-            </table>
-        </div>
+        if (item.numberOfItems > 0) {
+            if (item.category === "Poor (Bad) Questions") {
+                comments = `
+                ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
+                ● All the questions should be rejected.
+            `;
+            } else if (item.category === "Very Difficult Question") {
+                comments = `
+                ● Keys of these items are needed to be checked.
+                ● Items should be rejected.
+            `;
+            } else if (item.category === "Difficult Question") {
+                comments = `
+                ● Key of this item is also needed to be checked.
+            `;
+            } else if (item.category === "Good Question") {
+                comments = `
+                ● Items could be stored in question bank for further use.
+            `;
+            } else if (item.category === "Easy Question") {
+                comments = `
+                ● Item should be revised before re-use.
+            `;
+            } else if (item.category === "Very Easy Question") {
+                comments = `
+                ● Items should be rejected Or needed to be revised.
+            `;
+            } else {
+                comments = `
+                ● No specific comments available.
+            `;
+            }
+        }
+
+        return `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.category}</td>
+            <td
+            style="word-wrap: break-word;min-width: 160px;max-width: 160px;"
+            >
+             ${item.items}
+            
+            </td>
+            <td>${item.numberOfItems}</td>
+            <td>${item.percentage}</td>
+            <td>${comments}</td>
+        </tr>
+    `;
+    }).join('')}
+</table>
+</div>
         <div class="data-details" style="margin-top: 20px;">
             <table style="width: 100%;">
                 <tr>
@@ -184,7 +181,7 @@ async function generateReportCardPDF(dbData) {
 
     try {
         const pdfBuffer = await htmlPdf.generatePdf(file, options);
-        const pdfPath = path.join(__dirname, '../reports', `${data.name.replace(/\s+/g, '_')}_ReportCard.pdf`);
+        const pdfPath = path.join(__dirname, '../reports', `${data?.name?.replace(/\s+/g, '_')}_ReportCard.pdf`);
 
         // Ensure the directory exists
         fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
@@ -201,16 +198,16 @@ async function generateReportCardPDF(dbData) {
 async function generatePdf(req, res) {
     try {
 
-        const data = await Class.findOne().sort({createdAt : -1})
+        const data = await Class.findOne().sort({ createdAt: -1 })
         console.log("🚀 ~ generatePdf ~ data:", data)
         let items;
         let numberOfItems;
         let percentage;
 
-    
+
 
         const result = [];
-        var total =0;
+        var total = 0;
 
         Object.keys(data.questionSummary).forEach(category => {
             const items = data.questionSummary[category];
@@ -236,54 +233,54 @@ async function generatePdf(req, res) {
             grade: data.grade,
             average: data.average,
             items: result,
-            courses:{
-              code: data.courseCode,
-              creditHour: data.creditHours,
-              studentsNumber: data.studentsNumber? data.studentsNumber   : "-",
-              studentsWithdrawn: data.studentsWithdrawn? data.studentsWithdrawn   : "-",
-              studentsAbsent: data.studentsAbsent? data.studentsAbsent   : "-",
-              studentsAttended: data.studentsAttended? data.studentsAttended   : "-",
-              studentsPassed: data.studentsPassed ? data.studentsPassed : "-",
-              grades: {
-                APlus: {
-                  number: data.FinalGrade.APlus.number,
-                  percentage: data.FinalGrade.APlus.percentage
-                },
-                A: {
-                  number: data.FinalGrade.A.number,
-                  percentage: data.FinalGrade.A.percentage
-                },
-                BPlus: {
-                  number: data.FinalGrade.BPlus.number,
-                  percentage: data.FinalGrade.BPlus.percentage
-                },
-                B: {
-                  number: data.FinalGrade.B.number,
-                  percentage: data.FinalGrade.B.percentage
-                },
-                CPlus: {
-                  number: data.FinalGrade.CPlus.number,
-                  percentage: data.FinalGrade.CPlus.percentage
-                },
-                C: {
-                  number: data.FinalGrade.C.number,
-                  percentage: data.FinalGrade.C.percentage
-                },
-                DPlus: {
-                  number: data.FinalGrade.DPlus.number,
-                  percentage: data.FinalGrade.DPlus.percentage
-                },
-                D: {
-                  number: data.FinalGrade.D.number,
-                  percentage: data.FinalGrade.D.percentage
-                },
-                F: {
-                  number: data.FinalGrade.F.number,
-                  percentage: data.FinalGrade.F.percentage
+            courses: {
+                code: data.courseCode,
+                creditHour: data.creditHours,
+                studentsNumber: data.studentsNumber ? data.studentsNumber : "-",
+                studentsWithdrawn: data.studentsWithdrawn ? data.studentsWithdrawn : "-",
+                studentsAbsent: data.studentsAbsent ? data.studentsAbsent : "-",
+                studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
+                studentsPassed: data.studentsPassed ? data.studentsPassed : "-",
+                grades: {
+                    APlus: {
+                        number: data.FinalGrade.APlus.number,
+                        percentage: data.FinalGrade.APlus.percentage
+                    },
+                    A: {
+                        number: data.FinalGrade.A.number,
+                        percentage: data.FinalGrade.A.percentage
+                    },
+                    BPlus: {
+                        number: data.FinalGrade.BPlus.number,
+                        percentage: data.FinalGrade.BPlus.percentage
+                    },
+                    B: {
+                        number: data.FinalGrade.B.number,
+                        percentage: data.FinalGrade.B.percentage
+                    },
+                    CPlus: {
+                        number: data.FinalGrade.CPlus.number,
+                        percentage: data.FinalGrade.CPlus.percentage
+                    },
+                    C: {
+                        number: data.FinalGrade.C.number,
+                        percentage: data.FinalGrade.C.percentage
+                    },
+                    DPlus: {
+                        number: data.FinalGrade.DPlus.number,
+                        percentage: data.FinalGrade.DPlus.percentage
+                    },
+                    D: {
+                        number: data.FinalGrade.D.number,
+                        percentage: data.FinalGrade.D.percentage
+                    },
+                    F: {
+                        number: data.FinalGrade.F.number,
+                        percentage: data.FinalGrade.F.percentage
+                    }
                 }
-              }
             }
-          };
+        };
         console.log("🚀 ~ generatePdf ~ dbData:", dbData)
 
 

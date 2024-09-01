@@ -29,52 +29,31 @@ async function getLatestClassWithStudentScores() {
     throw error;
   }
 }
+function getReliabilityDescription(score) {
+  if (score > 0.90) {
+    return "Excellent reliability, at the level of the best standardized tests.";
+  }  if (score >= 0.85 && score <= 0.90) {
+    return "Exam seems to be Very good and reliable.";
+  }  if (score >= 0.80 && score <= 0.84) {
+    return "Exam seems to be Good and reliable.";
+  }  if (score >= 0.71 && score <= 0.79) {
+    return "Values lies betweeen the marginally acceptable ranges.There are probably a few items which could be improved";
+  }  if (score >= 0.61 && score <= 0.70) {
+    return "Somewhat low. This test should be supplemented by other  measures for grading";
+  }  if (score >= 0.51 && score <= 0.60) {
+    return "Value Suggests need for revision of the test. The test definitely need to be supplemented by other measures for grading";
+  }  if (score <= 0.50) {
+    return "Questionable Reliability . The test should not contribute heavily to the course grade, and it needs revision";
+  } 
+}
 
-
-exports.handleCollegeSubmit = (req, res) => {
-  const { collegeName, universityName } = req.body;
-
-  if (!collegeName || !universityName) {
-    return res.status(400).json({ message: 'Both collegeName and universityName are required' });
-  }
-
-  // Perform any necessary processing, e.g., save to database
-
-  res.status(200).json({ message: 'College and University names submitted successfully', data: { collegeName, universityName } });
-};
 exports.createClass = async (req, res) => {
 
 
-  // class: "",
-  // nameOfCourse: "",
-  // courseCode: "",
-  // creditHours: "",
-  // semester: "",
-  // academicYear: "",
-  // coordinatorGender: "",
-  // courseCoordinator: "",
-  // totalNoOfQuestion: "",
-  // StudentsAttended: "",
-  // studentsWithdrawn: "",
-  // studentAbsent: "",
-  // studentPassed:"",
-  
-  // className: { type: String, required: false },
-
-
-  // correctIndexData: [Number],
-
-  // average: { type: String, required: false },
-  // code: { type: String, required: false },
-  // credit: { type: String, required: false },
-  // studentsNumber: { type: String },
-  // studentsWithdrawn: { type: String },
-  // studentsAbsent: { type: String },
-  // studentsAttended: { type: String },
-  // studentsPassed: { type: String },
   const {
     college,
     univerity,
+
     className,
     nameOfCourse,
     courseCode,
@@ -156,17 +135,7 @@ exports.uploadFile = async (req, res) => {
     .filter((value) => value !== null && value !== undefined);
 
   const correctIndexData = IncorrectIndexData.map((value) => 100 - value);
-  //  console.log("🚀 ~ exports.uploadFile= ~ IncorrectColumnIndex:", IncorrectColumnIndex)
-  //  return res.json({IncorrectIndexData, discIndexData})
 
-  //  console.log("🚀 ~ exports.uploadFile= ~ Disc Index data:", discIndexData);
-
-  //  return res.status(200).json({
-  //    message: "Data extracted successfully",
-  //    discIndexData: discIndexData
-  //  });
-
-  // console.log("🚀 ~ exports.uploadFile= ~ data:", data.slice(2));
   const extractQuestionColumns = (row) => {
     const questionColumns = [];
     Object.keys(row).forEach((key) => {
@@ -181,8 +150,12 @@ exports.uploadFile = async (req, res) => {
   };
   // Extract answer key from the first row
   const answerKeyData = data.slice(0, 1)[0];
+  console.log("🚀 ~ exports.uploadFile= ~ answerKeyDat:", answerKeyData)
+
+  const TotalStudents = answerKeyData.Score;
   const answerKey =   extractQuestionColumns(answerKeyData);
   console.log("🚀 ~ exports.uploadFile= ~ answerKey:", answerKey);
+
 
   // Function to parse percentage strings to numbers
   const parsePercentage = (percentage) => {
@@ -215,7 +188,7 @@ exports.uploadFile = async (req, res) => {
       idNumber: row.IDNumber,
       blankCount: row.BlankCount ? parseInt(row.BlankCount, 10) : 0,
       correctCount: score,
-      percentage: row.Percentage ? parsePercentage(row.Percentage) : 0,
+      percentage: row.Score ? (row.Score / TotalStudents) * 100 : 0,
       score: score,
       questions: studentAnswers,
     };
@@ -234,12 +207,7 @@ exports.uploadFile = async (req, res) => {
   latestClass.answerKey = answerKey;
   latestClass.correctIndexData = correctIndexData;
   latestClass.discIndexData = discIndexData;
-  // const newClass = new Class({
-  //   className: 'Class 1', // You can set this dynamically
-  //   answerKey: answerKey,
-  //   correctIndexData: correctIndexData,
-  //   discIndexData: discIndexData,
-  // });
+
 
   try {
     // Save the class to get the class ID
@@ -319,12 +287,9 @@ async function calculateResult() {
       
       QA_PQ_Sum += QA_PQ[answerKey.question];
     }
-    console.log("🚀 ~ calculateResult ~ QA_P:", QA_P)
-    console.log("🚀 ~ calculateResult ~ QA_Q:", QA_Q)
-    console.log("🚀 ~ calculateResult ~ QA_PQ_Sum:", QA_PQ_Sum)
 
-    // calculate variance
-    // Calculate variance
+
+
     async function calculateSingleValue(scores) {
       const variance = simpleStatistics.variance(scores, { sample: false });
       return variance;
@@ -387,61 +352,66 @@ async function calculateResult() {
     const KR20 =
       (answerKeys?.length / (answerKeys?.length - 1)) *
       (1 - QA_PQ_Sum / variance);
-    // console.log("🚀 ~ exports.calculateResult= ~ KR20:", KR20)
+
     const newArray = disc_.map((item, index) => {
       const questionNumber = item.questionNumber || index + 1; // Default to index + 1 if questionNumber is not available
 
-      if (item.disc_index < 0.2) {
+      console.log("🚀 ~ newArray ~ item.disc_index :", item.disc_index )
+      console.log("🚀 ~ newArray ~ item.correctAnswersPercentage:", item.correctAnswersPercentage)
+      if (item.disc_index < 0.2 && item.correctAnswersPercentage >= 0 ) {
         return {
           questionNumber: questionNumber,
           category: "Poor (Bad) Questions",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.2) {
+        }}
+       if (item.disc_index >= 0.2 && item.correctAnswersPercentage >=0 && item.correctAnswersPercentage <= 20) {
         return {
           questionNumber: questionNumber,
           category: "Very Difficult Question",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.3) {
+        }}
+       if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30 ) {
         return {
           questionNumber: questionNumber,
           category: " Difficult Question",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.7) {
+        }}
+       if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70) {
         return {
           questionNumber: questionNumber,
           category: "Good Question",
           questionNumber: questionNumber,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.8) {
+        }}
+       if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80) {
         return {
           questionNumber: questionNumber,
           category: "Easy Question",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else {
+        }}
+       if(item.correctAnswersPercentage >= 81 && item.correctAnswersPercentage <= 100){
         return {
           questionNumber: questionNumber,
           category: "Very Easy Question",
           questionNumber: questionNumber,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      }
+        }}
+
     });
+
+
 
     const resdata = await Class.findByIdAndUpdate(latestId[0]._id, {
       KR20: KR20,
       questionAnalysis: newArray,
     });
+      // console.log("🚀 ~ calculateResult ~ KR20:", KR20)
 
-    return resdata
+    return resdata;
 
 
   } catch (error) {
@@ -480,7 +450,7 @@ async function getResultData() {
     // console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
 
     classData.questionSummary = questionTypes;
-    classData.save()
+    await classData.save()
 
 
 
@@ -500,9 +470,9 @@ exports.getFinalResult = async (req, res) => {
     const cal = await calculateResult();
     console.log(cal, "---121")
     const resdata = await getResultData();
-    console.log(resdata)
+    // console.log(resdata)
     const grades = await getGrades()
-    console.log(grades)
+    // console.log(grades)
 
 
     if(!cal || !resdata || !grades){

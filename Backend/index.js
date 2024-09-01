@@ -57,7 +57,7 @@ app.use("/auth", authRoutes);
 
 app.delete("/cleanClass", deleteAllData);
 // ********************************************************************************************
-app.post('/initializeClass', handleCollegeSubmit)  
+
 app.post("/createClass", createClass );
 
 app.use("/upload", upload.single("file"), uploadFile);
