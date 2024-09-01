@@ -7,19 +7,19 @@ import BASE_URL from "../lib/db"
 
 const Class = ({ onClassIdChange }: any) => {
   const [classData, setClassData] = useState({
-    className: "",
+    className: 0,
     nameOfCourse: "",
     courseCode: "",
     creditHours: "",
     semester: "",
-    academicYear: "",
+    academicYear:0 ,
     coordinatorGender: "",
     courseCoordinator: "",
-    totalNoOfQuestion: "",
-    StudentsAttended: "",
-    studentsWithdrawn: "",
-    studentAbsent: "",
-    studentPassed:"",
+    totalNoOfQuestion: 0,
+    StudentsAttended: 0,
+    studentsWithdrawn: 0,
+    studentAbsent: 0,
+    studentPassed:0,
   });
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -42,16 +42,36 @@ const Class = ({ onClassIdChange }: any) => {
     // onClassIdChange("111");
     
   };
+  
+  const generateYearOptions = () => {
+    const startYear = 2015;
+    const numberOfYears = 20;
+    const options = [];
+
+    for (let i = 0; i < numberOfYears; i++) {
+      const year1 = startYear + i;
+      const year2 = year1 + 1;
+      options.push(
+        <option key={year1} value={`${year1}-${year2.toString().slice(-2)}`}>
+          {year1}-{year2.toString().slice(-2)}
+        </option>
+      );
+    }
+
+    return options;
+  };
   return (
-    <div className="flex justify-center items-center mb-12  ">
+    <div className="flex justify-center items-center mb-12 border border-black ">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-2 p-4 border rounded shadow-lg w-full overflow-y-true"
+        className="grid grid-cols-2 gap-2 p-4 border rounded shadow-lg w-full overflow-y-true
+        bg-yellow-100
+        "
       >
         <label className="flex flex-col" htmlFor="className">
           Level:
           <input
-            type="text"
+            type="Number"
             name="className"
             value={classData.className}
             onChange={handleChange}
@@ -110,23 +130,43 @@ const Class = ({ onClassIdChange }: any) => {
         </label>
         <label className="flex flex-col">
           Academic Year:
-          <input
-            type="text"
-            name="academicYear"
-            value={classData.academicYear}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
+          <select
+          name="academicYear"
+          value={classData.academicYear}
+          onChange={handleChange}
+          className="p-2 border rounded"
+        >
+          <option value="">Select Academic Year</option>
+          {generateYearOptions()}
+        </select>
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col gap-5 justify-between">
           coordinatorGender:
+          <div className="
+          flex flex-row gap-5">
+          <label>
           <input
-            type="text"
+            type="radio"
             name="coordinatorGender"
-            value={classData.coordinatorGender}
+            value="male"
+            checked={classData.coordinatorGender === "male"}
             onChange={handleChange}
             className="p-2 border rounded"
           />
+          Male
+          </label>
+          <label>
+          <input
+            type="radio"
+            name="coordinatorGender"
+            value="female"
+            checked={classData.coordinatorGender === "female"}
+            onChange={handleChange}
+            className="p-2 border rounded"
+          />
+          Female
+          </label>
+            </div>
         </label>
         <label className="flex flex-col">
           Course coordinator:
@@ -141,7 +181,7 @@ const Class = ({ onClassIdChange }: any) => {
         <label className="flex flex-col">
           totalNoOfQuestion:
           <input
-            type="text"
+            type="number"
             name="totalNoOfQuestion"
             value={classData.totalNoOfQuestion}
             onChange={handleChange}
@@ -151,7 +191,7 @@ const Class = ({ onClassIdChange }: any) => {
         <label className="flex flex-col">
           totalNoOfStudentsAttendedExam:
           <input
-            type="text"
+            type="number"
             name="StudentsAttended"
             value={classData.StudentsAttended}
             onChange={handleChange}
@@ -161,7 +201,7 @@ const Class = ({ onClassIdChange }: any) => {
         <label className="flex flex-col">
           studentsWithdrawn:
           <input
-            type="text"
+            type="number"
             name="studentsWithdrawn"
             value={classData.studentsWithdrawn}
             onChange={handleChange}
@@ -171,7 +211,7 @@ const Class = ({ onClassIdChange }: any) => {
         <label className="flex flex-col">
           studentAbsent,
           <input
-            type="text"
+            type="number"
             name="studentAbsent"
             value={classData.studentAbsent}
             onChange={handleChange}
@@ -181,7 +221,7 @@ const Class = ({ onClassIdChange }: any) => {
         <label className="flex flex-col">
           studentPassed,
           <input
-            type="text"
+            type="number"
             name="studentPassed"
             value={classData.studentPassed}
             onChange={handleChange}

@@ -30,37 +30,14 @@ async function getLatestClassWithStudentScores() {
   }
 }
 
+
 exports.createClass = async (req, res) => {
 
 
-  // class: "",
-  // nameOfCourse: "",
-  // courseCode: "",
-  // creditHours: "",
-  // semester: "",
-  // academicYear: "",
-  // coordinatorGender: "",
-  // courseCoordinator: "",
-  // totalNoOfQuestion: "",
-  // StudentsAttended: "",
-  // studentsWithdrawn: "",
-  // studentAbsent: "",
-  // studentPassed:"",
-  
-  // className: { type: String, required: false },
-
-
-  // correctIndexData: [Number],
-
-  // average: { type: String, required: false },
-  // code: { type: String, required: false },
-  // credit: { type: String, required: false },
-  // studentsNumber: { type: String },
-  // studentsWithdrawn: { type: String },
-  // studentsAbsent: { type: String },
-  // studentsAttended: { type: String },
-  // studentsPassed: { type: String },
   const {
+    college,
+    univerity,
+
     className,
     nameOfCourse,
     courseCode,
@@ -78,6 +55,8 @@ exports.createClass = async (req, res) => {
   } = req.body;
 
   const newClass = new Class({
+    college,
+    univerity,
     className,
     nameOfCourse,
     courseCode,
@@ -101,7 +80,10 @@ exports.createClass = async (req, res) => {
 
   try {
     const savedClass = await newClass.save();
-    res.status(201).json(savedClass);
+    res.status(201).json({
+      data:savedClass,
+      message:"Class Create Successfully"
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -130,24 +112,18 @@ exports.uploadFile = async (req, res) => {
     .filter((value) => value !== null && value !== undefined);
 
   const IncorrectColumnIndex = dataSheet2[4].indexOf("Pct. Incorrect");
+  console.log("🚀 ~ exports.uploadFile= ~ IncorrectColumnIndex:", IncorrectColumnIndex)
 
   const IncorrectIndexData = dataSheet2
     .slice(5)
-    .map((row) => row[discIndexColumnIndex])
-    .filter((value) => value !== null && value !== undefined);
+    .map((row) => row[IncorrectColumnIndex])
 
-  const correctIndexData = IncorrectIndexData.map((value) => 100 - value);
-  //  console.log("🚀 ~ exports.uploadFile= ~ IncorrectColumnIndex:", IncorrectColumnIndex)
-  //  return res.json({IncorrectIndexData, discIndexData})
+  console.log("🚀 ~ exports.uploadFile= ~ IncorrectIndexData:", IncorrectIndexData)
 
-  //  console.log("🚀 ~ exports.uploadFile= ~ Disc Index data:", discIndexData);
+  const correctIndexData = IncorrectIndexData.map((value) => parseFloat((100 - (value * 100)).toFixed(2)));
+  console.log("🚀 ~ exports.uploadFile= ~ correctIndexData:", correctIndexData)
 
-  //  return res.status(200).json({
-  //    message: "Data extracted successfully",
-  //    discIndexData: discIndexData
-  //  });
 
-  // console.log("🚀 ~ exports.uploadFile= ~ data:", data.slice(2));
   const extractQuestionColumns = (row) => {
     const questionColumns = [];
     Object.keys(row).forEach((key) => {
@@ -162,8 +138,12 @@ exports.uploadFile = async (req, res) => {
   };
   // Extract answer key from the first row
   const answerKeyData = data.slice(0, 1)[0];
-  const answerKey = extractQuestionColumns(answerKeyData);
+  console.log("🚀 ~ exports.uploadFile= ~ answerKeyDat:", answerKeyData)
+
+  const TotalStudents = answerKeyData.Score;
+  const answerKey =   extractQuestionColumns(answerKeyData);
   console.log("🚀 ~ exports.uploadFile= ~ answerKey:", answerKey);
+
 
   // Function to parse percentage strings to numbers
   const parsePercentage = (percentage) => {
@@ -196,7 +176,7 @@ exports.uploadFile = async (req, res) => {
       idNumber: row.IDNumber,
       blankCount: row.BlankCount ? parseInt(row.BlankCount, 10) : 0,
       correctCount: score,
-      percentage: row.Percentage ? parsePercentage(row.Percentage) : 0,
+      percentage: row.Score ? (row.Score / TotalStudents) * 100 : 0,
       score: score,
       questions: studentAnswers,
     };
@@ -206,15 +186,16 @@ exports.uploadFile = async (req, res) => {
 
   const latestClass = await Class.findOne().sort({ createdAt: -1 }).exec();
 
+  if(!latestClass){
+    return res.status(401).json({
+      message: "NO class present"
+    })
+  }
+
   latestClass.answerKey = answerKey;
   latestClass.correctIndexData = correctIndexData;
   latestClass.discIndexData = discIndexData;
-  // const newClass = new Class({
-  //   className: 'Class 1', // You can set this dynamically
-  //   answerKey: answerKey,
-  //   correctIndexData: correctIndexData,
-  //   discIndexData: discIndexData,
-  // });
+
 
   try {
     // Save the class to get the class ID
@@ -291,12 +272,12 @@ async function calculateResult() {
       QA_PQ[answerKey.question] = parseFloat(
         roundedAccuracy * (1 - questionAccuracyValue)
       );
-
+      
       QA_PQ_Sum += QA_PQ[answerKey.question];
     }
 
-    // calculate variance
-    // Calculate variance
+
+
     async function calculateSingleValue(scores) {
       const variance = simpleStatistics.variance(scores, { sample: false });
       return variance;
@@ -310,7 +291,7 @@ async function calculateResult() {
     const scores = studentScores.map((student) => student.score);
 
     const variance = await calculateSingleValue(scores);
-    console.log("🚀 ~ exports.calculateResult= ~ variance:", variance);
+    // console.log("🚀 ~ exports.calculateResult= ~ variance:", variance);
 
     // calculate grades
     function calculatePercentagesAndGrades(classData) {
@@ -337,8 +318,8 @@ async function calculateResult() {
       grade: studentGrades[name].grade,
     }));
 
-    const latestId = await Class.find().sort({ createdAt: -1 });
-    await Class.findByIdAndUpdate(latestId[0]._id, {
+    const latestId = await Class.findOne().sort({ createdAt: -1 });
+    await Class.findByIdAndUpdate(latestId._id, {
       studentGrades: studentGradesArray,
     });
 
@@ -354,64 +335,74 @@ async function calculateResult() {
 
     const disc_ = await getClassStatistics();
 
-    console.log("🚀 ~ exports.calculateResult= ~ disc_:", disc_);
+
+
 
     const KR20 =
-      (answerKeys?.length / (answerKeys?.length - 1)) *
-      (1 - QA_PQ_Sum / variance);
-    // console.log("🚀 ~ exports.calculateResult= ~ KR20:", KR20)
+    (answerKeys?.length / (answerKeys?.length - 1)) *
+    (1 - QA_PQ_Sum / variance);
+    
     const newArray = disc_.map((item, index) => {
       const questionNumber = item.questionNumber || index + 1; // Default to index + 1 if questionNumber is not available
-
-      if (item.disc_index < 0.2) {
+      
+      // console.log("🚀 ~ newArray ~ item.disc_index :", item.disc_index )
+      // console.log("🚀 ~ newArray ~ item.correctAnswersPercentage:", item.correctAnswersPercentage)
+      if (item.disc_index < 0.2 && item.correctAnswersPercentage >= 0 ) {
         return {
           questionNumber: questionNumber,
           category: "Poor (Bad) Questions",
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.2) {
-        return {
-          questionNumber: questionNumber,
-          category: "Very Difficult Question",
-          disc_index: item.disc_index,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.3) {
-        return {
-          questionNumber: questionNumber,
-          category: " Difficult Question",
-          disc_index: item.disc_index,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.7) {
-        return {
-          questionNumber: questionNumber,
-          category: "Good Question",
-          questionNumber: questionNumber,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else if (item.correctAnswersPercentage <= 0.8) {
-        return {
-          questionNumber: questionNumber,
-          category: "Easy Question",
-          disc_index: item.disc_index,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      } else {
-        return {
-          questionNumber: questionNumber,
-          category: "Very Easy Question",
-          questionNumber: questionNumber,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        };
-      }
-    });
+        }}
+        if (item.disc_index >= 0.2 && item.correctAnswersPercentage >=0 && item.correctAnswersPercentage <= 20) {
+          return {
+            questionNumber: questionNumber,
+            category: "Very Difficult Question",
+            disc_index: item.disc_index,
+            correctAnswersPercentage: item.correctAnswersPercentage,
+          }}
+          if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30 ) {
+            return {
+              questionNumber: questionNumber,
+              category: " Difficult Question",
+              disc_index: item.disc_index,
+              correctAnswersPercentage: item.correctAnswersPercentage,
+            }}
+            if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70) {
+              return {
+                questionNumber: questionNumber,
+                category: "Good Question",
+                questionNumber: questionNumber,
+                correctAnswersPercentage: item.correctAnswersPercentage,
+              }}
+              if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80) {
+                return {
+                  questionNumber: questionNumber,
+                  category: "Easy Question",
+                  disc_index: item.disc_index,
+                  correctAnswersPercentage: item.correctAnswersPercentage,
+                }}
+                if(item.correctAnswersPercentage >= 81 && item.correctAnswersPercentage <= 100){
+                  return {
+                    questionNumber: questionNumber,
+                    category: "Very Easy Question",
+                    questionNumber: questionNumber,
+                    correctAnswersPercentage: item.correctAnswersPercentage,
+                  }}
+                  
+                });
+                
+                
+                
+                console.log("🚀 ~ calculateResult ~ KR20:", KR20)
 
-    await Class.findByIdAndUpdate(latestId[0]._id, {
-      KR20: KR20,
-      questionAnalysis: newArray,
-    });
+                const resdata = await Class.findByIdAndUpdate(latestId._id, {
+                  kr20: KR20,
+                  questionAnalysis: newArray,
+                });
+                
+                
+    return resdata;
 
 
   } catch (error) {
@@ -450,7 +441,7 @@ async function getResultData() {
     // console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
 
     classData.questionSummary = questionTypes;
-    classData.save()
+    await classData.save()
 
 
 
@@ -471,14 +462,17 @@ exports.getFinalResult = async (req, res) => {
     console.log(cal, "---121")
     const resdata = await getResultData();
     // console.log(resdata)
-    const gra = await getGrades()
-    // console.log(gra)
+    const grades = await getGrades()
+    // console.log(grades)
 
 
-    if(!cal || !resdata || !gra){
+    if(!cal || !resdata || !grades){
       return res.status(500).json({ message: "Internal server error" });
     } 
-    res.status(200).json({ message: "Result calculated successfully" });
+    res.status(200).json({ message: "Result calculated successfully", calculateResult: cal,
+      getResultData : resdata, 
+      getGrades: grades
+     });
 
 
 
