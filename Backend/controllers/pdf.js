@@ -69,11 +69,18 @@ async function generateReportCardPDF(dbData) {
         .info-box .column {
             width: 48%;
         }
-        .data-details {
-            margin-top: 20px;
+         .data-details td {
+    font-size: 10px; /* Reduced font size */
+            text-align: center;
+
+            
 
         
         }
+            .data-details th, {
+            font-size: 14px; /* Reduced font size */
+            
+            }
     </style>
     <div class="report-card">
         <div class="header-box">
@@ -199,33 +206,15 @@ async function generateReportCardPDF(dbData) {
 
         <td>${data.courses.studentsPassed.percentage}</td>
 
-        <td>${
-          data.courses.grades.APlus.number
-        } (${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.A.number
-        } (${data.courses.grades.A.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.BPlus.number
-        } (${data.courses.grades.BPlus.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.B.number
-        } (${data.courses.grades.B.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.CPlus.number
-        } (${data.courses.grades.CPlus.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.C.number
-        } (${data.courses.grades.C.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.DPlus.number
-        } (${data.courses.grades.DPlus.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.D.number
-        } (${data.courses.grades.D.percentage.toFixed(0)}%)</td>
-        <td>${
-          data.courses.grades.F.number
-        } (${data.courses.grades.F.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.A.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.BPlus.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.B.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.CPlus.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.C.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.DPlus.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.D.percentage.toFixed(0)}%)</td>
+        <td>(${data.courses.grades.F.percentage.toFixed(0)}%)</td>
 
 
       
