@@ -144,9 +144,8 @@ async function generateReportCardPDF(dbData) {
        
       
       
-          <img src="${
-            data.logo
-          }" alt="University Logo" style="width: 80px; height: 80px;">
+          <img src="${data.logo
+    }" alt="University Logo" style="width: 80px; height: 80px;">
    <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap:2" >
           <ul option>
           <li>المملكة العربية السعودية</li>
@@ -182,59 +181,62 @@ async function generateReportCardPDF(dbData) {
                   <th>Comments/Recommendation</th>
               </tr>
               ${data.items
-                .map((item, index) => {
-                  let comments = "";
+      .map((item, index) => {
+        let comments = "";
 
-                  if (item.numberOfItems > 0) {
-                    if (item.category === "Poor (Bad) Questions") {
-                      comments = `
-                                  ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
-                                  ● All the questions should be rejected.
+        if (item.numberOfItems > 0) {
+          if (item.category === "Poor (Bad) Questions") {
+            comments = `
+                                  ●Discrimination value of this items are negative in value.
+● Discrimination value of this items are less than 0.20
+● All the items should be rejected.
+
                               `;
-                    } else if (item.category === "Very Difficult Question") {
-                      comments = `
-                                  ● Keys of these items are needed to be checked.
-                                  ● Items should be rejected.
+          } else if (item.category === "Very Difficult Question") {
+            comments = `
+                                Keys of these items are needed to be checked.
+● Items should be rejected.
                               `;
-                    } else if (item.category === "Difficult Question") {
-                      comments = `
-                                  ● Key of this item is also needed to be checked.
+          } else if (item.category === "Difficult Question") {
+            comments = `
+                                 ● Key of this item is also needed to be checked.
                               `;
-                    } else if (item.category === "Good Question") {
-                      comments = `
-                                  ● Items could be stored in question bank for further use.
+          } else if (item.category === "Good Question") {
+            comments = `
+                                 ● Discrimination value of first raw items is accepted good
+● Items could be stored in question bank for further use.
                               `;
-                    } else if (item.category === "Easy Question") {
-                      comments = `
-                                  ● Item should be revised before re-use.
+          } else if (item.category === "Easy Question") {
+            comments = `
+
+● Item should be revised before re-use.
                               `;
-                    } else if (item.category === "Very Easy Question") {
-                      comments = `
-                                  ● Items should be rejected Or needed to be revised.
+          } else if (item.category === "Very Easy Question") {
+            comments = `
+● Items should be rejected or needed to be revised
                               `;
-                    } else {
-                      comments = `
+          } else {
+            comments = `
                                   ● No specific comments available.
                               `;
-                    }
-                    if (item.category == "Reliability") {
-                      comments = getReliabilityDescription(item.numberOfItems);
-                    }
-                  }
-                  if (item.category === "Reliability") {
-                    return `
+          }
+          if (item.category == "Reliability") {
+            comments = getReliabilityDescription(item.numberOfItems);
+          }
+        }
+        if (item.category === "Reliability") {
+          return `
                             <tr>
                                 <td class="white"> ${index + 1}</td>
                                 <td class="white">${item.category}</td>
-                               <td colspan="3" style=" white word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
-                                 item.numberOfItems
-                               }</td>
+                               <td colspan="3" style=" white word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems
+            }</td>
 
                                 <td class="white" > ●  ${comments}</td>
                             </tr>
                         `;
-                  } else {
-                    return `
+        } else {
+          return `
                             <tr>
                                 <td class="white" >${index + 1}</td>
                                 <td class="white">${item.category}</td>
@@ -248,9 +250,9 @@ async function generateReportCardPDF(dbData) {
                                 <td>${comments}</td>
                             </tr>
                         `;
-                  }
-                })
-                .join("")}
+        }
+      })
+      .join("")}
           </table>
       </div>
       <div class="data-details maintable" style="margin-top: 20px;">
@@ -382,7 +384,7 @@ async function generatePdf(req, res) {
     const dbData = {
       college: data.college,
       university: data.university,
-      name:data.className,
+      name: data.className,
 
       level: data.level,
 
