@@ -160,7 +160,7 @@ const Class = ({ onClassIdChange }: any) => {
             type="radio"
             name="coordinatorGender"
             value="Male"
-            checked={classData.coordinatorGender === "male"}
+            checked={classData.coordinatorGender === "Male"}
             onChange={handleChange}
             className="p-2 border rounded"
           />
@@ -171,7 +171,7 @@ const Class = ({ onClassIdChange }: any) => {
             type="radio"
             name="coordinatorGender"
             value="Female"
-            checked={classData.coordinatorGender === "female"}
+            checked={classData.coordinatorGender === "Female"}
             onChange={handleChange}
             className="p-2 border rounded"
           />
