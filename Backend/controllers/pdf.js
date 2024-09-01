@@ -133,7 +133,7 @@ async function generateReportCardPDF(dbData) {
   
   <div class="report-card">
       <div class="header-box back">
-          <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;">
+          <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;gap:2">
           <ul>
           <li>KINGDOM OF SAUDI ARABIA</li>
           <li>Ministry of Education</li>
@@ -147,7 +147,7 @@ async function generateReportCardPDF(dbData) {
           <img src="${
             data.logo
           }" alt="University Logo" style="width: 80px; height: 80px;">
-   <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;">
+   <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap:2" >
           <ul option>
           <li>المملكة العربية السعودية</li>
           <li>وزارة التعليم</li>
@@ -238,9 +238,11 @@ async function generateReportCardPDF(dbData) {
                             <tr>
                                 <td class="white" >${index + 1}</td>
                                 <td class="white">${item.category}</td>
-                                <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">${
-                                  item.items
-                                }</td>
+                             <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
+  <div style="display: flex; flex-wrap: wrap; gap: 10px;"> <!-- Adjust gap as needed -->
+    ${item.items.map(subItem => `<span>${subItem}</span>`).join('')}
+  </div>
+</td>
                                 <td>${item.numberOfItems}</td>
                                 <td>${item.percentage}</td>
                                 <td>${comments}</td>
