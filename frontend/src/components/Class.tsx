@@ -62,7 +62,7 @@ const Class = ({ onClassIdChange }: any) => {
     return options;
   };
   return (
-    <div className="flex justify-center items-center mb-12 border border-black ">
+    <div className="flex justify-center items-center mb-12 border rounded-md overflow-hidden border-black ">
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-2 gap-2 p-4 border rounded shadow-lg w-full overflow-y-true
