@@ -109,7 +109,7 @@ async function generateReportCardPDF(dbData) {
           <img src="${data.logo}" alt="University Logo" style="width: 80px; height: 80px;">
           <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;">
           <h1>${data?.college}</h1>
-          <h1>${data?.university ? data.university || "Najran University"}</h1>
+        <h1>${data?.university || 'Najran University'}</h1>
           </div>
       </div>
       <div class="info-box">
