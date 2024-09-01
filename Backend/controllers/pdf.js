@@ -48,7 +48,7 @@ async function generateReportCardPDF(dbData) {
         border-spacing: 0; /* Removes gaps between cells */
     }
     .report-card th, .report-card td {
-        border: 1px solid #000; /* Adds borders */
+        border: 2px solid #000; /* Adds borders */
         padding: 10px;
     }
     .report-card .key {
@@ -114,6 +114,10 @@ async function generateReportCardPDF(dbData) {
             ${data.items
                 .map((item, index) => {
                     let comments = "";
+
+                    if(item.category === "Reliability") {
+                        comments = getReliabilityDescription(item.numberOfItems);
+                    }
                     if (item.numberOfItems > 0) {
                         if (item.category === "Poor (Bad) Questions") {
                             comments = `
@@ -201,7 +205,7 @@ async function generateReportCardPDF(dbData) {
             </tr>
             <tr>
                 <td colspan="6"></td>
-                <td>${data.courses.studentsPassed.percentage}</td>
+                <td>(${data.courses.studentsPassed.percentage}%)</td>
                 <td>(${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
                 <td>(${data.courses.grades.A.percentage.toFixed(0)}%)</td>
                 <td>(${data.courses.grades.BPlus.percentage.toFixed(0)}%)</td>
@@ -269,6 +273,13 @@ async function generatePdf(req, res) {
         )}%`
       );
     });
+
+
+    result.push({
+        category: "Reliability",
+        numberOfItems : data.kr20.toFixed(2), // Replace "value" with the actual KR2 value
+
+      });
 
     let passedCount =
       data.FinalGrade.APlus.number +

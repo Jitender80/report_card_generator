@@ -318,8 +318,8 @@ async function calculateResult() {
       grade: studentGrades[name].grade,
     }));
 
-    const latestId = await Class.find().sort({ createdAt: -1 });
-    await Class.findByIdAndUpdate(latestId[0]._id, {
+    const latestId = await Class.findOne().sort({ createdAt: -1 });
+    await Class.findByIdAndUpdate(latestId._id, {
       studentGrades: studentGradesArray,
     });
 
@@ -336,15 +336,15 @@ async function calculateResult() {
     const disc_ = await getClassStatistics();
 
 
-    console.log("🚀 ~ exports.calculateResult= ~ disc_:", disc_);
+
 
     const KR20 =
-      (answerKeys?.length / (answerKeys?.length - 1)) *
-      (1 - QA_PQ_Sum / variance);
-
+    (answerKeys?.length / (answerKeys?.length - 1)) *
+    (1 - QA_PQ_Sum / variance);
+    
     const newArray = disc_.map((item, index) => {
       const questionNumber = item.questionNumber || index + 1; // Default to index + 1 if questionNumber is not available
-
+      
       // console.log("🚀 ~ newArray ~ item.disc_index :", item.disc_index )
       // console.log("🚀 ~ newArray ~ item.correctAnswersPercentage:", item.correctAnswersPercentage)
       if (item.disc_index < 0.2 && item.correctAnswersPercentage >= 0 ) {
@@ -354,52 +354,54 @@ async function calculateResult() {
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
         }}
-       if (item.disc_index >= 0.2 && item.correctAnswersPercentage >=0 && item.correctAnswersPercentage <= 20) {
-        return {
-          questionNumber: questionNumber,
-          category: "Very Difficult Question",
-          disc_index: item.disc_index,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        }}
-       if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30 ) {
-        return {
-          questionNumber: questionNumber,
-          category: " Difficult Question",
-          disc_index: item.disc_index,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        }}
-       if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70) {
-        return {
-          questionNumber: questionNumber,
-          category: "Good Question",
-          questionNumber: questionNumber,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        }}
-       if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80) {
-        return {
-          questionNumber: questionNumber,
-          category: "Easy Question",
-          disc_index: item.disc_index,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        }}
-       if(item.correctAnswersPercentage >= 81 && item.correctAnswersPercentage <= 100){
-        return {
-          questionNumber: questionNumber,
-          category: "Very Easy Question",
-          questionNumber: questionNumber,
-          correctAnswersPercentage: item.correctAnswersPercentage,
-        }}
+        if (item.disc_index >= 0.2 && item.correctAnswersPercentage >=0 && item.correctAnswersPercentage <= 20) {
+          return {
+            questionNumber: questionNumber,
+            category: "Very Difficult Question",
+            disc_index: item.disc_index,
+            correctAnswersPercentage: item.correctAnswersPercentage,
+          }}
+          if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30 ) {
+            return {
+              questionNumber: questionNumber,
+              category: " Difficult Question",
+              disc_index: item.disc_index,
+              correctAnswersPercentage: item.correctAnswersPercentage,
+            }}
+            if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70) {
+              return {
+                questionNumber: questionNumber,
+                category: "Good Question",
+                questionNumber: questionNumber,
+                correctAnswersPercentage: item.correctAnswersPercentage,
+              }}
+              if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80) {
+                return {
+                  questionNumber: questionNumber,
+                  category: "Easy Question",
+                  disc_index: item.disc_index,
+                  correctAnswersPercentage: item.correctAnswersPercentage,
+                }}
+                if(item.correctAnswersPercentage >= 81 && item.correctAnswersPercentage <= 100){
+                  return {
+                    questionNumber: questionNumber,
+                    category: "Very Easy Question",
+                    questionNumber: questionNumber,
+                    correctAnswersPercentage: item.correctAnswersPercentage,
+                  }}
+                  
+                });
+                
+                
+                
+                console.log("🚀 ~ calculateResult ~ KR20:", KR20)
 
-    });
-
-
-
-    const resdata = await Class.findByIdAndUpdate(latestId[0]._id, {
-      KR20: KR20,
-      questionAnalysis: newArray,
-    });
-      // console.log("🚀 ~ calculateResult ~ KR20:", KR20)
-
+                const resdata = await Class.findByIdAndUpdate(latestId._id, {
+                  kr20: KR20,
+                  questionAnalysis: newArray,
+                });
+                
+                
     return resdata;
 
 
