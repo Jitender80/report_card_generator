@@ -29,23 +29,7 @@ async function getLatestClassWithStudentScores() {
     throw error;
   }
 }
-function getReliabilityDescription(score) {
-  if (score > 0.90) {
-    return "Excellent reliability, at the level of the best standardized tests.";
-  }  if (score >= 0.85 && score <= 0.90) {
-    return "Exam seems to be Very good and reliable.";
-  }  if (score >= 0.80 && score <= 0.84) {
-    return "Exam seems to be Good and reliable.";
-  }  if (score >= 0.71 && score <= 0.79) {
-    return "Values lies betweeen the marginally acceptable ranges.There are probably a few items which could be improved";
-  }  if (score >= 0.61 && score <= 0.70) {
-    return "Somewhat low. This test should be supplemented by other  measures for grading";
-  }  if (score >= 0.51 && score <= 0.60) {
-    return "Value Suggests need for revision of the test. The test definitely need to be supplemented by other measures for grading";
-  }  if (score <= 0.50) {
-    return "Questionable Reliability . The test should not contribute heavily to the course grade, and it needs revision";
-  } 
-}
+
 
 exports.createClass = async (req, res) => {
 
@@ -307,7 +291,7 @@ async function calculateResult() {
     const scores = studentScores.map((student) => student.score);
 
     const variance = await calculateSingleValue(scores);
-    console.log("🚀 ~ exports.calculateResult= ~ variance:", variance);
+    // console.log("🚀 ~ exports.calculateResult= ~ variance:", variance);
 
     // calculate grades
     function calculatePercentagesAndGrades(classData) {

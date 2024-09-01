@@ -9,18 +9,18 @@ async function getGrades(){
       return  "No class data found" ;
     }
 
-    console.log("🚀 ~ exports.getGrades= ~ classData.students:", classData.students);
+    // console.log("🚀 ~ exports.getGrades= ~ classData.students:", classData.students);
 
     const gradeBoundaries = {
-      APlus: { min: 90, max: 100 },
-      A: { min: 80, max: 89 },
-      BPlus: { min: 75, max: 79 },
-      B: { min: 70, max: 74 },
-      CPlus: { min: 65, max: 69 },
-      C: { min: 60, max: 64 },
-      DPlus: { min: 55, max: 59 },
-      D: { min: 50, max: 54 },
-      F: { min: 0, max: 49 }
+      APlus: { min: 95, max: 100 },
+      A: { min: 90, max: 94 },
+      BPlus: { min: 85, max: 89 },
+      B: { min: 80, max: 84 },
+      CPlus: { min: 75, max: 79 },
+      C: { min: 70, max: 74 },
+      DPlus: { min: 65, max: 69 },
+      D: { min: 60, max: 64 },
+      F: { min: 0, max: 59 }
     };
 
     // Initialize counters for each grade category
