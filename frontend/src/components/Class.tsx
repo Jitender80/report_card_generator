@@ -159,7 +159,7 @@ const Class = ({ onClassIdChange }: any) => {
           <input
             type="radio"
             name="coordinatorGender"
-            value="male"
+            value="Male"
             checked={classData.coordinatorGender === "male"}
             onChange={handleChange}
             className="p-2 border rounded"
@@ -170,7 +170,7 @@ const Class = ({ onClassIdChange }: any) => {
           <input
             type="radio"
             name="coordinatorGender"
-            value="female"
+            value="Female"
             checked={classData.coordinatorGender === "female"}
             onChange={handleChange}
             className="p-2 border rounded"

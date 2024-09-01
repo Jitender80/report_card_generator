@@ -121,7 +121,7 @@ const ItemAnalysis: React.FC = () => {
       </form>
 
       {!isClassSubmitted && (
-        <div className="mb-5 mt-4 w-full max-w-xl">
+        <div className="mb-5 mt-4 w-full max-w-xl ">
           <Class onClassIdChange={handleClassIdChange} />
         </div>
       )}
