@@ -4,7 +4,6 @@ const fs = require("fs");
 const htmlPdf = require("html-pdf-node");
 const Class = require("../models/excelmodel");
 
-
 function getReliabilityDescription(score) {
   if (score > 0.9) {
     return "Excellent reliability, at the level of the best standardized tests.";
@@ -31,15 +30,17 @@ function getReliabilityDescription(score) {
 
 async function generateReportCardPDF(dbData) {
   const data = dbData;
-  data.logo = "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
+  data.logo =
+    "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
 
   const reportCardHtml = `
   <style>
       .report-card {
+      border:5px solid #000;
           height: 1920px;
           width: 1080px;
           padding: 20px;
-          background-color: #fff;
+          background-color: #7fd0f5;
           -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
       }
   
@@ -77,15 +78,16 @@ async function generateReportCardPDF(dbData) {
           padding: 10px;
           margin-bottom: 20px;
           text-align: center;
+          border:2px solid #000;
           display: flex;
-          flex-direction: column;
-            justify-content: center;
+          flex-direction: row;
+            justify-content: space-between;
             align-items: center;
             gap: 20px;
       }
   
       .info-box {
-          border: 1px solid #000;
+          border: 2px solid #000;
           display: flex;
           justify-content: space-between;
       }
@@ -102,17 +104,62 @@ async function generateReportCardPDF(dbData) {
       .data-details th {
           font-size: 14px; 
       }
+          .li{
+          
+          font-size: 14px;
+          font-weight: bold;
+          }
+          .ol{
+
+          }
+          .white{
+              background-color: #e7e5e5;
+          }
+          table.maintable {
+          background-color:white
+          }
+          .back{
+              background-color: #fff;}
+              ul {
+    list-style-type: none; 
+}
+    .bottom tr td{
+    background-colo:#fff}
+
+    .roww{
+    
+    background-color: #fff;}
   </style>
   
   <div class="report-card">
-      <div class="header-box">
-          <img src="${data.logo}" alt="University Logo" style="width: 80px; height: 80px;">
+      <div class="header-box back">
           <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;">
-          <h1>${data?.college}</h1>
-        <h1>${data?.university || 'Najran University'}</h1>
+          <ul>
+          <li>KINGDOM OF SAUDI ARABIA</li>
+          <li>Ministry of Education</li>
+          <li>${data?.university || "Najran University"}</li>
+          <li>Faculty of Dentistry</li>
+          </ul>
           </div>
+       
+      
+      
+          <img src="${
+            data.logo
+          }" alt="University Logo" style="width: 80px; height: 80px;">
+   <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;">
+          <ul option>
+          <li>المملكة العربية السعودية</li>
+          <li>وزارة التعليم</li>
+          <li>جامعة
+نجران/li>
+
+          <li>Cكلية طب الأسن</li>
+          </ul>
+          </div>
+    
       </div>
-      <div class="info-box">
+      <div class="info-box back">
           <div class="column">
               <p>Course Name : ${data.name}</p>
               <p>Level : ${data.level}</p>
@@ -125,84 +172,87 @@ async function generateReportCardPDF(dbData) {
           </div>
       </div>
       <div class="items-table">
-          <table>
+          <table class="maintable">
               <tr>
-                  <th>Serial No.</th>
-                  <th>Item Category</th>
+                  <th class="white">Serial No.</th>
+                  <th class="white">Item Category</th>
                   <th>Question No</th>
                   <th>Total Questions</th>
                   <th>%</th>
                   <th>Comments/Recommendation</th>
               </tr>
               ${data.items
-                  .map((item, index) => {
-                      let comments = "";
-  
-                  
-                      if (item.numberOfItems > 0) {
-                          if (item.category === "Poor (Bad) Questions") {
-                              comments = `
+                .map((item, index) => {
+                  let comments = "";
+
+                  if (item.numberOfItems > 0) {
+                    if (item.category === "Poor (Bad) Questions") {
+                      comments = `
                                   ● KEYS of 12, 19, 25, 26, 30, 34, 41, 77, questions with more % of attempt for wrong options are needed to be checked.
                                   ● All the questions should be rejected.
                               `;
-                          } else if (item.category === "Very Difficult Question") {
-                              comments = `
+                    } else if (item.category === "Very Difficult Question") {
+                      comments = `
                                   ● Keys of these items are needed to be checked.
                                   ● Items should be rejected.
                               `;
-                          } else if (item.category === "Difficult Question") {
-                              comments = `
+                    } else if (item.category === "Difficult Question") {
+                      comments = `
                                   ● Key of this item is also needed to be checked.
                               `;
-                          } else if (item.category === "Good Question") {
-                              comments = `
+                    } else if (item.category === "Good Question") {
+                      comments = `
                                   ● Items could be stored in question bank for further use.
                               `;
-                          } else if (item.category === "Easy Question") {
-                              comments = `
+                    } else if (item.category === "Easy Question") {
+                      comments = `
                                   ● Item should be revised before re-use.
                               `;
-                          } else if (item.category === "Very Easy Question") {
-                              comments = `
+                    } else if (item.category === "Very Easy Question") {
+                      comments = `
                                   ● Items should be rejected Or needed to be revised.
                               `;
-                          } else {
-                              comments = `
+                    } else {
+                      comments = `
                                   ● No specific comments available.
                               `;
-                          }
-                          if(item.category == "Reliability") {
-                            comments = getReliabilityDescription(item.numberOfItems);
-                        }
-                      }
-                      if (item.category === "Reliability") {
-                        return `
+                    }
+                    if (item.category == "Reliability") {
+                      comments = getReliabilityDescription(item.numberOfItems);
+                    }
+                  }
+                  if (item.category === "Reliability") {
+                    return `
                             <tr>
-                                <td>${index + 1}</td>
-                                <td>${item.category}</td>
-                               <td colspan="3" style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems}</td>
+                                <td class="white"> ${index + 1}</td>
+                                <td class="white">${item.category}</td>
+                               <td colspan="3" style=" white word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
+                                 item.numberOfItems
+                               }</td>
 
-                                <td> ●  ${comments}</td>
+                                <td class="white" > ●  ${comments}</td>
                             </tr>
                         `;
-                    } else {
-                        return `
+                  } else {
+                    return `
                             <tr>
-                                <td>${index + 1}</td>
-                                <td>${item.category}</td>
-                                <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">${item.items}</td>
+                                <td class="white" >${index + 1}</td>
+                                <td class="white">${item.category}</td>
+                                <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">${
+                                  item.items
+                                }</td>
                                 <td>${item.numberOfItems}</td>
                                 <td>${item.percentage}</td>
                                 <td>${comments}</td>
                             </tr>
                         `;
-                    }
-                  })
-                  .join("")}
+                  }
+                })
+                .join("")}
           </table>
       </div>
-      <div class="data-details" style="margin-top: 20px;">
-          <table>
+      <div class="data-details maintable" style="margin-top: 20px;">
+          <table class="bottom">
               <tr>
                   <th>Course Code</th>
                   <th>Credit Hour</th>
@@ -221,7 +271,7 @@ async function generateReportCardPDF(dbData) {
                   <th>D</th>
                   <th>F</th>
               </tr>
-              <tr>
+              <tr class="roww">
                   <td>${data.courses.code}</td>
                   <td>${data.courses.creditHour}</td>
                   <td>${data.courses.studentsNumber}</td>
@@ -239,7 +289,7 @@ async function generateReportCardPDF(dbData) {
                   <td>${data.courses.grades.D.number.toFixed(0)}</td>
                   <td>${data.courses.grades.F.number.toFixed(0)}</td>
               </tr>
-              <tr>
+                 <tr class="roww">
                   <td colspan="6"></td>
                   <td>(${data.courses.studentsPassed.percentage}%)</td>
                   <td>(${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
@@ -256,7 +306,6 @@ async function generateReportCardPDF(dbData) {
       </div>
   </div>
   `;
-  
 
   const options = { format: "A4" };
   const file = { content: reportCardHtml };
@@ -311,12 +360,10 @@ async function generatePdf(req, res) {
       );
     });
 
-
     result.push({
-        category: "Reliability",
-        numberOfItems : data.kr20.toFixed(2), // Replace "value" with the actual KR2 value
-
-      });
+      category: "Reliability",
+      numberOfItems: data.kr20.toFixed(2), // Replace "value" with the actual KR2 value
+    });
 
     let passedCount =
       data.FinalGrade.APlus.number +
@@ -333,17 +380,17 @@ async function generatePdf(req, res) {
     const dbData = {
       college: data.college,
       university: data.university,
+      name:data.className,
 
-        level: data.level,
-
+      level: data.level,
 
       creditHours: data.creditHours,
       grade: data.grade,
       average: data.average,
 
-        courseCoordinator: data.courseCoordinator,
+      courseCoordinator: data.courseCoordinator,
 
-    semester: data.semester,
+      semester: data.semester,
       items: result,
       courses: {
         code: data.courseCode,
