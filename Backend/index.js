@@ -32,6 +32,17 @@ connectDB();
 app.get("/", (req, res) => {
   res.json({ message: "pong working" });
 });
+app.get('/wake-up', async (req, res) => {
+  try {
+    // Perform any necessary operations to wake up the server
+
+    res.status(200).send({ message: 'Server is awake' });
+  } catch (err) {
+    console.error("Error waking up server:", err);
+    res.status(500).send({ error: err.message });
+  }
+});
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

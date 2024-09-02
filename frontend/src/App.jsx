@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -9,10 +9,13 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 
 import "./App.css";
-import Login from "./pages/Login";
-import AuthRoute from "./components/AuthRoute";
+
 import StudentTable from "./pages/Dashboard";
 import ItemAnalysis from "./pages/ItemAnalysis";
+import { ToastContainer, toast } from 'react-toastify';
+import BASE_URL from "./lib/db";
+import axios from "axios";
+
 
 const ProtectedLayout = () => {
   return (
@@ -26,10 +29,34 @@ const ProtectedLayout = () => {
 
 
 const App = () => {
+  useEffect(() => {
+    const wakeUpServer = async () => {
+      try {
+        toast.loading('Waking up server...');
+        const response = await axios.get(`${BASE_URL}/wake-up`);
+        if(
+          response.status === 200
+        ){
+
+          toast.dismiss()
+          toast.success(response.data.message);
+        }
+      } catch (error) {
+
+        toast.dismiss()
+        toast.error('Error waking up server| Refresh to try again');
+      }
+    };
+
+    wakeUpServer();
+  }, []);
   return (
+    <>
+    
     <Router
     basename="/"
     >
+     
       <Layout>
         <Routes
         initialRoute="/"
@@ -40,6 +67,7 @@ const App = () => {
         </Routes>
       </Layout>
     </Router>
+          </>
   );
 };
 

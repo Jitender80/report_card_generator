@@ -84,41 +84,41 @@ const ItemAnalysis: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mt-0 ">
-      <form
-        onSubmit={handleCollegeSubmit}
-        className="border  border-gray-600 p-2 rounded-lg w-11/12 flex flex-row gap-4
-  justify-around
-  items-center
-
-        "
-      >
-        <div className="flex flex-row items-center gap-5 w-96">
-          <label htmlFor="collegeName">College Name:</label>
-          <input
-            className="border border-gray-300 p-2 rounded-lg"
-            type="text"
-            id="collegeName"
-            value={collegeName}
-            onChange={handleCollegeNameChange}
-          />
-        </div>
-        <div className="flex flex-row items-center gap-5">
-          <label htmlFor="universityName">University Name:</label>
-          <input
-            className="border border-gray-300 p-2 rounded-lg"
-            type="text"
-            id="universityName"
-            value={universityName}
-            onChange={handleUniversityNameChange}
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-300 self-center p-2 rounded-md"
+    {
+        !isClassSubmitted  && (
+          <form
+          onSubmit={handleCollegeSubmit}
+          className="border  border-gray-600 p-2 rounded-lg w-11/12 flex flex-row gap-4
+    justify-around
+    items-center
+  
+          "
         >
-          Submit
-        </button>
-      </form>
+          <div className="flex flex-row items-center gap-5 w-96">
+            <label htmlFor="collegeName">College Name:</label>
+            <input
+              className="border border-gray-300 p-2 rounded-lg"
+              type="text"
+              id="collegeName"
+              value={collegeName}
+              onChange={handleCollegeNameChange}
+            />
+          </div>
+          <div className="flex flex-row items-center gap-5">
+            <label htmlFor="universityName">University Name:</label>
+            <input
+              className="border border-gray-300 p-2 rounded-lg"
+              type="text"
+              id="universityName"
+              value={universityName}
+              onChange={handleUniversityNameChange}
+            />
+          </div>
+        
+        </form>
+
+        )
+      }
 
       {!isClassSubmitted && (
         <div className="mb-5 mt-4 w-full max-w-xl ">
