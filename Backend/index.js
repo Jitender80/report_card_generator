@@ -93,6 +93,20 @@ app.get('/getReportsByRoleAndEmail', async (req, res) => {
   }
 });
 
+
+app.get('/getInstructors', async (req, res) => {
+  try {
+    const instructors = await User.find({ role: 'teacher' }).populate({
+      path: 'reports',
+      populate: { path: 'user' },
+    });
+    res.json(instructors);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(400).json({ error: 'Bad request' });
+  }
+});
+
 // app.get('/calculateRes', calculateResult)
 
 // app.get('/getResultData', getResultData);
