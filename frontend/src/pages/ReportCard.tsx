@@ -45,95 +45,121 @@ const ReportCard = ({ data }) => {
       <style>
         {`
           .report-card {
-            border: 5px solid #000;
-            height: 1200px;
-            width: 1000px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background-color: #7fd0f5;
-            -webkit-print-color-adjust: exact;
-          }
-          .report-card table {
-            width: 90%;
-            height: 60%;
-            border-collapse: collapse;
-            border-spacing: 0;
-          }
-          .report-card th, .report-card td {
-            border: 2px solid #000;
-            padding: 10px;
-          }
-          .report-card th {
-            background-color: #d3e0ea !important;
-            color: #000 !important;
-            font-weight: bold;
-          }
-          .report-card .key {
-            font-weight: bold;
-            background-color: #f9f9f9;
-          }
-          .report-card .student-details {
-            margin-bottom: 20px;
-          }
-          .report-card .items-table th, .report-card .items-table td {
-            text-align: left;
-          }
-          .header-box, .info-box {
-            padding: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            border: 2px solid #000;
-            display: flex;
-            flex-direction: row;
+
+          
+
+
+
+          width: 1080px;
+          // marginHorizontal:30px;
+          // paddingHorizontal: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          background-color: #7fd0f5;
+          -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
+      }
+  
+      .report-card table {
+          width: 90%;
+          height: 60%;
+          border-collapse: collapse; /* Ensures borders are collapsed */
+          border-spacing: 0; /* Removes gaps between cells */
+      }
+  
+      .report-card th, .report-card td {
+          border: 2px solid #000; /* Adds borders */
+          padding: 10px;
+      }
+  
+      .report-card th {
+          background-color: #d3e0ea !important; /* Light blue color for headers */
+          color: #000 !important; /* Ensures text color is black */
+          font-weight: bold;
+      }
+  
+      .report-card .key {
+          font-weight: bold;
+          background-color: #f9f9f9;
+      }
+  
+      .report-card .student-details {
+          margin-bottom: 20px;
+      }
+  
+      .report-card .items-table th, .report-card .items-table td {
+          text-align: left;
+      }
+  
+      .header-box, .info-box {
+          padding: 10px;
+          margin-bottom: 20px;
+          text-align: center;
+          border:2px solid #000;
+          display: flex;
+          flex-direction: row;
             justify-content: space-between;
             align-items: center;
             gap: 20px;
+      }
+  
+      .info-box {
+          border: 2px solid #000;
+          display: flex;
+          justify-content: space-between;
+      }
+  
+      .info-box .column {
+          width: 48%;
+      }
+  
+      .data-details {
+      height: 30%;
+      }
+      .data-details td {
+          font-size: 12px; 
+          text-align: center;
+      }
+  
+      .data-details th {
+          font-size: 14px; 
+      }
+          .li{
+          
+          font-size: 14px;
+          font-weight: bold;
           }
-          .info-box {
-            border: 2px solid #000;
-            display: flex;
-            justify-content: space-between;
+          .ol{
+
           }
-          .info-box .column {
-            width: 48%;
-          }
-          .data-details {
-            height: 30%;
-          }
-          .data-details td {
-            font-size: 12px;
-            text-align: center;
-          }
-          .data-details th {
-            font-size: 14px;
-          }
-          .li {
-            font-size: 14px;
-            font-weight: bold;
-          }
-          .ol {}
-          .white {
-            background-color: #e7e5e5;
+          .white{
+              background-color: #e7e5e5;
           }
           table.maintable {
-            background-color: white;
+          background-color:white
           }
-          .back {
-            background-color: #fff;
-          }
-          ul {
-            list-style-type: none;
-          }
-          .bottom tr td {
-            background-color: #fff;
-          }
-          .roww {
-            background-color: #fff;
-          }
-          .spac {
-            margin: 4px;
-          }
+          .back{
+              background-color: #fff;}
+              ul {
+    list-style-type: none; 
+}
+    .bottom tr td{
+    background-colo:#fff}
+
+    .roww{
+    
+    background-color: #fff;}
+    .spac{
+    margin:4px;
+    }
+    .spac{
+  margin:4px;
+}
+.spacing {
+  margin-bottom: 10px;
+}
         `}
       </style>
       <div className="header-box back">
@@ -167,7 +193,7 @@ const ReportCard = ({ data }) => {
           <p>Course Coordinator: {data.courseCoordinator}</p>
         </div>
       </div>
-      <div className="items-table">
+      <div className="items-table report-card">
         <table className="maintable">
           <thead>
             <tr>
@@ -213,7 +239,9 @@ const ReportCard = ({ data }) => {
           </tbody>
         </table>
       </div>
-      <div className="data-details maintable" style={{ marginTop: '20px' }}>
+
+      
+      <div className="data-details maintable items-table flex justify-center items-center" style={{ marginTop: '20px' }}>
         <table className="bottom">
           <thead>
             <tr>

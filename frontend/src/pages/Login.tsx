@@ -61,7 +61,7 @@ const Login = () => {
           <button
             type="button"
             className="mt-4 text-blue-500"
-            onClick={() => setIsLogin(false)}
+            onClick={()=> navigate('/signup')}
           >
             Don't have an account? Signup
           </button>

@@ -37,20 +37,21 @@ async function generateReportCardPDF(dbData) {
   <style>
       .report-card {
       border:5px solid #000;
-          height: 1200px;
-          width: 1000px;
+          height: 1400px;
+          width: 1080px;
           // marginHorizontal:30px;
           // paddingHorizontal: 20px;
           display: flex;
           flex-direction: column;
           justify-content: center;
 
+
           background-color: #7fd0f5;
           -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
       }
   
       .report-card table {
-          width: 90%;
+          width: 100%;
           height: 60%;
           border-collapse: collapse; /* Ensures borders are collapsed */
           border-spacing: 0; /* Removes gaps between cells */
@@ -141,17 +142,23 @@ async function generateReportCardPDF(dbData) {
     .spac{
     margin:4px;
     }
+    .spac{
+  margin:4px;
+}
+.spacing {
+  margin-bottom: 10px;
+}
   </style>
   
   <div class="report-card">
       <div class="header-box back">
           <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;gap:2">
-          <ul>
-          <li>KINGDOM OF SAUDI ARABIA</li>
-          <li>Ministry of Education</li>
-          <li>${data?.university || "Najran University"}</li>
-          <li>Faculty of Dentistry</li>
-          </ul>
+        <ul>
+        <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
+        <li class="spacing">Ministry of Education</li>
+        <li class="spacing">${data?.university || "Najran University"}</li>
+        <li class="spacing">Faculty of Dentistry</li>
+      </ul>
           </div>
        
       
@@ -160,14 +167,12 @@ async function generateReportCardPDF(dbData) {
             data.logo
           }" alt="University Logo" style="width: 80px; height: 80px;">
    <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap:2" >
-          <ul option>
-          <li>المملكة العربية السعودية</li>
-          <li>وزارة التعليم</li>
-          <li>جامعة
-نجران/li>
-
-          <li>Cكلية طب الأسن</li>
-          </ul>
+            <ul>
+        <li class="spacing">المملكة العربية السعودية</li>
+        <li class="spacing">وزارة التعليم</li>
+        <li class="spacing">جامعة نجران</li>
+        <li class="spacing">كلية طب الأسنان</li>
+      </ul>
           </div>
     
       </div>
@@ -551,9 +556,7 @@ async function getDbData(req, res) {
       code: data.courseCode,
       creditHour: data.creditHours,
       studentsNumber: data.studentsNumber ? data.studentsNumber : "-",
-      studentsWithdrawn: data.studentsWithdrawn
-        ? data.studentsWithdrawn
-        : "-",
+      studentsWithdrawn: data.studentsWithdrawn ? data.studentsWithdrawn : "-",
       studentsAbsent: data.studentsAbsent ? data.studentsAbsent : "-",
       studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
       studentsPassed: {

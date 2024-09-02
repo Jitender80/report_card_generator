@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import BASE_URL from "../lib/db";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [signupData, setSignupData] = useState({
@@ -20,6 +21,7 @@ const Signup = () => {
     });
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    toast.loading("Signing up...");
     e.preventDefault();
 
     if (signupData.password !== signupData.confirmPassword) {
@@ -33,9 +35,11 @@ const Signup = () => {
 
       console.log(response.data);
 
-
-      navigate("/login");
-    } catch (error) {
+        toast.dismiss()
+        navigate("/login");
+        toast.success("Signup successful. Please login.");
+      } catch (error) {
+      toast.dismiss()
       console.error("Error signing up:", error);
       alert("Error signing up. Please try again.");
     }
@@ -72,6 +76,16 @@ const Signup = () => {
         <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">
           Signup
         </button>
+
+        <div>
+        <button
+            type="button"
+            className="mt-4 text-blue-500"
+            onClick={()=> navigate('/login')}
+          >
+          Login
+          </button>
+        </div>
       </form>
     </div>
   );

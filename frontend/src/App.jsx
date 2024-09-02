@@ -17,6 +17,7 @@ import BASE_URL from "./lib/db";
 import axios from "axios";
 import AuthRoute from "./components/AuthRoute";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 const ProtectedLayout = () => {
   return (
     <div>
@@ -50,6 +51,7 @@ const App = () => {
           <Routes initialRoute="/">
             <Route path="" element={<Home />} />
             <Route path="login" element={<Login/>} /> 
+            <Route path="signup" element={<Signup/>} /> 
             
             <Route
               path="/*"

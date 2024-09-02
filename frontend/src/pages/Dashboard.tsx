@@ -7,7 +7,7 @@ import ReportCard from "./ReportCard";
 
 const StudentTable = () => {
   const [students, setStudents] = React.useState([]);
-  const [pdf, setPdf] = React.useState("");
+  const [pdf, setPdf] = React.useState(null);
 
   const [showPdf, setShowPdf] = React.useState(false);
   const fetchStudents = async () => {
@@ -43,7 +43,7 @@ const StudentTable = () => {
     }
   };
 
-  
+
 
 
 
@@ -65,14 +65,15 @@ const StudentTable = () => {
     try {
       // Call the /generate API
       const res = await axios.get(`${BASE_URL}/pdfData`);
-      console.log("🚀 ~ getPdf ~ res:", res.data)
-      const data = res.data.data[0].students;
+      console.log("🚀 ~ getPdf ~ res:", res.data.data)
 
-      console.log("🚀 ~ fetchStudents ~ data:", data);
-      console.log("🚀 fetchStudents data type", typeof data);
+
+
+
+
 
       // Update the state with the fetched data
-      setPdf(data);
+      setPdf(res.data.data);
       toast.success("PDF generated successfully");
     } catch (error) {
 
@@ -82,19 +83,19 @@ const StudentTable = () => {
 
   useEffect(() => {
     fetchStudents();
-   calculateResult();
+    calculateResult();
 
 
 
   }, []);
   console.log(pdf)
 
-  const handlePress = async() => {
+  const handlePress = async () => {
     await getPdf();
   }
 
   return (
-    <div className=" overflow-y-auto h-screen w-full   overflow-x-auto ">
+    <div className=" flex-1 h-screen w-full   overflow-x-auto overflow-y-auto ">
 
       <div className="flex flex-col justify-center items-center m-20 gap-10">
 
@@ -115,19 +116,19 @@ const StudentTable = () => {
         </i>
       </div>
 
-      <div>
+      <div className="flex flex-col justify-center items-center bg-blue-200 ">
 
-        {
-          !showPdf ? (
-            <div onClick={handlePress}>
-              Show PDF
-            </div>
+        <div onClick={handlePress} className="
+            text-2xl bg-green-500 rounded-md p-2 m-2 cursor-pointer
+            ">
+          Show PDF
+        </div>
 
-          ):(
 
-           pdf && <ReportCard data={pdf}/>
-          )
-        }
+        <div className="h-full py-20 mb-20 " >
+
+          {pdf && <ReportCard data={pdf} />}
+        </div>
 
 
       </div>
@@ -135,10 +136,10 @@ const StudentTable = () => {
 
 
 
-    <div className="mt-10 border-zinc-700 border-1">
+      <div className="mt-10 border-zinc-700 border-1">
 
-    
-      <table className="min-w-full bg-white border-red-100 border-2 ">
+
+        {/* <table className="min-w-full bg-white border-red-100 border-2 ">
         <thead>
           <tr>
             <th className="py-2 px-4 border-b">Name</th>
@@ -147,9 +148,7 @@ const StudentTable = () => {
             <th className="py-2 px-4 border-b">Correct Count</th>
             <th className="py-2 px-4 border-b">Percentage</th>
             <th className="py-2 px-4 border-b">Score</th>
-            {/* <th className="py-2 px-4 border-b">Questions</th> */}
-            {/* <th className="py-2 px-4 border-b">Incorrect Index Data</th>
-            <th className="py-2 px-4 border-b">Disc Index Data</th> */}
+
           </tr>
         </thead>
         <tbody className="overflow-y-auto p-5">
@@ -170,25 +169,13 @@ const StudentTable = () => {
               <td className="py-2 px-4 border-b">{student[1]?.percentage}</td>
               <td className="py-2 px-4 border-b">{student[1]?.score}</td>
               <td className="py-2 px-4 border-b">
-                {/* {Object.entries(student).map((student, index) => (
-                  <td key={index}>
-                    <td>{student[1].questions[1].question}</td>
-                  </td>
-                ))} */}
-                {/* {student[1]?.questions.map((question, index) => (
-                  <td key={index}>
-                    <td>{question.question}</td>
-                  </td>
-                ))} */}
+
               </td>
-              {/* <td className="py-2 px-4 border-b">
-                {student.incorrectIndexData}
-              </td>
-              <td className="py-2 px-4 border-b">{student.discIndexData}</td> */}
+
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
       </div>
     </div>
   );
