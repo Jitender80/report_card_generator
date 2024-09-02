@@ -125,6 +125,8 @@ const StudentTable = () => {
         </div>
 
 
+    <h2 className="text-red-600 text-xl">THis Pdf is only for data verification , Kindly ignore the formatting ,Instead Download the pdf to view</h2>
+
         <div className="h-full py-20 mb-20 " >
 
           {pdf && <ReportCard data={pdf} />}

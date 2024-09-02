@@ -44,30 +44,24 @@ const ReportCard = ({ data }) => {
     <div className="report-card">
       <style>
         {`
-          .report-card {
+   .report-card {
+  width: 1080px;
+  padding: 0 60px; /* Corrected paddingHorizontal */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #7fd0f5;
+  -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
+}
 
-          
-
-
-
-          width: 1080px;
-          // marginHorizontal:30px;
-          // paddingHorizontal: 20px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          background-color: #7fd0f5;
-          -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
-      }
-  
-      .report-card table {
-          width: 90%;
-          height: 60%;
-          border-collapse: collapse; /* Ensures borders are collapsed */
-          border-spacing: 0; /* Removes gaps between cells */
-      }
+.report-card table {
+  width: 100%; /* Ensures the table fits inside the container */
+  height: 60%;
+  border-collapse: collapse; /* Ensures borders are collapsed */
+  border-spacing: 0; /* Removes gaps between cells */
+  align-self: center;
+}
   
       .report-card th, .report-card td {
           border: 2px solid #000; /* Adds borders */
@@ -116,7 +110,9 @@ const ReportCard = ({ data }) => {
       }
   
       .data-details {
-      height: 30%;
+      height: 40%;
+      // width:'60%'
+
       }
       .data-details td {
           font-size: 12px; 
@@ -162,7 +158,7 @@ const ReportCard = ({ data }) => {
 }
         `}
       </style>
-      <div className="header-box back">
+      <div className="header-box back px-20">
         <div style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', flexDirection: 'row', gap: '2px' }}>
           <ul>
             <li>KINGDOM OF SAUDI ARABIA</li>

@@ -35,27 +35,29 @@ async function generateReportCardPDF(dbData) {
 
   const reportCardHtml = `
   <style>
-      .report-card {
-      border:5px solid #000;
-          height: 1400px;
-          width: 1080px;
-          // marginHorizontal:30px;
-          // paddingHorizontal: 20px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
+    .report-card {
+  width: 1000px;
+  height: 90%;
+  padding: 0 60px; /* Corrected paddingHorizontal */
+padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  // align-items: center;
+  background-color: #7fd0f5;
+  border: 5px solid #000; 
+  border-style: double; /* Adds double border */
+  -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
+}
 
-
-          background-color: #7fd0f5;
-          -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
-      }
-  
-      .report-card table {
-          width: 100%;
-          height: 60%;
-          border-collapse: collapse; /* Ensures borders are collapsed */
-          border-spacing: 0; /* Removes gaps between cells */
-      }
+.report-card table {
+  width: 100%; /* Ensures the table fits inside the container */
+  height: 60%;
+  border: 2px solid #000; /* Adds borders */
+  // border-collapse: collapse; /* Ensures borders are collapsed */
+  border-spacing: 0; /* Removes gaps between cells */
+  align-self: center;
+}
   
       .report-card th, .report-card td {
           border: 2px solid #000; /* Adds borders */
@@ -94,9 +96,11 @@ async function generateReportCardPDF(dbData) {
       }
   
       .info-box {
+          background-color: #f4e2de;
           border: 2px solid #000;
           display: flex;
           justify-content: space-between;
+
       }
   
       .info-box .column {
@@ -104,8 +108,13 @@ async function generateReportCardPDF(dbData) {
       }
   
       .data-details {
-      height: 30%;
-      }
+
+        height: 25%;
+        width:90%;
+
+        }
+
+
       .data-details td {
           font-size: 12px; 
           text-align: center;
@@ -132,22 +141,29 @@ async function generateReportCardPDF(dbData) {
               background-color: #fff;}
               ul {
     list-style-type: none; 
-}
+} 
+    .bottom{
+      width:90%
+    }
     .bottom tr td{
-    background-colo:#fff}
+    background-color:#fff}
 
     .roww{
     
     background-color: #fff;}
     .spac{
-    margin:4px;
+    margin:2px;
     }
-    .spac{
-  margin:4px;
-}
+
 .spacing {
   margin-bottom: 10px;
 }
+  .column p{
+  font-size: 20px;
+  font-weight: 600;
+  text-align:'center'
+
+  }
   </style>
   
   <div class="report-card">
@@ -247,7 +263,7 @@ async function generateReportCardPDF(dbData) {
                             <tr>
                                 <td class="white"> ${index + 1}</td>
                                 <td class="white">${item.category}</td>
-                               <td colspan="3" style=" white word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
+                               <td colspan="3" style=" white word-wrap: break-word; background-color: #f4e2dd;  min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
                                  item.numberOfItems
                                }</td>
 
