@@ -5,6 +5,7 @@ const Class = require("../models/excelmodel");
 const math = require("mathjs");
 const simpleStatistics = require("simple-statistics");
 const { getGrades } = require("./grading");
+const User = require("../models/usermodel");
 async function getLatestClassWithStudentScores() {
   try {
     const latestClass = await Class.findOne()
@@ -30,15 +31,12 @@ async function getLatestClassWithStudentScores() {
   }
 }
 
-
 exports.createClass = async (req, res) => {
-
-
+  const { id } = req.params;
   const {
     college,
     univerity,
-className,
-
+    className,
     level,
     nameOfCourse,
     courseCode,
@@ -48,7 +46,6 @@ className,
     coordinatorGender,
     courseCoordinator,
     totalNoOfQuestion,
-  
     studentsWithdrawn,
     studentAbsent,
     StudentsAttended,
@@ -56,38 +53,56 @@ className,
   } = req.body;
 
   const newClass = new Class({
+    user: id,
     college,
     className,
     univerity,
     level,
     nameOfCourse,
     courseCode,
-    courseCode,
-    creditHours,
-   
     creditHours,
     semester,
     academicYear,
     coordinatorGender,
     courseCoordinator,
-
-    studentsNumber:totalNoOfQuestion,
- 
-    studentsWithdrawn:studentsWithdrawn,
-    studentsAbsent:studentAbsent,
-    studentsAttended:StudentsAttended,
-    
-    studentsPassed:studentPassed,
+    studentsNumber: totalNoOfQuestion,
+    studentsWithdrawn: studentsWithdrawn,
+    studentsAbsent: studentAbsent,
+    studentsAttended: StudentsAttended,
+    studentsPassed: studentPassed,
   });
-
   try {
     const savedClass = await newClass.save();
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.reports.push(newClass._id);
+    await user.save();
     res.status(201).json({
-      data:savedClass,
-      message:"Class Create Successfully"
+      data: savedClass,
+      message: "Class Create Successfully",
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+
+};
+
+exports.listClasses = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId).populate('classes');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ classes: user.classes });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 exports.uploadFile = async (req, res) => {

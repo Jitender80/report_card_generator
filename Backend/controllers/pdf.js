@@ -37,15 +37,21 @@ async function generateReportCardPDF(dbData) {
   <style>
       .report-card {
       border:5px solid #000;
-          height: 1920px;
-          width: 1080px;
-          padding: 20px;
+          height: 1200px;
+          width: 1000px;
+          // marginHorizontal:30px;
+          // paddingHorizontal: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
           background-color: #7fd0f5;
           -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
       }
   
       .report-card table {
-          width: 100%;
+          width: 90%;
+          height: 60%;
           border-collapse: collapse; /* Ensures borders are collapsed */
           border-spacing: 0; /* Removes gaps between cells */
       }
@@ -96,6 +102,9 @@ async function generateReportCardPDF(dbData) {
           width: 48%;
       }
   
+      .data-details {
+      height: 30%;
+      }
       .data-details td {
           font-size: 12px; 
           text-align: center;
@@ -247,7 +256,9 @@ async function generateReportCardPDF(dbData) {
                                 <td class="white">${item.category}</td>
                              <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
 
-    ${item.items.map(subItem => `<span class="spac">${subItem}</span>`).join('')}
+    ${item.items
+      .map((subItem) => `<span class="spac">${subItem}</span>`)
+      .join("")}
 
 </td>
                                 <td>${item.numberOfItems}</td>
@@ -342,7 +353,7 @@ async function generateReportCardPDF(dbData) {
 async function generatePdf(req, res) {
   try {
     const data = await Class.findOne().sort({ createdAt: -1 });
-    console.log("🚀 ~ generatePdf ~ data:", data);
+
     let items;
     let numberOfItems;
     let percentage;
@@ -389,7 +400,7 @@ async function generatePdf(req, res) {
     const dbData = {
       college: data.college,
       university: data.university,
-      name:data.className,
+      name: data.className,
 
       level: data.level,
 
@@ -474,4 +485,127 @@ async function generatePdf(req, res) {
   }
 }
 
-module.exports = { generatePdf };
+// Function to create dbData
+async function getDbData(req, res) {
+  const data = await Class.findOne().sort({ createdAt: -1 });
+
+  let items;
+  let numberOfItems;
+  let percentage;
+
+  const result = [];
+  var total = 0;
+
+  Object.keys(data.questionSummary).forEach((category) => {
+    const items = data.questionSummary[category];
+    console.log("🚀 ~ Object.keys ~ items:", items);
+    const numberOfItems = items.length;
+    total += numberOfItems;
+    const percentage = (numberOfItems / data.questionAnalysis.length) * 100;
+    result.push({
+      items,
+      category,
+      numberOfItems,
+      percentage: percentage.toFixed(0), // Optional: format percentage to 2 decimal places
+    });
+    console.log(
+      `Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage.toFixed(
+        0
+      )}%`
+    );
+  });
+
+  result.push({
+    category: "Reliability",
+    numberOfItems: data?.kr20, // Replace "value" with the actual KR2 value
+  });
+
+  let passedCount =
+    data.FinalGrade.APlus.number +
+    data.FinalGrade.A.number +
+    data.FinalGrade.BPlus.number +
+    data.FinalGrade.B.number +
+    data.FinalGrade.CPlus.number +
+    data.FinalGrade.C.number +
+    data.FinalGrade.DPlus.number +
+    data.FinalGrade.D.number;
+  let failedCount = +data.FinalGrade.F.number;
+  let totalStudents = passedCount + failedCount;
+
+  const dbData = {
+    college: data.college,
+    university: data.university,
+    name: data.className,
+
+    level: data.level,
+
+    creditHours: data.creditHours,
+    grade: data.grade,
+    average: data.average,
+
+    courseCoordinator: data.courseCoordinator,
+
+    semester: data.semester,
+    items: result,
+    courses: {
+      code: data.courseCode,
+      creditHour: data.creditHours,
+      studentsNumber: data.studentsNumber ? data.studentsNumber : "-",
+      studentsWithdrawn: data.studentsWithdrawn
+        ? data.studentsWithdrawn
+        : "-",
+      studentsAbsent: data.studentsAbsent ? data.studentsAbsent : "-",
+      studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
+      studentsPassed: {
+        number: passedCount ? passedCount : "-",
+        percentage: ((passedCount / totalStudents) * 100).toFixed(0),
+      },
+      grades: {
+        APlus: {
+          number: data.FinalGrade.APlus.number,
+          percentage: data.FinalGrade.APlus.percentage,
+        },
+        A: {
+          number: data.FinalGrade.A.number,
+          percentage: data.FinalGrade.A.percentage,
+        },
+        BPlus: {
+          number: data.FinalGrade.BPlus.number,
+          percentage: data.FinalGrade.BPlus.percentage,
+        },
+        B: {
+          number: data.FinalGrade.B.number,
+          percentage: data.FinalGrade.B.percentage,
+        },
+        CPlus: {
+          number: data.FinalGrade.CPlus.number,
+          percentage: data.FinalGrade.CPlus.percentage,
+        },
+        C: {
+          number: data.FinalGrade.C.number,
+          percentage: data.FinalGrade.C.percentage,
+        },
+        DPlus: {
+          number: data.FinalGrade.DPlus.number,
+          percentage: data.FinalGrade.DPlus.percentage,
+        },
+        D: {
+          number: data.FinalGrade.D.number,
+          percentage: data.FinalGrade.D.percentage,
+        },
+        F: {
+          number: data.FinalGrade.F.number,
+          percentage: data.FinalGrade.F.percentage,
+        },
+      },
+    },
+  };
+  console.log("🚀 ~ generatePdf ~ dbData:", dbData);
+  console.log("🚀 ~ getDbData ~ dbData:", dbData);
+
+  return res.status(200).json({
+    data: dbData,
+  });
+}
+
+module.exports = { generatePdf, getDbData };

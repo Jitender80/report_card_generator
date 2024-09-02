@@ -3,6 +3,7 @@ const Student = require("./student");
 
 const classSchema = new mongoose.Schema({
   college : {type: String, required: false},
+   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User schema
   university : {type: String, required: false}, 
   level:{type: Number, required: false},
   className: { type: String, required: false },

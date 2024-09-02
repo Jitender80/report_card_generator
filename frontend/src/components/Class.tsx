@@ -4,8 +4,12 @@ type Props = {
   onClassIdChange: (id: string) => void;
 };
 import BASE_URL from "../lib/db"
+import { toast } from "react-toastify";
 
 const Class = ({ onClassIdChange }: any) => {
+  
+
+
   const [classData, setClassData] = useState({
     level: 0,
     className: "",
@@ -28,22 +32,37 @@ const Class = ({ onClassIdChange }: any) => {
     // setting the class id in the parent component
   };
   const handleSubmit = async (e: any) => {
+    toast.loading("Creating class...");
+
+    const userId = localStorage.getItem('user'); // Get user ID from local storage
+
+    console.log("🚀 ~ handleSubmit ~ userId:", userId)
+    if (!userId) {
+      alert("User ID not found. Please log in again.");
+      return;
+    }
     e.preventDefault();
     console.log(classData);
     // onClassIdChange("loading");
     // TODO: make a post request to create a class
-    const response = await axios.post(`${BASE_URL}/createClass`, classData);
+    const response = await axios.post(`${BASE_URL}/createClass/${userId}`, classData);
     console.log(response.data);
     if(response.status === 201){
+      toast.dismiss()
+
       console.log(response.data._id);
-      alert("Class created successfully");
+      // alert("Class created successfully");
+
       onClassIdChange(response.data._id);
+      toast.success("Class create successfully")
     }
+
+    toast.dismiss()
+
     // for testing--
     // onClassIdChange("111");
     
   };
-  
   const generateYearOptions = () => {
     const startYear = 2015;
     const numberOfYears = 20;

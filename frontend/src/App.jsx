@@ -12,11 +12,11 @@ import "./App.css";
 
 import StudentTable from "./pages/Dashboard";
 import ItemAnalysis from "./pages/ItemAnalysis";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import BASE_URL from "./lib/db";
 import axios from "axios";
-
-
+import AuthRoute from "./components/AuthRoute";
+import Login from "./pages/Login";
 const ProtectedLayout = () => {
   return (
     <div>
@@ -25,26 +25,19 @@ const ProtectedLayout = () => {
   );
 };
 
-
-
-
 const App = () => {
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
-        toast.loading('Waking up server...');
+        toast.loading("Waking up server...");
         const response = await axios.get(`${BASE_URL}/wake-up`);
-        if(
-          response.status === 200
-        ){
-
-          toast.dismiss()
+        if (response.status === 200) {
+          toast.dismiss();
           toast.success(response.data.message);
         }
       } catch (error) {
-
-        toast.dismiss()
-        toast.error('Error waking up server| Refresh to try again');
+        toast.dismiss();
+        toast.error("Error waking up server| Refresh to try again");
       }
     };
 
@@ -52,22 +45,23 @@ const App = () => {
   }, []);
   return (
     <>
-    
-    <Router
-    basename="/"
-    >
-     
-      <Layout>
-        <Routes
-        initialRoute="/"
-        >
-          <Route path="" element={<Home />} />
-          <Route path="itemanalysis" element={<ItemAnalysis />} />
-          <Route path="studentTable" element={<StudentTable />} />
-        </Routes>
-      </Layout>
-    </Router>
-          </>
+      <Router basename="/">
+        <Layout>
+          <Routes initialRoute="/">
+            <Route path="" element={<Home />} />
+            <Route path="login" element={<Login/>} /> 
+            
+            <Route
+              path="/*"
+              element={<AuthRoute element={ProtectedLayout} />}
+            >
+              <Route path="itemanalysis" element={<ItemAnalysis />} />
+              <Route path="studentTable" element={<StudentTable />} />
+            </Route>
+          </Routes>
+        </Layout>
+      </Router>
+    </>
   );
 };
 

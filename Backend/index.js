@@ -15,7 +15,7 @@ const cors = require("cors");
 
 const { deleteAllData } = require("./controllers/dev");
 const connectDB = require("./db");
-const { generate, generateReportCardPDF, generatePdf } = require("./controllers/pdf");
+const { generate, generateReportCardPDF, generatePdf, getDbData } = require("./controllers/pdf");
 const { getGrades } = require("./controllers/grading");
 
 
@@ -69,7 +69,7 @@ app.use("/auth", authRoutes);
 app.delete("/cleanClass", deleteAllData);
 // ********************************************************************************************
 
-app.post("/createClass", createClass );
+app.post("/createClass/:id", createClass );
 
 app.use("/upload", upload.single("file"), uploadFile);
 app.get('/getStudent',getstudentData )
@@ -82,6 +82,7 @@ app.get('/getStudent',getstudentData )
 
 app.get('/calculate', getFinalResult)
 
+app.get('/pdfData', getDbData)
 app.get('/generate', generatePdf);
 
 

@@ -2,10 +2,14 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import BASE_URL from "../lib/db"
 import { ConstructionIcon } from "lucide-react";
+import { toast } from "react-toastify";
+import ReportCard from "./ReportCard";
 
 const StudentTable = () => {
   const [students, setStudents] = React.useState([]);
+  const [pdf, setPdf] = React.useState("");
 
+  const [showPdf, setShowPdf] = React.useState(false);
   const fetchStudents = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/getStudent`);
@@ -39,11 +43,15 @@ const StudentTable = () => {
     }
   };
 
+  
+
+
+
   const calculateResult = async () => {
 
     try {
       const res = await axios.get(`${BASE_URL}/calculate`);
-      if(res.status != 200){
+      if (res.status != 200) {
         alert("Error calculating result | Refresh of filll again");
       }
       console.log("🚀 ~ file: StudentTable.tsx ~ line 39 ~ calculateResult ~ res", res)
@@ -53,37 +61,83 @@ const StudentTable = () => {
     }
   }
 
+  const getPdf = async () => {
+    try {
+      // Call the /generate API
+      const res = await axios.get(`${BASE_URL}/pdfData`);
+      console.log("🚀 ~ getPdf ~ res:", res.data)
+      const data = res.data.data[0].students;
+
+      console.log("🚀 ~ fetchStudents ~ data:", data);
+      console.log("🚀 fetchStudents data type", typeof data);
+
+      // Update the state with the fetched data
+      setPdf(data);
+      toast.success("PDF generated successfully");
+    } catch (error) {
+
+      toast.error("Failed to generate PDF");
+    }
+  };
+
   useEffect(() => {
     fetchStudents();
-    calculateResult();
+   calculateResult();
+
 
 
   }, []);
+  console.log(pdf)
+
+  const handlePress = async() => {
+    await getPdf();
+  }
 
   return (
     <div className=" overflow-y-auto h-screen w-full   overflow-x-auto ">
 
-      <div className="flex justify-center items-center">
+      <div className="flex flex-col justify-center items-center m-20 gap-10">
 
-<h2>Download PDF</h2>
-    <button
+        <h2 className="text-2xl">Download PDF</h2>
+        <button
 
-className="bg-blue-500 hover:bg-blue-700 space-x-3 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 space-x-3 text-white font-bold py-2 px-4 rounded"
 
-    onClick={()=>{window.open(`${BASE_URL}/generate`)}}
-    >
-      Download 
+          onClick={() => { window.open(`${BASE_URL}/generate`) }}
+        >
+          Download
 
 
-    </button>
+        </button>
 
-<i>
-  if download not working, please refresh the page and try again
-</i>
+        <i>
+          if download not working, please refresh the page and try again
+        </i>
+      </div>
+
+      <div>
+
+        {
+          !showPdf ? (
+            <div onClick={handlePress}>
+              Show PDF
+            </div>
+
+          ):(
+
+           pdf && <ReportCard data={pdf}/>
+          )
+        }
+
+
       </div>
 
 
 
+
+    <div className="mt-10 border-zinc-700 border-1">
+
+    
       <table className="min-w-full bg-white border-red-100 border-2 ">
         <thead>
           <tr>
@@ -135,6 +189,7 @@ className="bg-blue-500 hover:bg-blue-700 space-x-3 text-white font-bold py-2 px-
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
