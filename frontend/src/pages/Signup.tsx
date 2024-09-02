@@ -34,6 +34,7 @@ const Signup = () => {
       const response = await axios.post(`${BASE_URL}/auth/signup`, { email, password });
 
       console.log(response.data);
+      localStorage.setItem("user", response.data);
 
         toast.dismiss()
         navigate("/login");

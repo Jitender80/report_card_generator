@@ -26,9 +26,12 @@ const Login = () => {
     const response = await axios.post(`${BASE_URL}/auth/login`, loginData);
 
     console.log(response.data);
+    localStorage.setItem("user", response.data);
 
-    localStorage.setItem("authToken", response.data.token);
-    localStorage.setItem("user", response.data.user);
+
+    localStorage.setItem("authToken",response.data.token);
+    localStorage.setItem("user", response.data.user._id);
+    localStorage.setItem("usermail", response.data.user.email);
     
     navigate("/itemanalysis");
   };
