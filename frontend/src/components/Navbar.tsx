@@ -23,6 +23,11 @@ const Navbar: React.FC = () => {
         <h2 className="text-white text-sm">Upload the report card PDF</h2>
 
       </div>
+
+      <div className=" flex flex-row gap-10 justify-around text-green-400 text-2xl">
+
+        <Link to="/check-report">Reports</Link>
+      </div>
       <div className=" flex flex-row gap-10 justify-around text-white text-2xl">
         {/* <h2 >Materials</h2>
         <h2>Sessions</h2>
