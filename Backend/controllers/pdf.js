@@ -576,7 +576,7 @@ async function getDbData(req, res) {
     courses: {
       code: data.courseCode,
       creditHour: data.creditHours,
-      studentsNumber: data.studentsNumber ? data.studentsNumber : "-",
+      studentsNumber: totalStudents,
 
 
       studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
