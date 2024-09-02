@@ -1,7 +1,7 @@
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
-import BASE_URL from "../lib/db"
+import BASE_URL from "../lib/db";
 import Class from "../components/Class";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,34 +12,40 @@ const ItemAnalysis: React.FC = () => {
   const [classFormSubmited, setClassFormSubmitted] = useState<boolean>(false);
   const [isClassSubmitted, setClassSubmitted] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [collegeName, setCollegeName] = useState('');
-  const [universityName, setUniversityName] = useState('');
+  const [collegeName, setCollegeName] = useState("");
+  const [universityName, setUniversityName] = useState("");
+  const [savedCollegeDetails, setSavedCollegeDetails] = useState(false);
 
-  const handleCollegeNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setCollegeName(event.target.value);
+  const handleCollegeNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCollegeName(event.target.value);
   };
 
-  const handleUniversityNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setUniversityName(event.target.value);
+  const handleUniversityNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setUniversityName(event.target.value);
   };
 
-  const handleCollegeSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      toast.loading('Submitting college details');
-      const res = await  axios.post(`${BASE_URL}/initializeClass`, {
-          collegeName,
-          universityName
-      });
+  const handleCollegeSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    toast.loading("Submitting college details");
+    const res = await axios.post(`${BASE_URL}/initializeClass`, {
+      collegeName,
+      universityName,
+    });
 
-      if(res.status === 200){
-        toast.dismiss()
-        toast.success("College details submitted successfully");
-      }else{
-        toast.dismiss()
-        toast.error("Failed to submit college details");
-      }
-
+    if (res.status === 200) {
+      toast.dismiss();
+      toast.success("College details submitted successfully");
+    } else {
+      toast.dismiss();
+      toast.error("Failed to submit college details");
     }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -47,23 +53,23 @@ const ItemAnalysis: React.FC = () => {
     }
   };
   const handleClassIdChange = (id: string) => {
-     setClassId(id);
+    setClassId(id);
     // console.log("class id", classId);
     // if (classId) {
-      setClassSubmitted(true);
+    setClassSubmitted(true);
     // } else {
     //   setClassSubmitted(false);
     //   console.log("class id not set");
     // }
   };
-  useEffect(()=>{
+  useEffect(() => {
     console.log("class id", classId);
-    
-  },[classId])
-
-  const handleUpload = async() => {
-
-    toast.loading('Uploading file');
+  }, [classId]);
+  const handleCollegeDetailsSave = () => {
+    setSavedCollegeDetails(true);
+  };
+  const handleUpload = async () => {
+    toast.loading("Uploading file");
     if (selectedFile) {
       // Handle the file upload logic here
       console.log("Uploading file____>:", selectedFile);
@@ -71,31 +77,27 @@ const ItemAnalysis: React.FC = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const res = await axios.post(`${BASE_URL}/upload`,formData);
+      const res = await axios.post(`${BASE_URL}/upload`, formData);
 
-      if(res.status === 200){
-        toast.dismiss()
-        navigate("/studentTable")
+      if (res.status === 200) {
+        toast.dismiss();
+        navigate("/studentTable");
         toast.success("File uploaded successfully");
-        
-
       }
 
       // console.log("🚀 ~ handleUpload ~ res:", res);
       // navigate("/studentTable")
     } else {
-      toast.dismiss()
+      toast.dismiss();
       toast.error("No file selected");
       console.log("No file selected");
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center justify-center mt-0 ">
-    {
-        !isClassSubmitted  && (
-          <form
+      {!isClassSubmitted && !savedCollegeDetails && (
+        <form
           onSubmit={handleCollegeSubmit}
           className="border  border-gray-600 p-2 rounded-lg w-11/12 flex flex-row gap-4
     justify-around
@@ -123,13 +125,20 @@ const ItemAnalysis: React.FC = () => {
               onChange={handleUniversityNameChange}
             />
           </div>
-        
+          <div className="flex flex-row items-center gap-5">
+            <Button
+              variant="outline"
+              color="primary"
+              onClick={handleCollegeDetailsSave}
+              className="mt-[-1px]"
+            >
+              Save
+            </Button>
+          </div>
         </form>
+      )}
 
-        )
-      }
-
-      {!isClassSubmitted && (
+      {!isClassSubmitted && savedCollegeDetails && (
         <div className="mb-5 mt-4 w-full max-w-xl ">
           <Class onClassIdChange={handleClassIdChange} />
         </div>
