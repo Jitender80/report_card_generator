@@ -8,7 +8,24 @@ import { toast } from "react-toastify";
 
 const Class = ({ onClassIdChange }: any) => {
   
-
+  // Level
+  // Course Name
+  // Course Code
+  // Credit hours
+  // Course coordinator 
+  // Semester 
+  // Academic Year
+  // Section 
+  // Ye important h
+  // className,
+  // level,
+  // nameOfCourse,
+  // courseCode,
+  // creditHours,
+  // semester,
+  // academicYear,
+  // coordinatorGender,
+  // courseCoordinator,
 
   const [classData, setClassData] = useState({
     level: 0,
@@ -16,15 +33,15 @@ const Class = ({ onClassIdChange }: any) => {
     nameOfCourse: "",
     courseCode: "",
     creditHours: "",
+    courseCoordinator: "",
     semester: "",
     academicYear:0 ,
     coordinatorGender: "",
-    courseCoordinator: "",
-    totalNoOfQuestion: 0,
-    StudentsAttended: 0,
-    studentsWithdrawn: 0,
-    studentAbsent: 0,
-    studentPassed:0,
+
+
+
+
+
   });
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -84,7 +101,7 @@ const Class = ({ onClassIdChange }: any) => {
     <div className="flex justify-center items-center mb-12 border rounded-md overflow-hidden border-black ">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-2 p-4 border rounded shadow-lg w-full overflow-y-true
+        className="grid grid-cols-2 gap-2 p-4 justify-center items-center border rounded shadow-lg w-full overflow-y-true
         bg-yellow-100
         "
       >
@@ -208,56 +225,10 @@ const Class = ({ onClassIdChange }: any) => {
             className="p-2 border rounded"
           />
         </label>
-        <label className="flex flex-col">
-          totalNoOfQuestion:
-          <input
-            type="number"
-            name="totalNoOfQuestion"
-            value={classData.totalNoOfQuestion}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
-        </label>
-        <label className="flex flex-col">
-          totalNoOfStudentsAttendedExam:
-          <input
-            type="number"
-            name="StudentsAttended"
-            value={classData.StudentsAttended}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
-        </label>
-        <label className="flex flex-col">
-          studentsWithdrawn:
-          <input
-            type="number"
-            name="studentsWithdrawn"
-            value={classData.studentsWithdrawn}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
-        </label>
-        <label className="flex flex-col">
-          studentAbsent,
-          <input
-            type="number"
-            name="studentAbsent"
-            value={classData.studentAbsent}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
-        </label>
-        <label className="flex flex-col">
-          studentPassed,
-          <input
-            type="number"
-            name="studentPassed"
-            value={classData.studentPassed}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
-        </label>
+     
+       
+  
+       
 
         <button
           type="submit"

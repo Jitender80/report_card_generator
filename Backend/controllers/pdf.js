@@ -46,6 +46,7 @@ padding-top: 30px;
   // align-items: center;
   background-color: #7fd0f5;
   border: 5px solid #000; 
+  justify-content: center;
   border-style: double; /* Adds double border */
   -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
 }
@@ -60,7 +61,7 @@ padding-top: 30px;
 }
   
       .report-card th, .report-card td {
-          border: 2px solid #000; /* Adds borders */
+          border: 1px solid #000; /* Adds borders */
           padding: 10px;
       }
   
@@ -87,7 +88,7 @@ padding-top: 30px;
           padding: 10px;
           margin-bottom: 20px;
           text-align: center;
-          border:2px solid #000;
+          border:1px solid #000;
           display: flex;
           flex-direction: row;
             justify-content: space-between;
@@ -97,7 +98,7 @@ padding-top: 30px;
   
       .info-box {
           background-color: #f4e2de;
-          border: 2px solid #000;
+          border: 1px solid #000;
           display: flex;
           justify-content: space-between;
 
@@ -110,18 +111,19 @@ padding-top: 30px;
       .data-details {
 
         height: 25%;
-        width:90%;
+        width:100%;
 
         }
 
 
       .data-details td {
-          font-size: 12px; 
+          font-size: 14px; 
+          font-weight: 600;
           text-align: center;
       }
   
       .data-details th {
-          font-size: 14px; 
+          font-size: 18px; 
       }
           .li{
           
@@ -298,8 +300,8 @@ padding-top: 30px;
                   <th>Course Code</th>
                   <th>Credit Hour</th>
                   <th>Students Number</th>
-                  <th>Students Withdrawn</th>
-                  <th>Students Absent</th>
+
+
                   <th>Students Attended</th>
                   <th>Students Passed</th>
                   <th>A+</th>
@@ -316,8 +318,10 @@ padding-top: 30px;
                   <td>${data.courses.code}</td>
                   <td>${data.courses.creditHour}</td>
                   <td>${data.courses.studentsNumber}</td>
-                  <td>${data.courses.studentsWithdrawn}</td>
-                  <td>${data.courses.studentsAbsent}</td>
+
+                  
+
+
                   <td>${data.courses.studentsAttended}</td>
                   <td>${data.courses.studentsPassed.number}</td>
                   <td>${data.courses.grades.APlus.number.toFixed(0)}</td>
@@ -331,7 +335,7 @@ padding-top: 30px;
                   <td>${data.courses.grades.F.number.toFixed(0)}</td>
               </tr>
                  <tr class="roww">
-                  <td colspan="6"></td>
+                  <td colspan="4"></td>
                   <td>(${data.courses.studentsPassed.percentage}%)</td>
                   <td>(${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
                   <td>(${data.courses.grades.A.percentage.toFixed(0)}%)</td>
@@ -437,14 +441,12 @@ async function generatePdf(req, res) {
         code: data.courseCode,
         creditHour: data.creditHours,
         studentsNumber: data.studentsNumber ? data.studentsNumber : "-",
-        studentsWithdrawn: data.studentsWithdrawn
-          ? data.studentsWithdrawn
-          : "-",
-        studentsAbsent: data.studentsAbsent ? data.studentsAbsent : "-",
-        studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
+    
+
+        studentsAttended: totalStudents,
         studentsPassed: {
           number: passedCount ? passedCount : "-",
-          percentage: ((passedCount / totalStudents) * 100).toFixed(0),
+          percentage: ((passedCount /totalStudents ) * 100).toFixed(0),
         },
         grades: {
           APlus: {
@@ -498,7 +500,7 @@ async function generatePdf(req, res) {
     }
 
     // Send the generated PDF file as a response
-    res.download(pdfPath, `${dbData.name}_ReportCard.pdf`);
+    res.download(pdfPath, `${data.courseCode}_Item_Analysis_Report.pdf`);
   } catch (err) {
     // Catch unexpected errors
     console.error("Unexpected error:", err);
@@ -572,8 +574,8 @@ async function getDbData(req, res) {
       code: data.courseCode,
       creditHour: data.creditHours,
       studentsNumber: data.studentsNumber ? data.studentsNumber : "-",
-      studentsWithdrawn: data.studentsWithdrawn ? data.studentsWithdrawn : "-",
-      studentsAbsent: data.studentsAbsent ? data.studentsAbsent : "-",
+
+
       studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
       studentsPassed: {
         number: passedCount ? passedCount : "-",

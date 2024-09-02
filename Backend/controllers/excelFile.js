@@ -45,11 +45,7 @@ exports.createClass = async (req, res) => {
     academicYear,
     coordinatorGender,
     courseCoordinator,
-    totalNoOfQuestion,
-    studentsWithdrawn,
-    studentAbsent,
-    StudentsAttended,
-    studentPassed,
+
   } = req.body;
 
   const newClass = new Class({
@@ -65,11 +61,7 @@ exports.createClass = async (req, res) => {
     academicYear,
     coordinatorGender,
     courseCoordinator,
-    studentsNumber: totalNoOfQuestion,
-    studentsWithdrawn: studentsWithdrawn,
-    studentsAbsent: studentAbsent,
-    studentsAttended: StudentsAttended,
-    studentsPassed: studentPassed,
+
   });
   try {
     const savedClass = await newClass.save();
