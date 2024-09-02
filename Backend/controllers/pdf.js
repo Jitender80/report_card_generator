@@ -279,7 +279,7 @@ padding-top: 30px;
 
     ${item.items
       .map((subItem) => `<span class="spac">${subItem}</span>`)
-      .join("")}
+      .join(",")}
 
 </td>
                                 <td>${item.numberOfItems}</td>
