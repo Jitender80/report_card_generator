@@ -166,6 +166,9 @@ padding-top: 30px;
   text-align:'center'
 
   }
+  .per{
+    width:40px;
+  }
   </style>
   
   <div class="report-card">
@@ -208,14 +211,14 @@ padding-top: 30px;
       </div>
       <div class="items-table">
           <table class="maintable">
-              <tr>
-                  <th class="white">Serial No.</th>
-                  <th class="white">Item Category</th>
-                  <th>Question No</th>
-                  <th>Total Questions</th>
-                  <th>%</th>
-                  <th>Comments/Recommendation</th>
-              </tr>
+            <tr>
+  <th class="white" style="width: 5%;">Serial No.</th>
+  <th class="white" style="width: 15%;">Item Category</th>
+  <th style="width: 25%;">Question No</th>
+  <th style="width: 5%;">Total Questions</th>
+  <th class="per" style="width: 5%;">%</th>
+  <th style="width: 40%;">Comments/Recommendation</th>
+</tr>
               ${data.items
                 .map((item, index) => {
                   let comments = "";
