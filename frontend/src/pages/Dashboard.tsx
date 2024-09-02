@@ -1,97 +1,80 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BASE_URL from "../lib/db"
 import { ConstructionIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import ReportCard from "./ReportCard";
 
 const StudentTable = () => {
-  const [students, setStudents] = React.useState([]);
-  const [pdf, setPdf] = React.useState(null);
+  const [students, setStudents] = useState([]);
+  const [pdf, setPdf] = useState(null);
+  const [showPdf, setShowPdf] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const [showPdf, setShowPdf] = React.useState(false);
   const fetchStudents = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/getStudent`);
+      // console.log("🚀 ~ fetchStudents ~ res:", res.data.students)
 
-      // const data = res.data.data[0].students
-      // if (typeof data === 'object') {
-      //   const studentsArray = [];
-      //   for (const key in data) {
-      //     studentsArray.push(data[key]);
-      //   }
-      //   // setStudents(studentsArray);
-      //   return;
-      // }
+      // const data = res.data.data[0].students;
+      setStudents(res.data.students);
 
-      const data = res.data.data[0].students;
-      console.log("🚀 ~ fetchStudents ~ data:", res.data.data[0].students);
-      console.log("🚀 fetchStudents data type", typeof data);
 
-      // const studentsArray = Object.entries(data);
-      // const studentsArray = Object.entries(data);
-      // console.log(
-      //   "🚀 fetchStudents ~ studentsArray typeof:",
-      //   typeof studentsArray
-      // );
-      // console.log("🚀 fetchStudents ~ studentsArray:", studentsArray);
-      setStudents(data);
-      console.log("student name", students[1]?.score);
-      console.log("student questions", students[1]?.questions[1]);
     } catch (error) {
       console.error(error.message);
     }
   };
-
 
 
 
 
   const calculateResult = async () => {
-
     try {
       const res = await axios.get(`${BASE_URL}/calculate`);
       if (res.status != 200) {
-        alert("Error calculating result | Refresh of filll again");
+        alert("Error calculating result | Refresh or fill again");
       }
-      console.log("🚀 ~ file: StudentTable.tsx ~ line 39 ~ calculateResult ~ res", res)
+      console.log("🚀 ~ file: StudentTable.tsx ~ line 39 ~ calculateResult ~ res", res);
     } catch (error) {
-      alert("Error calculating result | Refresh of filll again");
+      alert("Error calculating result | Refresh or fill again");
       console.error(error.message);
     }
-  }
+  };
 
   const getPdf = async () => {
     try {
-      // Call the /generate API
       const res = await axios.get(`${BASE_URL}/pdfData`);
-      console.log("🚀 ~ getPdf ~ res:", res.data.data)
-
-
-
-
-
-
-      // Update the state with the fetched data
+      console.log("🚀 ~ getPdf ~ res:", res.data.data);
       setPdf(res.data.data);
       toast.success("PDF generated successfully");
     } catch (error) {
-
       toast.error("Failed to generate PDF");
     }
   };
 
   useEffect(() => {
-    fetchStudents();
-    calculateResult();
-
-
-
+    const fetchData = async () => {
+      toast.loading("Loading data");
+      setLoading(true);
+      await fetchStudents();
+      await calculateResult();
+      setLoading(false);
+      toast.dismiss()
+    };
+    fetchData();
   }, []);
-  console.log(pdf)
 
   const handlePress = async () => {
     await getPdf();
+  };
+
+  if(loading){
+    
+    return (
+      <div className="flex justify-center items-center h-screen">
+          <ConstructionIcon size={64}/>
+      </div>
+    )
   }
 
   return (

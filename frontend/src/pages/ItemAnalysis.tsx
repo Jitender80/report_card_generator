@@ -62,9 +62,9 @@ const ItemAnalysis: React.FC = () => {
     //   console.log("class id not set");
     // }
   };
-  useEffect(() => {
-    console.log("class id", classId);
-  }, [classId]);
+  // useEffect(() => {
+  //   console.log("class id", classId);
+  // }, [classId]);
   const handleCollegeDetailsSave = () => {
     setSavedCollegeDetails(true);
   };
