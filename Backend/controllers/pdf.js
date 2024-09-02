@@ -62,7 +62,7 @@ padding-top: 30px;
   
       .report-card th, .report-card td {
           border: 1px solid #000; /* Adds borders */
-          padding: 10px;
+          padding-left: 10px;
       }
   
       .report-card th {
@@ -183,8 +183,8 @@ padding-top: 30px;
       
           <img src="${
             data.logo
-          }" alt="University Logo" style="width: 80px; height: 80px;">
-   <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap:2" >
+          }" alt="University Logo" style="width: 160px; height: 150px;">
+   <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap:2 " >
             <ul>
         <li class="spacing">المملكة العربية السعودية</li>
         <li class="spacing">وزارة التعليم</li>

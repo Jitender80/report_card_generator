@@ -10,7 +10,6 @@ const signup = async (req, res) => {
     const newUser = new User({
       email,
       password: hashedPassword,
-
       role
     });
 
@@ -44,7 +43,7 @@ const login = async (req, res) => {
     const role=existingUser.role;
     const token = jwt.sign({ userId: existingUser._id }, "your_jwt_secret");
 
-    res.json({ message: "Login successful", token,role , user: existingUser._id });
+    res.json({ message: "Login successful", token,role , user: existingUser });
   } catch (error) {
     console.log("error during login", error);
     res.status(500).json({ error: "Internal server error" });

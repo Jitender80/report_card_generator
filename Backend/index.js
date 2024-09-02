@@ -17,6 +17,8 @@ const { deleteAllData } = require("./controllers/dev");
 const connectDB = require("./db");
 const { generate, generateReportCardPDF, generatePdf, getDbData } = require("./controllers/pdf");
 const { getGrades } = require("./controllers/grading");
+const { getReportsByRoleAndEmail } = require("./controllers/get.controllers");
+const User = require("./models/usermodel");
 
 
 const app = express();
@@ -73,6 +75,23 @@ app.post("/createClass/:id", createClass );
 
 app.use("/upload", upload.single("file"), uploadFile);
 app.get('/getStudent',getstudentData )
+app.get('/getReportsByRoleAndEmail', async (req, res) => {
+  try {
+    console.log('Request query:', req.query);
+    const { role, email } = req.query;
+    if (!role || !email) {
+      console.error('Missing required parameters');
+      throw new Error('Bad request');
+    }
+    const reports = await User.findOne({ email: req.query.email })
+    .populate('reports')
+    .exec();
+    res.json(reports);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(400).json({ error: 'Bad request' });
+  }
+});
 
 // app.get('/calculateRes', calculateResult)
 
