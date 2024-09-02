@@ -1,15 +1,21 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import BASE_URL from '../lib/db'
+import { useSearchParams } from 'react-router-dom'
 
  const CheckReports =() => {
     const [reports, setReports] = useState<any>([])
+    const [searchParams] = useSearchParams()
     const usermail = localStorage.getItem("usermail")
+    const searchmain = searchParams.get('email')
+    const role = localStorage.getItem("role")
+  
     // console.log(parsedUser)
     useEffect(() => {
+
         const getReports = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/getReportsByRoleAndEmail?email=${usermail}&role=teacher`)
+                const response = await axios.get(`${BASE_URL}/getReportsByRoleAndEmail?email=${searchmain ? searchmain : usermail}&role=teacher`)
                 console.log(response?.data?.reports)
                 setReports(response?.data?.reports)
             } catch (error) {
@@ -17,10 +23,22 @@ import BASE_URL from '../lib/db'
             }
         }
         getReports()
+      
     },[])
   return (
     <>
-    <h4 className='py-2'>Intructor mail : {usermail}</h4>
+    <h4 className='py-2'>
+        {
+            role === "admin" ?  "Admin mail :" :  "Intructor main :" 
+        }
+        <span>: {usermail}</span>
+    </h4>
+    <h4 className='py-2'>
+        {
+            role === "admin" &&    <span>Intructor main :  {searchmain}</span>
+        }
+      
+    </h4>
     
    <div className="max-w-7xl mx-auto rounded-md border border-gray-300 overflow-hidden shadow-md">
     {

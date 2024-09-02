@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const role = localStorage.getItem('role');
 
 
 
@@ -25,17 +26,22 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className=" flex flex-row gap-10 justify-around text-green-400 text-2xl">
+      {
+        role === 'admin' && (
+        <Link className="text-sm font-semibold text-white" to="/instructors">Instructors</Link>
 
-        <Link to="/check-report">Reports</Link>
+        )
+      }
+        <Link className="text-sm font-semibold text-white" to="/check-report">Reports</Link>
       </div>
       <div className=" flex flex-row gap-10 justify-around text-white text-2xl">
         {/* <h2 >Materials</h2>
         <h2>Sessions</h2>
         <h2>Result</h2> */}
-        <Link to="/">home</Link>
+        <Link className="text-sm font-semibold text-white" to="/">home</Link>
       </div>
 
-      <button onClick={handleLogout}>
+      <button className="text-sm font-semibold text-white" onClick={handleLogout}>
       Logout
     </button>
     </nav>

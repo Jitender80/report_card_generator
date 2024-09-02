@@ -32,6 +32,7 @@ const Login = () => {
     localStorage.setItem("authToken",response.data.token);
     localStorage.setItem("user", response.data.user._id);
     localStorage.setItem("usermail", response.data.user.email);
+    localStorage.setItem("role", response.data.user.role);
     
     navigate("/itemanalysis");
   };

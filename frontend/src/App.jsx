@@ -19,6 +19,7 @@ import AuthRoute from "./components/AuthRoute";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import CheckReports from "./pages/CheckReports";
+import InstructorsList from "./pages/InstructorsList";
 const ProtectedLayout = () => {
   return (
     <div>
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="itemanalysis" element={<ItemAnalysis />} />
               <Route path="studentTable" element={<StudentTable />} />
               <Route path="check-report" element={<CheckReports />} />
+              <Route path="instructors" element={<InstructorsList />} />
             </Route>
           </Routes>
         </Layout>
