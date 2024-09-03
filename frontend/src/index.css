@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.loader {
+    border-top-color: #3490dc; /* Customize the color as needed */
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
