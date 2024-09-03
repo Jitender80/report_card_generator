@@ -35,8 +35,8 @@ async function generateReportCardPDF(dbData) {
 
     const reportCardHtml = ` <style>
     .report-card {
-      width: 900px; /* Square box dimension */
-      height: 900px; /* Square box dimension */
+      width: 1000px; /* Square box dimension */
+      height: 90%; /* Square box dimension */
       padding: 20px; /* Padding for the square box */
       display: flex;
       flex-direction: column;
@@ -111,6 +111,10 @@ async function generateReportCardPDF(dbData) {
       background-color: white;
     }
 
+    table.maintable td{
+    text-align:center
+    }
+
     .back {
       background-color: #fff;
     }
@@ -148,6 +152,16 @@ async function generateReportCardPDF(dbData) {
     .per {
       width: 40px;
     }
+      .comments{
+       display: block; /* Ensures each comment is on a separate line */
+  margin-bottom: 5px; /
+
+  text-align: center;
+      }
+      .items{
+
+  text-align: center;
+      }
   </style>
 
   <div class="report-card">
@@ -251,12 +265,9 @@ async function generateReportCardPDF(dbData) {
                   <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
                     ${item.items.map((subItem) => `<span class="spac">${subItem}</span>`).join(",")}
                   </td>
-                  <td style={{text-align:'center'}}>${item.numberOfItems > 0 ? item.numberOfItems : " "}</td>
+                  <td class="items">${item.numberOfItems > 0 ? item.numberOfItems : " "}</td>
                   <td>${item.percentage}</td>
-                  <td style={{
-                  text-align:'center',
-
-                  }} >${comments}</td>
+                  <td class="comments">${comments}</td>
                 </tr>
               `;
             }
