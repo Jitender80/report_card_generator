@@ -380,8 +380,8 @@ padding-top: 30px;
 
 async function generatePdf(req, res) {
   try {
-    const {id} = req.params
-    const data = await Class.findById(id).poppulate('students')
+    const { id } = req.params;
+    const data = await Class.findById(id).populate("students");
 
     let items;
     let numberOfItems;
@@ -445,12 +445,11 @@ async function generatePdf(req, res) {
         code: data.courseCode,
         creditHour: data.creditHours,
         studentsNumber: totalStudents || "-",
-    
 
         studentsAttended: totalStudents,
         studentsPassed: {
           number: passedCount ? passedCount : "-",
-          percentage: ((passedCount /totalStudents ) * 100).toFixed(0),
+          percentage: ((passedCount / totalStudents) * 100).toFixed(0),
         },
         grades: {
           APlus: {
@@ -514,8 +513,8 @@ async function generatePdf(req, res) {
 
 // Function to create dbData
 async function getDbData(req, res) {
-  const {id} = req.params;
-  const data = await Class.findById(id)
+  const { id } = req.params;
+  const data = await Class.findById(id);
 
   let items;
   let numberOfItems;
@@ -579,7 +578,6 @@ async function getDbData(req, res) {
       code: data.courseCode,
       creditHour: data.creditHours,
       studentsNumber: totalStudents,
-
 
       studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
       studentsPassed: {
