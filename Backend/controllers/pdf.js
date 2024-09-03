@@ -33,325 +33,286 @@ async function generateReportCardPDF(dbData) {
   data.logo =
     "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
 
-  const reportCardHtml = `
-  <style>
+    const reportCardHtml = ` <style>
     .report-card {
-  width: 1000px;
-  height: 90%;
-  padding: 0 60px; /* Corrected paddingHorizontal */
-padding-top: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  // align-items: center;
-  background-color: #7fd0f5;
-  border: 5px solid #000; 
-  justify-content: center;
-  border-style: double; /* Adds double border */
-  -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
-}
-
-.report-card table {
-  width: 100%; /* Ensures the table fits inside the container */
-  height: 60%;
-  border: 2px solid #000; /* Adds borders */
-  // border-collapse: collapse; /* Ensures borders are collapsed */
-  border-spacing: 0; /* Removes gaps between cells */
-  align-self: center;
-}
-  
-      .report-card th, .report-card td {
-          border: 1px solid #000; /* Adds borders */
-          padding-left: 10px;
-      }
-  
-      .report-card th {
-          background-color: #d3e0ea !important; /* Light blue color for headers */
-          color: #000 !important; /* Ensures text color is black */
-          font-weight: bold;
-      }
-  
-      .report-card .key {
-          font-weight: bold;
-          background-color: #f9f9f9;
-      }
-  
-      .report-card .student-details {
-          margin-bottom: 20px;
-      }
-  
-      .report-card .items-table th, .report-card .items-table td {
-          text-align: left;
-      }
-  
-      .header-box, .info-box {
-          padding: 10px;
-          margin-bottom: 20px;
-          text-align: center;
-          border:1px solid #000;
-          display: flex;
-          flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-      }
-  
-      .info-box {
-          background-color: #f4e2de;
-          border: 1px solid #000;
-          display: flex;
-          justify-content: space-between;
-
-      }
-  
-      .info-box .column {
-          width: 48%;
-      }
-  
-      .data-details {
-
-        height: 25%;
-        width:100%;
-
-        }
-
-
-      .data-details td {
-          font-size: 14px; 
-          font-weight: 600;
-          text-align: center;
-      }
-  
-      .data-details th {
-          font-size: 18px; 
-      }
-          .li{
-          
-          font-size: 14px;
-          font-weight: bold;
-          }
-          .ol{
-
-          }
-          .white{
-              background-color: #e7e5e5;
-          }
-          table.maintable {
-          background-color:white
-          }
-          .back{
-              background-color: #fff;}
-              ul {
-    list-style-type: none; 
-} 
-    .bottom{
-      width:90%
-    }
-    .bottom tr td{
-    background-color:#fff}
-
-    .roww{
-    
-    background-color: #fff;}
-    .spac{
-    margin:2px;
+      width: 900px; /* Square box dimension */
+      height: 900px; /* Square box dimension */
+      padding: 20px; /* Padding for the square box */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: #b8d3ef;
+      border: 5px solid #000;
+      border-style: double;
+      -webkit-print-color-adjust: exact;
     }
 
-.spacing {
-  margin-bottom: 10px;
-}
-  .column p{
-  font-size: 20px;
-  font-weight: 600;
-  text-align:'center'
+    .report-card table {
+      width: 100%;
+      height: auto;
+      border: 2px solid #000;
+      border-spacing: 0;
+      align-self: center;
+    }
 
-  }
-  .per{
-    width:40px;
-  }
+    .report-card th, .report-card td {
+      border: 1px solid #000;
+      padding: 10px;
+    }
+
+    .report-card th {
+      background-color: #D9D9D9 !important;
+      color: #000 !important;
+      font-weight: bold;
+    }
+
+    .header-box, .info-box {
+      padding: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid #000;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .info-box {
+      background-color: #D9D9D9;
+      border: 1px solid #000;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .info-box .column {
+      width: 48%;
+    }
+
+    .data-details {
+      width: 100%;
+    }
+
+    .data-details td {
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .data-details th {
+      font-size: 18px;
+    }
+
+    .white {
+      background-color: #D9D9D9;
+    }
+
+    table.maintable {
+      background-color: white;
+    }
+
+    .back {
+      background-color: #fff;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    .bottom {
+      width: 90%;
+    }
+
+    .bottom tr td {
+      background-color: #fff;
+    }
+
+    .roww {
+      background-color: #fff;
+    }
+
+    .spac {
+      margin: 2px;
+    }
+
+    .spacing {
+      margin-bottom: 10px;
+    }
+
+    .column p {
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .per {
+      width: 40px;
+    }
   </style>
-  
+
   <div class="report-card">
-      <div class="header-box back">
-          <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row;gap:2">
+    <div class="header-box back">
+      <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap: 2">
         <ul>
-        <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
-        <li class="spacing">Ministry of Education</li>
-        <li class="spacing">${data?.university || "Najran University"}</li>
-        <li class="spacing">Faculty of Dentistry</li>
-      </ul>
-          </div>
-       
-      
-      
-          <img src="${
-            data.logo
-          }" alt="University Logo" style="width: 160px; height: 150px;">
-   <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap:2 " >
-            <ul>
-        <li class="spacing">المملكة العربية السعودية</li>
-        <li class="spacing">وزارة التعليم</li>
-        <li class="spacing">جامعة نجران</li>
-        <li class="spacing">كلية طب الأسنان</li>
-      </ul>
-          </div>
-    
+          <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
+          <li class="spacing">Ministry of Education</li>
+          <li class="spacing">${data?.university || "Najran University"}</li>
+          <li class="spacing">Faculty of Dentistry</li>
+        </ul>
       </div>
-      <div class="info-box back">
-          <div class="column">
-              <p>Course Name : ${data.name}</p>
-              <p>Level : ${data.level}</p>
-              <p>Credit Hours : ${data.creditHours}</p>
-          </div>
-          <div class="column">
-              <p>Course Code : ${data.courses.code}</p>
-              <p>Semester : ${data.semester}</p>
-              <p>Course Coordinator  : ${data.courseCoordinator}</p>
-          </div>
+      <img src="${data.logo}" alt="University Logo" style="width: 160px; height: 150px;">
+      <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap: 2">
+        <ul>
+          <li class="spacing">المملكة العربية السعودية</li>
+          <li class="spacing">وزارة التعليم</li>
+          <li class="spacing">جامعة نجران</li>
+          <li class="spacing">كلية طب الأسنان</li>
+        </ul>
       </div>
-      <div class="items-table">
-          <table class="maintable">
-            <tr>
-  <th class="white" style="width: 5%;">Serial No.</th>
-  <th class="white" style="width: 15%;">Item Category</th>
-  <th style="width: 25%;">Question No</th>
-  <th style="width: 5%;">Total Questions</th>
-  <th class="per" style="width: 5%;">%</th>
-  <th style="width: 40%;">Comments/Recommendation</th>
-</tr>
-              ${data.items
-                .map((item, index) => {
-                  let comments = "";
-
-                  if (item.numberOfItems > 0) {
-                    if (item.category === "Poor (Bad) Questions") {
-                      comments = `
-                                  ●Discrimination value of this items are negative in value.
-● Discrimination value of this items are less than 0.20
-● All the items should be rejected.
-
-                              `;
-                    } else if (item.category === "Very Difficult Question") {
-                      comments = `
-                                Keys of these items are needed to be checked.
-● Items should be rejected.
-                              `;
-                    } else if (item.category === "Difficult Question") {
-                      comments = `
-                                 ● Key of this item is also needed to be checked.
-                              `;
-                    } else if (item.category === "Good Question") {
-                      comments = `
-                                 ● Discrimination value of first raw items is accepted good
-● Items could be stored in question bank for further use.
-                              `;
-                    } else if (item.category === "Easy Question") {
-                      comments = `
-
-● Item should be revised before re-use.
-                              `;
-                    } else if (item.category === "Very Easy Question") {
-                      comments = `
-● Items should be rejected or needed to be revised
-                              `;
-                    } else {
-                      comments = `
-                                  ● No specific comments available.
-                              `;
-                    }
-                    if (item.category == "Reliability") {
-                      comments = getReliabilityDescription(item.numberOfItems);
-                    }
-                  }
-                  if (item.category === "Reliability") {
-                    return `
-                            <tr>
-                                <td class="white"> ${index + 1}</td>
-                                <td class="white">${item.category}</td>
-                               <td colspan="3" style=" white word-wrap: break-word; background-color: #f4e2dd;  min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
-                                 item.numberOfItems
-                               }</td>
-
-                                <td class="white" > ●  ${comments}</td>
-                            </tr>
-                        `;
-                  } else {
-                    return `
-                            <tr>
-                                <td class="white" >${index + 1}</td>
-                                <td class="white">${item.category}</td>
-                             <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
-
-    ${item.items
-      .map((subItem) => `<span class="spac">${subItem}</span>`)
-      .join(",")}
-
-</td>
-                                <td>${item.numberOfItems}</td>
-                                <td>${item.percentage}</td>
-                                <td>${comments}</td>
-                            </tr>
-                        `;
-                  }
-                })
-                .join("")}
-          </table>
+    </div>
+    <div class="info-box back">
+      <div class="column">
+        <p>Course Name : ${data.name}</p>
+        <p>Level : ${data.level}</p>
+        <p>Credit Hours : ${data.creditHours}</p>
       </div>
-      <div class="data-details maintable" style="margin-top: 20px;">
-          <table class="bottom">
-              <tr>
-                  <th>Course Code</th>
-                  <th>Credit Hour</th>
-                  <th>Students Number</th>
-
-
-                  <th>Students Attended</th>
-                  <th>Students Passed</th>
-                  <th>A+</th>
-                  <th>A</th>
-                  <th>B+</th>
-                  <th>B</th>
-                  <th>C+</th>
-                  <th>C</th>
-                  <th>D+</th>
-                  <th>D</th>
-                  <th>F</th>
-              </tr>
-              <tr class="roww">
-                  <td>${data.courses.code}</td>
-                  <td>${data.courses.creditHour}</td>
-                  <td>${data.courses.studentsNumber}</td>
-
-                  
-
-
-                  <td>${data.courses.studentsAttended}</td>
-                  <td>${data.courses.studentsPassed.number}</td>
-                  <td>${data.courses.grades.APlus.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.A.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.BPlus.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.B.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.CPlus.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.C.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.DPlus.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.D.number.toFixed(0)}</td>
-                  <td>${data.courses.grades.F.number.toFixed(0)}</td>
-              </tr>
-                 <tr class="roww">
-                  <td colspan="4"></td>
-                  <td>(${data.courses.studentsPassed.percentage}%)</td>
-                  <td>(${data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.A.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.BPlus.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.B.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.CPlus.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.C.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.DPlus.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.D.percentage.toFixed(0)}%)</td>
-                  <td>(${data.courses.grades.F.percentage.toFixed(0)}%)</td>
-              </tr>
-          </table>
+      <div class="column">
+        <p>Course Code : ${data.courses.code}</p>
+        <p>Semester : ${data.semester}</p>
+        <p>Course Coordinator : ${data.courseCoordinator}</p>
       </div>
+    </div>
+    <div class="items-table">
+      <table class="maintable">
+        <tr>
+          <th class="white" style="width: 5%;">Serial No.</th>
+          <th class="white" style="width: 15%;">Item Category</th>
+          <th style="width: 25%;">Question No</th>
+          <th style="width: 5%;">Total Questions</th>
+          <th class="per" style="width: 5%;">%</th>
+          <th style="width: 40%;">Comments/Recommendation</th>
+        </tr>
+        ${data.items
+          .map((item, index) => {
+            let comments = "";
+
+            if (item.numberOfItems > 0) {
+              if (item.category === "Poor (Bad) Questions") {
+                comments = `
+                  ● Discrimination value of this items are negative in value.
+                  ● Discrimination value of this items are less than 0.20
+                  ● All the items should be rejected.
+                `;
+              } else if (item.category === "Very Difficult Question") {
+                comments = `
+                  ● Keys of these items are needed to be checked.
+                  ● Items should be rejected.
+                `;
+              } else if (item.category === "Difficult Question") {
+                comments = `
+                  ● Key of this item is also needed to be checked.
+                `;
+              } else if (item.category === "Good Question") {
+                comments = `
+                  ● Discrimination value of first raw items is accepted good.
+                  ● Items could be stored in question bank for further use.
+                `;
+              } else if (item.category === "Easy Question") {
+                comments = `
+                  ● Item should be revised before re-use.
+                `;
+              } else if (item.category === "Very Easy Question") {
+                comments = `
+                  ● Items should be rejected or needed to be revised.
+                `;
+              } else {
+                comments = `
+                  ● No specific comments available.
+                `;
+              }
+              if (item.category == "Reliability") {
+                comments = getReliabilityDescription(item.numberOfItems);
+              }
+            }
+            if (item.category === "Reliability") {
+              return `
+                <tr>
+                  <td class="white">${index + 1}</td>
+                  <td class="white">${item.category}</td>
+                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems}</td>
+                  <td class="white">● ${comments}</td>
+                </tr>
+              `;
+            } else {
+              return `
+                <tr>
+                  <td class="white">${index + 1}</td>
+                  <td class="white">${item.category}</td>
+                  <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
+                    ${item.items.map((subItem) => `<span class="spac">${subItem}</span>`).join(",")}
+                  </td>
+                  <td style={{text-align:'center'}}>${item.numberOfItems > 0 ? item.numberOfItems : " "}</td>
+                  <td>${item.percentage}</td>
+                  <td style={{
+                  text-align:'center',
+
+                  }} >${comments}</td>
+                </tr>
+              `;
+            }
+          })
+          .join("")}
+      </table>
+    </div>
+    <div class="data-details maintable" style="margin-top: 20px;">
+      <table class="bottom">
+        <tr>
+          <th>Course Code</th>
+          <th>Credit Hour</th>
+          <th>Students Number</th>
+          <th>Students Attended</th>
+          <th>Students Passed</th>
+          <th>A+</th>
+          <th>A</th>
+          <th>B+</th>
+          <th>B</th>
+          <th>C+</th>
+          <th>C</th>
+          <th>D+</th>
+          <th>D</th>
+          <th>F</th>
+        </tr>
+        <tr class="roww">
+          <td>${data.courses.code}</td>
+          <td>${data.courses.creditHour}</td>
+          <td>${data.courses.studentsNumber}</td>
+          <td>${data.courses.studentsAttended}</td>
+          <td>${data.courses.studentsPassed.number}</td>
+          <td>${data.courses.grades.APlus.number.toFixed(0)}</td>
+          <td>${data.courses.grades.A.number.toFixed(0)}</td>
+          <td>${data.courses.grades.BPlus.number.toFixed(0)}</td>
+          <td>${data.courses.grades.B.number.toFixed(0)}</td>
+          <td>${data.courses.grades.CPlus.number.toFixed(0)}</td>
+          <td>${data.courses.grades.C.number.toFixed(0)}</td>
+          <td>${data.courses.grades.DPlus.number.toFixed(0)}</td>
+          <td>${data.courses.grades.D.number.toFixed(0)}</td>
+          <td>${data.courses.grades.F.number.toFixed(0)}</td>
+        </tr>
+        <tr class="roww">
+          <td colspan="4"></td>
+          <td>${data.courses.studentsPassed.percentage}%</td>
+          <td>${data.courses.grades.APlus.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.A.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.BPlus.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.B.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.CPlus.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.C.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.DPlus.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.D.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.F.percentage.toFixed(0)}%</td>
+        </tr>
+      </table>
+    </div>
   </div>
   `;
 
@@ -429,7 +390,7 @@ async function generatePdf(req, res) {
     const dbData = {
       college: data.college,
       university: data.university,
-      name: data.className,
+      name: data.nameOfCourse,
 
       level: data.level,
 

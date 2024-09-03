@@ -44,118 +44,101 @@ const ReportCard = ({ data }) => {
     <div className="report-card">
       <style>
         {`
+    <style>
    .report-card {
-  width: 1080px;
-  padding: 0 60px; /* Corrected paddingHorizontal */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #7fd0f5;
-  -webkit-print-color-adjust: exact; /* Ensures print color matches screen */
-}
-
-.report-card table {
-  width: 100%; /* Ensures the table fits inside the container */
-  height: 60%;
-  border-collapse: collapse; /* Ensures borders are collapsed */
-  border-spacing: 0; /* Removes gaps between cells */
-  align-self: center;
-}
-  
-      .report-card th, .report-card td {
-          border: 2px solid #000; /* Adds borders */
-          padding: 10px;
-      }
-  
-      .report-card th {
-          background-color: #d3e0ea !important; /* Light blue color for headers */
-          color: #000 !important; /* Ensures text color is black */
-          font-weight: bold;
-      }
-  
-      .report-card .key {
-          font-weight: bold;
-          background-color: #f9f9f9;
-      }
-  
-      .report-card .student-details {
-          margin-bottom: 20px;
-      }
-  
-      .report-card .items-table th, .report-card .items-table td {
-          text-align: left;
-      }
-  
-      .header-box, .info-box {
-          padding: 10px;
-          margin-bottom: 20px;
-          text-align: center;
-          border:2px solid #000;
-          display: flex;
-          flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-      }
-  
-      .info-box {
-          border: 2px solid #000;
-          display: flex;
-          justify-content: space-between;
-      }
-  
-      .info-box .column {
-          width: 48%;
-      }
-  
-      .data-details {
-      height: 40%;
-      // width:'60%'
-
-      }
-      .data-details td {
-          font-size: 12px; 
-          text-align: center;
-      }
-  
-      .data-details th {
-          font-size: 14px; 
-      }
-          .li{
-          
-          font-size: 14px;
-          font-weight: bold;
-          }
-          .ol{
-
-          }
-          .white{
-              background-color: #e7e5e5;
-          }
-          table.maintable {
-          background-color:white
-          }
-          .back{
-              background-color: #fff;}
-              ul {
-    list-style-type: none; 
-}
-    .bottom tr td{
-    background-colo:#fff}
-
-    .roww{
-    
-    background-color: #fff;}
-    .spac{
-    margin:4px;
-    }
-    .spac{
-  margin:4px;
-}
-.spacing {
-  margin-bottom: 10px;
-}
+     width: 900px;
+     height: 900px;
+     padding: 20px;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     background-color: #7fd0f5;
+     border: 5px solid #000;
+     border-style: double;
+     -webkit-print-color-adjust: exact;
+   }
+   .report-card table {
+     width: 100%;
+     height: auto;
+     border: 2px solid #000;
+     border-spacing: 0;
+     align-self: center;
+   }
+   .report-card th, .report-card td {
+     border: 1px solid #000;
+     padding: 10px;
+   }
+   .report-card th {
+     background-color: #d3e0ea !importa
+     color: #000 !important;
+     font-weight: bold;
+   }
+   .header-box, .info-box {
+     padding: 10px;
+     margin-bottom: 20px;
+     text-align: center;
+     border: 1px solid #000;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+     gap: 20px;
+   }
+   .info-box {
+     background-color: #f4e2de;
+     border: 1px solid #000;
+     display: flex;
+     justify-content: space-between;
+   }
+   .info-box .column {
+     width: 48%;
+   }
+   .data-details {
+     width: 100%;
+   }
+   .data-details td {
+     font-size: 14px;
+     font-weight: 600;
+     text-align: center;
+   }
+   .data-details th {
+     font-size: 18px;
+   }
+   .white {
+     background-color: #e7e5e5;
+   }
+   table.maintable {
+     background-color: white;
+   }
+   .back {
+     background-color: #fff;
+   }
+   ul {
+     list-style-type: none;
+   }
+   .bottom {
+     width: 90%;
+   }
+   .bottom tr td {
+     background-color: #fff;
+   }
+   .roww {
+     background-color: #fff;
+   }
+   .spac {
+     margin: 2px;
+   }
+   .spacing {
+     margin-bottom: 10px;
+   }
+   .column p {
+     font-size: 20px;
+     font-weight: 600;
+     text-align: center;
+   }
+   .per {
+     width: 40px;
+   }
         `}
       </style>
       <div className="header-box back px-20">

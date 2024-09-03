@@ -65,7 +65,7 @@ import { toast } from 'react-toastify';
             <table className="w-full">
             <thead className="bg-blue-500 text-white">
               <tr>
-                <th className="px-6 py-3 text-center">Sr No</th>
+                <th className="px-6 py-3 text-center">Sn</th>
                 <th className="px-6 py-3 text-center">Course Code</th>
                 <th className="px-6 py-3 text-center">Class Name</th>
                 <th className="px-6 py-3 text-center">Level</th>

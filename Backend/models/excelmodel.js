@@ -7,6 +7,7 @@ const classSchema = new mongoose.Schema({
   university : {type: String, required: false}, 
   level:{type: Number, required: false},
   className: { type: String, required: false },
+  nameOfCourse:{type:String, required:false},
   courseCode: { type: String, required: false },
   creditHours: { type: String, required: false },
   semester: { type: String, required: false },
