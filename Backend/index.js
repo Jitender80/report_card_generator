@@ -73,8 +73,8 @@ app.delete("/cleanClass", deleteAllData);
 
 app.post("/createClass/:id", createClass );
 
-app.use("/upload", upload.single("file"), uploadFile);
-app.get('/getStudent',getstudentData )
+app.post("/upload/:id", upload.single("file"), uploadFile);
+app.get('/getStudent/:id',getstudentData )
 app.get('/getReportsByRoleAndEmail', async (req, res) => {
   try {
     console.log('Request query:', req.query);
@@ -113,10 +113,10 @@ app.get('/getInstructors', async (req, res) => {
 
 // app.get('/finalgrade', getGrades)
 
-app.get('/calculate', getFinalResult)
+app.get('/calculate/:id', getFinalResult)
 
-app.get('/pdfData', getDbData)
-app.get('/generate', generatePdf);
+app.get('/pdfData/:id', getDbData)
+app.get('/generate/:id', generatePdf);
 
 
 

@@ -6,10 +6,9 @@ const math = require("mathjs");
 const simpleStatistics = require("simple-statistics");
 const { getGrades } = require("./grading");
 const User = require("../models/usermodel");
-async function getLatestClassWithStudentScores() {
+async function getLatestClassWithStudentScores(id) {
   try {
-    const latestClass = await Class.findOne()
-      .sort({ createdAt: -1 })
+    const latestClass = await Class.findById(id)
       .populate("students")
       .exec();
     if (!latestClass) {
@@ -43,10 +42,11 @@ exports.createClass = async (req, res) => {
     creditHours,
     semester,
     academicYear,
-    coordinatorGender,
+
     courseCoordinator,
 
   } = req.body;
+  console.log("🚀 ~ exports.createClass= ~ req.body:", req.body)
 
   const newClass = new Class({
     user: id,
@@ -59,7 +59,7 @@ exports.createClass = async (req, res) => {
     creditHours,
     semester,
     academicYear,
-    coordinatorGender,
+
     courseCoordinator,
 
   });
@@ -74,7 +74,7 @@ exports.createClass = async (req, res) => {
     user.reports.push(newClass._id);
     await user.save();
     res.status(201).json({
-      data: savedClass,
+      data: savedClass._id,
       message: "Class Create Successfully",
     });
   } catch (error) {
@@ -97,7 +97,24 @@ exports.listClasses = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+const extractQuestionColumns = (row) => {
+  const questionColumns = [];
+  Object.keys(row).forEach((key) => {
+    if (/^Q\s*\d+$/.test(key)) {
+      questionColumns.push({
+        question: key.replace(/\s/g, ""),
+        answer: row[key],
+      }); // Remove spaces from keys
+    }
+  });
+  return questionColumns;
+};
+
 exports.uploadFile = async (req, res) => {
+
+  const { id } = req.params;
   
   const file = req.file;
   
@@ -193,7 +210,7 @@ exports.uploadFile = async (req, res) => {
 
   // Create a new class with the answer key
 
-  const latestClass = await Class.findOne().sort({ createdAt: -1 }).exec();
+  const latestClass = await Class.findById(id);
 
   if(!latestClass){
     return res.status(401).json({
@@ -226,6 +243,15 @@ exports.uploadFile = async (req, res) => {
     res.status(500).json({ message: "Error saving data", error });
   }
 };
+
+const extractColumnData = (dataSheet, columnName, headerRowIndex, dataStartRowIndex) => {
+  const columnIndex = dataSheet[headerRowIndex].indexOf(columnName);
+  return dataSheet
+    .slice(dataStartRowIndex)
+    .map(row => row[columnIndex])
+    .filter(value => value !== null && value !== undefined);
+};
+
 function assignGrade(percentage) {
   if (percentage >= 95) return "A+";
   if (percentage >= 90) return "A";
@@ -238,12 +264,13 @@ function assignGrade(percentage) {
   return "F";
 }
 
-async function calculateResult() {
+async function calculateResult(id) {
   try {
-    const classData = await Class.findOne()
-      .sort({ createdAt: -1 })
-      .populate("students")
-      .exec();
+    console.log("🚀 ~ calculateResult ~ id121:", id)
+
+    const classData = await Class.findById(id).populate("students");
+    console.log("🚀 ~ calculateResult ~ classData:", classData)
+
     const answerKeys = classData.answerKey; // Extract answer keys from the class data
 
     const QA_P = {};
@@ -291,11 +318,8 @@ async function calculateResult() {
       const variance = simpleStatistics.variance(scores, { sample: false });
       return variance;
     }
-    const studentScores = await getLatestClassWithStudentScores();
-    console.log(
-      "🚀 ~ exports.calculateResult= ~ studentScores:",
-      studentScores
-    );
+    const studentScores = await getLatestClassWithStudentScores(id);
+   
 
     const scores = studentScores.map((student) => student.score);
 
@@ -327,7 +351,7 @@ async function calculateResult() {
       grade: studentGrades[name].grade,
     }));
 
-    const latestId = await Class.findOne().sort({ createdAt: -1 });
+    const latestId = await Class.findById(id);
     await Class.findByIdAndUpdate(latestId._id, {
       studentGrades: studentGradesArray,
     });
@@ -405,10 +429,11 @@ async function calculateResult() {
                 
                 console.log("🚀 ~ calculateResult ~ KR20:", KR20)
 
-                const resdata = await Class.findByIdAndUpdate(latestId._id, {
+                const resdata = await Class.findByIdAndUpdate(id, {
                   kr20: KR20,
                   questionAnalysis: newArray,
                 });
+                console.log("🚀 ~ calculateResult ~ resdata:", resdata)
                 
                 
     return resdata;
@@ -419,11 +444,10 @@ async function calculateResult() {
   }
 };
 
-async function getResultData() {
+async function getResultData(id) {
   try {
-    const classData = await Class.findOne()
-      .sort({ createdAt: -1 })
-      .populate("students")
+
+    const classData = await Class.findById(id).populate("students")
 
 
 
@@ -467,12 +491,20 @@ exports.getFinalResult = async (req, res) => {
 
   try {
 
-    const cal = await calculateResult();
+    const {id} = req.params
+    console.log("🚀 ~ exports.getFinalResult= ~ id11:", id)
+        // Validate the id
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+          return res.status(400).send("Invalid ID format");
+        }
+    
+
+    const cal = await calculateResult(id);
     console.log(cal, "---121")
-    const resdata = await getResultData();
-    // console.log(resdata)
-    const grades = await getGrades()
-    // console.log(grades)
+    const resdata = await getResultData(id);
+    console.log(resdata, "505")
+    const grades = await getGrades(id)
+    console.log(grades, "507")
 
 
     if(!cal || !resdata || !grades){
@@ -493,9 +525,10 @@ exports.getFinalResult = async (req, res) => {
 }
 
 exports.getstudentData = async (req, res) => {
-  const classData = await Class.find()
-    .sort({ createdAt: -1 })
-    .populate("students");
+
+  const {id} = req.params;
+  
+  const classData = await Class.findById(id)
 
   res.status(200).json({ data: classData });
 };

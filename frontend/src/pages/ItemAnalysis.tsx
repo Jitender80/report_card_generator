@@ -5,6 +5,7 @@ import BASE_URL from "../lib/db";
 import Class from "../components/Class";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const ItemAnalysis: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -15,7 +16,7 @@ const ItemAnalysis: React.FC = () => {
   const [collegeName, setCollegeName] = useState("");
   const [universityName, setUniversityName] = useState("");
   const [savedCollegeDetails, setSavedCollegeDetails] = useState(false);
-
+  const currentClassId = useSelector((state) => state.class.currentClassId);
   const handleCollegeNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -68,7 +69,14 @@ const ItemAnalysis: React.FC = () => {
   const handleCollegeDetailsSave = () => {
     setSavedCollegeDetails(true);
   };
+ 
+  console.log("🚀 ~ currentClassId:", currentClassId)
+  
   const handleUpload = async () => {
+
+    if(!currentClassId){
+      toast.error("Please create a class first");
+    }
     toast.loading("Uploading file");
     if (selectedFile) {
       // Handle the file upload logic here
@@ -77,14 +85,14 @@ const ItemAnalysis: React.FC = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const res = await axios.post(`${BASE_URL}/upload`, formData);
+      const res = await axios.post(`${BASE_URL}/upload/${currentClassId}`, formData);
 
       if (res.status === 200) {
         toast.dismiss();
         navigate("/studentTable");
         toast.success("File uploaded successfully");
       }
-
+      toast.dismiss()
       // console.log("🚀 ~ handleUpload ~ res:", res);
       // navigate("/studentTable")
     } else {
@@ -92,6 +100,7 @@ const ItemAnalysis: React.FC = () => {
       toast.error("No file selected");
       console.log("No file selected");
     }
+    toast.dismiss()
   };
 
   return (

@@ -11,7 +11,7 @@ const classSchema = new mongoose.Schema({
   creditHours: { type: String, required: false },
   semester: { type: String, required: false },
   academicYear: { type:String, required: false },
-  coordinatorGender: { type: String, required: false },
+
   courseCoordinator: { type: String, required: false },
   totalNoOfQuestion: { type: Number, required: false },
   studentsNumber: { type: Number, required: false },

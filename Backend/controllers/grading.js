@@ -1,8 +1,9 @@
 const Class = require("../models/excelmodel");
 
-async function getGrades(){
+async function getGrades(id){
+
   try {
-    const classData = await Class.findOne().populate('students').sort({ createdAt: -1 });
+    const classData = await Class.findById(id).populate('students');
 
     // Check if classData is not null
     if (!classData) {

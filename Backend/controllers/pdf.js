@@ -380,7 +380,8 @@ padding-top: 30px;
 
 async function generatePdf(req, res) {
   try {
-    const data = await Class.findOne().sort({ createdAt: -1 });
+    const {id} = req.params
+    const data = await Class.findById(id).poppulate('students')
 
     let items;
     let numberOfItems;
@@ -513,7 +514,8 @@ async function generatePdf(req, res) {
 
 // Function to create dbData
 async function getDbData(req, res) {
-  const data = await Class.findOne().sort({ createdAt: -1 });
+  const {id} = req.params;
+  const data = await Class.findById(id)
 
   let items;
   let numberOfItems;

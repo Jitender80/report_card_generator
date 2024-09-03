@@ -4,6 +4,7 @@ import BASE_URL from "../lib/db"
 import { ConstructionIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import ReportCard from "./ReportCard";
+import { useSelector } from "react-redux";
 
 const StudentTable = () => {
   const [students, setStudents] = useState([]);
@@ -11,9 +12,16 @@ const StudentTable = () => {
   const [showPdf, setShowPdf] = useState(false);
   const [loading, setLoading] = useState(true);
 
+ const currentClassId = useSelector((state) => state.class.currentClassId);
+ 
+  console.log("🚀 ~ StudentTable ~ currentClassId:", currentClassId)
   const fetchStudents = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/getStudent`);
+      if(!currentClassId){
+        toast.error('create class first')
+        return;
+      }
+      const res = await axios.get(`${BASE_URL}/getStudent/${currentClassId}`);
       // console.log("🚀 ~ fetchStudents ~ res:", res.data.students)
 
       // const data = res.data.data[0].students;
@@ -30,20 +38,21 @@ const StudentTable = () => {
 
   const calculateResult = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/calculate`);
+      const res = await axios.get(`${BASE_URL}/calculate/${currentClassId}`);
       if (res.status != 200) {
         alert("Error calculating result | Refresh or fill again");
       }
       console.log("🚀 ~ file: StudentTable.tsx ~ line 39 ~ calculateResult ~ res", res);
     } catch (error) {
       alert("Error calculating result | Refresh or fill again");
-      console.error(error.message);
+      console.error(error.message,"42");
     }
   };
 
-  const getPdf = async () => {
+  const getPdf = async (currentClassId) => {
+
     try {
-      const res = await axios.get(`${BASE_URL}/pdfData`);
+      const res = await axios.get(`${BASE_URL}/pdfData/${currentClassId}`);
       console.log("🚀 ~ getPdf ~ res:", res.data.data);
       setPdf(res.data.data);
       toast.success("PDF generated successfully");
@@ -64,8 +73,8 @@ const StudentTable = () => {
     fetchData();
   }, []);
 
-  const handlePress = async () => {
-    await getPdf();
+  const handlePress = async (currentClassId) => {
+    await getPdf(currentClassId);
   };
 
   if(loading){
@@ -87,7 +96,7 @@ const StudentTable = () => {
 
           className="bg-blue-500 hover:bg-blue-700 space-x-3 text-white font-bold py-2 px-4 rounded"
 
-          onClick={() => { window.open(`${BASE_URL}/generate`) }}
+          onClick={() => { window.open(`${BASE_URL}/generate/${currentClassId}`) }}
         >
           Download
 
@@ -101,7 +110,7 @@ const StudentTable = () => {
 
       <div className="flex flex-col justify-center items-center bg-blue-200 ">
 
-        <div onClick={handlePress} className="
+        <div onClick={() => handlePress(currentClassId)} className="
             text-2xl bg-green-500 rounded-md p-2 m-2 cursor-pointer
             ">
           Show PDF

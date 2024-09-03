@@ -5,28 +5,15 @@ type Props = {
 };
 import BASE_URL from "../lib/db"
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentClassId } from '../../redux/slice/classSlice';
+
 
 const Class = ({ onClassIdChange }: any) => {
-  
-  // Level
-  // Course Name
-  // Course Code
-  // Credit hours
-  // Course coordinator 
-  // Semester 
-  // Academic Year
-  // Section 
-  // Ye important h
-  // className,
-  // level,
-  // nameOfCourse,
-  // courseCode,
-  // creditHours,
-  // semester,
-  // academicYear,
-  // coordinatorGender,
-  // courseCoordinator,
+  const dispatch = useDispatch();
+  const currentClassId = useSelector((state) => state.class.currentClassId);
 
+  
   const [classData, setClassData] = useState({
     level: 0,
     className: "",
@@ -36,7 +23,7 @@ const Class = ({ onClassIdChange }: any) => {
     courseCoordinator: "",
     semester: "",
     academicYear:0 ,
-    coordinatorGender: "",
+
 
 
 
@@ -63,11 +50,12 @@ const Class = ({ onClassIdChange }: any) => {
     // onClassIdChange("loading");
     // TODO: make a post request to create a class
     const response = await axios.post(`${BASE_URL}/createClass/${userId}`, classData);
-    console.log(response.data);
+
+    dispatch(setCurrentClassId(response.data.data));
     if(response.status === 201){
       toast.dismiss()
 
-      console.log(response.data._id);
+      // console.log(response.data._id);
       // alert("Class created successfully");
 
       onClassIdChange(response.data._id);
@@ -187,8 +175,8 @@ const Class = ({ onClassIdChange }: any) => {
           {generateYearOptions()}
         </select>
         </label>
-        <label className="flex flex-col gap-5 justify-between">
-          coordinatorGender:
+        {/* <label className="flex flex-col gap-5 justify-between">
+        Gender:
           <div className="
           flex flex-row gap-5">
           <label>
@@ -214,7 +202,7 @@ const Class = ({ onClassIdChange }: any) => {
           Female
           </label>
             </div>
-        </label>
+        </label> */}
         <label className="flex flex-col">
           Course coordinator:
           <input
