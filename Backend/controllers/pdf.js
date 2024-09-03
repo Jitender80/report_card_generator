@@ -162,6 +162,15 @@ async function generateReportCardPDF(dbData) {
 
   text-align: center;
       }
+  .arabic-text {
+  font-family: 'Amiri', serif;
+  color: rgba(0, 0, 0, 0.5); /* Adjust the transparency as needed */
+}
+  .litt{
+
+  font-family: 'Amiri', serif;
+  color: rgba(0, 0, 0, 0.5); /* Adjust the transparency as needed */
+}
   </style>
 
   <div class="report-card">
@@ -177,10 +186,10 @@ async function generateReportCardPDF(dbData) {
       <img src="${data.logo}" alt="University Logo" style="width: 160px; height: 150px;">
       <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap: 2">
         <ul>
-          <li class="spacing">المملكة العربية السعودية</li>
-          <li class="spacing">وزارة التعليم</li>
-          <li class="spacing">جامعة نجران</li>
-          <li class="spacing">كلية طب الأسنان</li>
+          <li class="spacing litt ">المملكة العربية السعودية</li>
+          <li class="spacing litt">وزارة التعليم</li>
+          <li class="spacing litt">جامعة نجران</li>
+          <li class="spacing litt">كلية طب الأسنان</li>
         </ul>
       </div>
     </div>
@@ -254,7 +263,7 @@ async function generateReportCardPDF(dbData) {
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
                   <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems}</td>
-                  <td class="white">● ${comments}</td>
+                  <td class="white comments">● ${comments}</td>
                 </tr>
               `;
             } else {
@@ -279,8 +288,7 @@ async function generateReportCardPDF(dbData) {
       <table class="bottom">
         <tr>
           <th>Course Code</th>
-          <th>Credit Hour</th>
-          <th>Students Number</th>
+
           <th>Students Attended</th>
           <th>Students Passed</th>
           <th>A+</th>
@@ -295,8 +303,7 @@ async function generateReportCardPDF(dbData) {
         </tr>
         <tr class="roww">
           <td>${data.courses.code}</td>
-          <td>${data.courses.creditHour}</td>
-          <td>${data.courses.studentsNumber}</td>
+
           <td>${data.courses.studentsAttended}</td>
           <td>${data.courses.studentsPassed.number}</td>
           <td>${data.courses.grades.APlus.number.toFixed(0)}</td>
