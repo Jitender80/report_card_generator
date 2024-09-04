@@ -43,7 +43,7 @@ async function generateReportCardPDF(dbData) {
         flex-direction: column;
         justify-content: center;
         background-color: #b8d3ef;
-        border: 15px solid #000; /* Corrected border style */
+        border: 12px solid #000; /* Corrected border style */
         -webkit-print-color-adjust: exact;
       }
 
@@ -149,8 +149,8 @@ table.maintable th {
     }
 
     .column p {
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       text-align: center;
     }
 
@@ -192,7 +192,7 @@ table.maintable th {
           <li class="spacing">Faculty of Dentistry</li>
         </ul>
       </div>
-      <img src="${data.logo}" alt="University Logo" style="width: 50px; height: 50px; ">
+      <img src="${data.logo}" alt="University Logo" style="width: 75px; height: 75px; ">
       <div style="font-size: 12px; font-weight:400;  gap: 2">
         <ul style={{display:flex; flex-direction : row}}>
           <li class="spacing litt">المملكة العربية السعودية</li>
