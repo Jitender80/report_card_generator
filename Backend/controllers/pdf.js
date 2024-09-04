@@ -1,7 +1,8 @@
 // controllers/reportController.js
 const path = require("path");
 const fs = require("fs");
-const htmlPdf = require("html-pdf-node");
+const puppeteer = require("puppeteer");
+
 const Class = require("../models/excelmodel");
 
 function getReliabilityDescription(score) {
@@ -34,90 +35,94 @@ async function generateReportCardPDF(dbData) {
     "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
 
     const reportCardHtml = ` <style>
-    .report-card {
-      width: 1000px; /* Square box dimension */
-      height: 90%; /* Square box dimension */
-      padding: 20px; /* Padding for the square box */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background-color: #b8d3ef;
-      border: 5px solid #000;
-      border-style: double;
-      -webkit-print-color-adjust: exact;
-    }
+ .report-card {
+        width: 1000px; /* Adjusted for landscape */
+        height: 90%; /* Adjusted for content height */
+        padding: 10px 20px; /* Reduced padding */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #b8d3ef;
+        border: 15px solid #000; /* Corrected border style */
+        -webkit-print-color-adjust: exact;
+      }
 
-    .report-card table {
-      width: 100%;
-      height: auto;
-      border: 2px solid #000;
-      border-spacing: 0;
-      align-self: center;
-    }
+      .report-card table {
+        width: 100%; /* Adjusted to take full width */
+        height: auto /* Adjusted for content height */
+        border: 2px solid #000;
+        border-spacing: 0;
+        align-self: center;
+      }
 
-    .report-card th, .report-card td {
-      border: 1px solid #000;
-      padding: 10px;
-    }
+      .report-card th, .report-card td {
+        border: 2px solid #000; /* Add border to table cells */
+        padding: 4px; /* Reduced padding */
+        text-align: left; /* Align text to the left */
+        font-size: 12px; /* Reduced font size */
+      }
 
-    .report-card th {
-      background-color: #D9D9D9 !important;
-      color: #000 !important;
-      font-weight: bold;
-    }
+      .report-card th {
+        background-color: #D9D9D9 !important;
+        color: #000 !important;
+        font-weight: bold;
+      }
+ .header-box, .info-box {
+        margin-bottom: 10px; /* Reduced margin */
+        text-align: center;
+        background-color: #fff;
+        border: 1px solid #000;
+        height: 80px; /* Reduced height */
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+  padding:0 20px;
+        align-items: center;
+      }
 
-    .header-box, .info-box {
-      padding: 10px;
-      margin-bottom: 20px;
-      text-align: center;
-      border: 1px solid #000;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
+      .info-box {
+        background-color: #D9D9D9;
+        border: 1px solid #000;
+        display: flex;
+        justify-content: space-between;
+      }
 
-    .info-box {
-      background-color: #D9D9D9;
-      border: 1px solid #000;
-      display: flex;
-      justify-content: space-between;
-    }
+      .info-box .column {
+        width: 48%;
+      }
 
-    .info-box .column {
-      width: 48%;
-    }
+      .data-details {
+        width: 100%;
+      }
 
-    .data-details {
-      width: 100%;
-    }
+      .data-details td {
+        font-size: 12px; /* Reduced font size */
+        font-weight: 600;
+        text-align: center;
+      }
 
-    .data-details td {
-      font-size: 14px;
-      font-weight: 600;
-      text-align: center;
-    }
+.data-details th {
+  font-size: 18px;
+}
 
-    .data-details th {
-      font-size: 18px;
-    }
+.white {
+  background-color: #D9D9D9;
+}
 
-    .white {
-      background-color: #D9D9D9;
-    }
 
-    table.maintable {
-      background-color: white;
-    }
+table.maintable {
+  background-color: white;
+  height:60%
+  
+}
 
-    table.maintable td{
-    text-align:center
-    }
+table.maintable td {
+  text-align: center;
+}
+table.maintable th {
+  text-align: center;
+}
 
-    .back {
-      background-color: #fff;
-    }
 
     ul {
       list-style-type: none;
@@ -140,12 +145,12 @@ async function generateReportCardPDF(dbData) {
     }
 
     .spacing {
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
     }
 
     .column p {
-      font-size: 20px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 500;
       text-align: center;
     }
 
@@ -153,8 +158,8 @@ async function generateReportCardPDF(dbData) {
       width: 40px;
     }
       .comments{
-       display: block; /* Ensures each comment is on a separate line */
-  margin-bottom: 5px; /
+      //  display: block; /* Ensures each comment is on a separate line */
+  // margin-bottom: 5px; /
 
   text-align: center;
       }
@@ -171,31 +176,37 @@ async function generateReportCardPDF(dbData) {
   font-family: 'Amiri', serif;
   color: rgba(0, 0, 0, 0.5); /* Adjust the transparency as needed */
 }
+  .comments div {
+  display: block; /* Ensures each comment is on a separate line */
+  margin-bottom: 2px; /* Adds space between comments */
+}
   </style>
 
   <div class="report-card">
-    <div class="header-box back">
-      <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap: 2">
-        <ul>
+    <div class="header-box">
+      <div style="font-size: 12px; font-weight: bold; gap: 2">
+<ul style={{display:flex; flex-direction : row}}>
           <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
           <li class="spacing">Ministry of Education</li>
           <li class="spacing">${data?.university || "Najran University"}</li>
           <li class="spacing">Faculty of Dentistry</li>
         </ul>
       </div>
-      <img src="${data.logo}" alt="University Logo" style="width: 160px; height: 150px;">
-      <div style="font-size: 20px; font-weight: bold; display: flex; flex-direction: row; gap: 2">
-        <ul>
-          <li class="spacing litt ">المملكة العربية السعودية</li>
+      <img src="${data.logo}" alt="University Logo" style="width: 50px; height: 50px; ">
+      <div style="font-size: 12px; font-weight:400;  gap: 2">
+        <ul style={{display:flex; flex-direction : row}}>
+          <li class="spacing litt">المملكة العربية السعودية</li>
           <li class="spacing litt">وزارة التعليم</li>
           <li class="spacing litt">جامعة نجران</li>
           <li class="spacing litt">كلية طب الأسنان</li>
         </ul>
       </div>
     </div>
+
+
     <div class="info-box back">
       <div class="column">
-        <p>Course Name : ${data.name}</p>
+        <p>Course Name : ${data.name}</p> 
         <p>Level : ${data.level}</p>
         <p>Credit Hours : ${data.creditHours}</p>
       </div>
@@ -208,7 +219,7 @@ async function generateReportCardPDF(dbData) {
     <div class="items-table">
       <table class="maintable">
         <tr>
-          <th class="white" style="width: 5%;">Serial No.</th>
+          <th class="white" style="width: 5%;">S.No.</th>
           <th class="white" style="width: 15%;">Item Category</th>
           <th style="width: 25%;">Question No</th>
           <th style="width: 5%;">Total Questions</th>
@@ -218,39 +229,39 @@ async function generateReportCardPDF(dbData) {
         ${data.items
           .map((item, index) => {
             let comments = "";
-
+        
             if (item.numberOfItems > 0) {
               if (item.category === "Poor (Bad) Questions") {
                 comments = `
-                  ● Discrimination value of this items are negative in value.
-                  ● Discrimination value of this items are less than 0.20
-                  ● All the items should be rejected.
+                  <div>● Discrimination value of this items are negative in value.</div>
+                  <div>● Discrimination value of this items are less than 0.20</div>
+                  <div>● All the items should be rejected.</div>
                 `;
               } else if (item.category === "Very Difficult Question") {
                 comments = `
-                  ● Keys of these items are needed to be checked.
-                  ● Items should be rejected.
+                  <div>● Keys of these items are needed to be checked.</div>
+                  <div>● Items should be rejected.</div>
                 `;
               } else if (item.category === "Difficult Question") {
                 comments = `
-                  ● Key of this item is also needed to be checked.
+                  <div>● Key of this item is also needed to be checked.</div>
                 `;
               } else if (item.category === "Good Question") {
                 comments = `
-                  ● Discrimination value of first raw items is accepted good.
-                  ● Items could be stored in question bank for further use.
+                  <div>● Discrimination value of first raw items is accepted good.</div>
+                  <div>● Items could be stored in question bank for further use.</div>
                 `;
               } else if (item.category === "Easy Question") {
                 comments = `
-                  ● Item should be revised before re-use.
+                  <div>● Item should be revised before re-use.</div>
                 `;
               } else if (item.category === "Very Easy Question") {
                 comments = `
-                  ● Items should be rejected or needed to be revised.
+                  <div>● Items should be rejected or needed to be revised.</div>
                 `;
               } else {
                 comments = `
-                  ● No specific comments available.
+                  <div>● No specific comments available.</div>
                 `;
               }
               if (item.category == "Reliability") {
@@ -263,7 +274,7 @@ async function generateReportCardPDF(dbData) {
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
                   <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems}</td>
-                  <td class="white comments">● ${comments}</td>
+                  <td class="white comments">${comments}</td>
                 </tr>
               `;
             } else {
@@ -275,7 +286,7 @@ async function generateReportCardPDF(dbData) {
                     ${item.items.map((subItem) => `<span class="spac">${subItem}</span>`).join(",")}
                   </td>
                   <td class="items">${item.numberOfItems > 0 ? item.numberOfItems : " "}</td>
-                  <td>${item.percentage}</td>
+                  <td>${item.percentage> 0 ? item.percentage : " "}</td>
                   <td class="comments">${comments}</td>
                 </tr>
               `;
@@ -317,7 +328,7 @@ async function generateReportCardPDF(dbData) {
           <td>${data.courses.grades.F.number.toFixed(0)}</td>
         </tr>
         <tr class="roww">
-          <td colspan="4"></td>
+          <td colspan="2"></td>
           <td>${data.courses.studentsPassed.percentage}%</td>
           <td>${data.courses.grades.APlus.percentage.toFixed(0)}%</td>
           <td>${data.courses.grades.A.percentage.toFixed(0)}%</td>
@@ -333,21 +344,38 @@ async function generateReportCardPDF(dbData) {
     </div>
   </div>
   `;
+  var options = { format: 'Letter' };
 
-  const options = { format: "A4" };
   const file = { content: reportCardHtml };
 
   try {
-    const pdfBuffer = await htmlPdf.generatePdf(file, options);
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(reportCardHtml, { waitUntil: 'networkidle0' });
+  
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      landscape: true, // Set the orientation to landscape
+      printBackground: true,
+      margin: {
+        // top: '10mm',
+        right: '10mm',
+        // bottom: '10mm',
+        left: '10mm'
+      }
+    });
+  
+    await browser.close();
+  
     const pdfPath = path.join(
       __dirname,
       "../reports",
       `${data?.name?.replace(/\s+/g, "_")}_ReportCard.pdf`
     );
-
+  
     // Ensure the directory exists
     fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
-
+  
     fs.writeFileSync(pdfPath, pdfBuffer);
     console.log(`PDF generated: ${pdfPath}`);
     return pdfPath;
