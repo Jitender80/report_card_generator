@@ -278,7 +278,7 @@ table.maintable th {
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
                   <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
-                    ${item.items.map((subItem) => `<span class="spac">${subItem}</span>`)}
+                    ${item.items.map((subItem) => `<span class="spac">${subItem} </span>`)}
                   </td>
                   <td class="items">${item.numberOfItems > 0 ? item.numberOfItems : " "}</td>
                   <td>${item.percentage> 0 ? item.percentage : " "}</td>
@@ -339,29 +339,24 @@ table.maintable th {
     </div>
 
     <div style={{
-    display:flex;
-
-    width:100%
-    margin-left:100%;
-    flex-direction:column-reverse;
-    justify-content:flex-end
-    // align-items:flex-end
-    }}>
-    <h6 style={{
-    font-size:2px;
-    font-weight:100
-    }}>
-    Prepared By: Dr Siraj Khan
-
-    </h6>
-    <h6 style={{
-    font-size:8px;
-    font-weight:200
-    }}>
-    PhD, MDS Pediatric Dentistry
-
-    </h6>
-    </div>
+      display: flex;
+      width: 100%;
+      margin-left: 100%;
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+      // align-items: flex-end;
+  }}>
+      <h6 style={{
+          font-size: 2px;
+          font-weight: 100;
+          margin-bottom: 2px; /* Adjust this value to control spacing */
+          line-height: 1.2; /* Adjust this value to control line spacing */
+      }}>
+          Prepared By: Dr Siraj Khan<br>
+          (PhD, MDS Pediatric Dentistry)
+      </h6>
+  </div>
+  
 
   </div>
   `;
