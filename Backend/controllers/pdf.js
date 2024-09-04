@@ -185,8 +185,8 @@ table.maintable th {
 
   <div class="report-card">
     <div class="header-box">
-      <div style="font-size: 12px; font-weight: bold; gap: 4">
-<ul style={{display:flex; flex-direction : row}}>
+      <div style="font-size: 12px; font-weight: bold; gap: 5">
+        <ul style={{display:flex; flex-direction : row}}>
           <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
           <li class="spacing">Ministry of Education</li>
           <li class="spacing">${data?.university || "Najran University"}</li>
