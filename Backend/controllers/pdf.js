@@ -31,8 +31,9 @@ function getReliabilityDescription(score) {
 
 async function generateReportCardPDF(dbData) {
   const data = dbData;
-  data.logo =
-    "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
+
+  // data.logo =
+    // "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
 
     const reportCardHtml = ` <style>
  .report-card {
@@ -192,15 +193,9 @@ table.maintable th {
           <li class="spacing">Faculty of Dentistry</li>
         </ul>
       </div>
-      <img src="${data.logo}" alt="University Logo" style="width: 75px; height: 75px; ">
-      <div style="font-size: 12px; font-weight:400;  gap: 2">
-        <ul style={{display:flex; flex-direction : row}}>
-          <li class="spacing litt">المملكة العربية السعودية</li>
-          <li class="spacing litt">وزارة التعليم</li>
-          <li class="spacing litt">جامعة نجران</li>
-          <li class="spacing litt">كلية طب الأسنان</li>
-        </ul>
-      </div>
+      <img src="https://res.cloudinary.com/dkijovd6p/image/upload/v1725480428/t50opxpqoofrimbd3yxi.png" alt="University Logo" style="width: 75px; height: 75px; ">
+      <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px; ">
+    
     </div>
 
 
@@ -298,7 +293,7 @@ table.maintable th {
     <div class="data-details maintable" style="margin-top: 20px;">
       <table class="bottom">
         <tr>
-          <th>Course Code</th>
+
 
           <th>Students Attended</th>
           <th>Students Passed</th>
@@ -313,7 +308,7 @@ table.maintable th {
           <th>F</th>
         </tr>
         <tr class="roww">
-          <td>${data.courses.code}</td>
+
 
           <td>${data.courses.studentsAttended}</td>
           <td>${data.courses.studentsPassed.number}</td>
@@ -328,7 +323,7 @@ table.maintable th {
           <td>${data.courses.grades.F.number.toFixed(0)}</td>
         </tr>
         <tr class="roww">
-          <td colspan="2"></td>
+          <td colspan="1"></td>
           <td>${data.courses.studentsPassed.percentage}%</td>
           <td>${data.courses.grades.APlus.percentage.toFixed(0)}%</td>
           <td>${data.courses.grades.A.percentage.toFixed(0)}%</td>
