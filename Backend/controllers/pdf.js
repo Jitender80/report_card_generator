@@ -142,7 +142,7 @@ table.maintable th {
     }
 
     .spac {
-      margin: 2px;
+      margin: 0px 1px 0 3px;
     }
 
     .spacing {
@@ -185,7 +185,7 @@ table.maintable th {
 
   <div class="report-card">
     <div class="header-box">
-      <div style="font-size: 12px; font-weight: bold; gap: 2">
+      <div style="font-size: 12px; font-weight: bold; gap: 4">
 <ul style={{display:flex; flex-direction : row}}>
           <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
           <li class="spacing">Ministry of Education</li>
@@ -278,7 +278,7 @@ table.maintable th {
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
                   <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
-                    ${item.items.map((subItem) => `<span class="spac">${subItem}</span>`).join(",")}
+                    ${item.items.map((subItem) => `<span class="spac">${subItem}</span>`)}
                   </td>
                   <td class="items">${item.numberOfItems > 0 ? item.numberOfItems : " "}</td>
                   <td>${item.percentage> 0 ? item.percentage : " "}</td>
@@ -337,6 +337,32 @@ table.maintable th {
         </tr>
       </table>
     </div>
+
+    <div style={{
+    display:flex;
+
+    width:100%
+    margin-left:100%;
+    flex-direction:column-reverse;
+    justify-content:flex-end
+    // align-items:flex-end
+    }}>
+    <h6 style={{
+    font-size:2px;
+    font-weight:100
+    }}>
+    Prepared By: Dr Siraj Khan
+
+    </h6>
+    <h6 style={{
+    font-size:8px;
+    font-weight:200
+    }}>
+    PhD, MDS Pediatric Dentistry
+
+    </h6>
+    </div>
+
   </div>
   `;
   var options = { format: 'Letter' };
