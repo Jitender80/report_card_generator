@@ -44,7 +44,7 @@ async function generateReportCardPDF(dbData) {
         flex-direction: column;
         justify-content: center;
         background-color: #b8d3ef;
-        border: 12px solid #000; /* Corrected border style */
+        border: 8px solid #000; /* Corrected border style */
         -webkit-print-color-adjust: exact;
       }
 
@@ -181,6 +181,22 @@ table.maintable th {
   display: block; /* Ensures each comment is on a separate line */
   margin-bottom: 2px; /* Adds space between comments */
 }
+  .roww td{
+    text-align:center
+  
+  }
+    .rowe td{
+      text-align:center;
+      padding:2px 0px 5px 10px;
+      }
+
+    .cred {
+    position: absolute;
+    bottom: 40px; /* Adjust this value as needed */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
   </style>
 
   <div class="report-card">
@@ -296,7 +312,7 @@ table.maintable th {
 
 
           <th>Students Attended</th>
-          <th>Students Passed</th>
+          <th>Students Pass</th>
           <th>A+</th>
           <th>A</th>
           <th>B+</th>
@@ -322,7 +338,7 @@ table.maintable th {
           <td>${data.courses.grades.D.number.toFixed(0)}</td>
           <td>${data.courses.grades.F.number.toFixed(0)}</td>
         </tr>
-        <tr class="roww">
+        <tr class="rowe">
           <td colspan="1"></td>
           <td>${data.courses.studentsPassed.percentage}%</td>
           <td>${data.courses.grades.APlus.percentage.toFixed(0)}%</td>
@@ -338,14 +354,7 @@ table.maintable th {
       </table>
     </div>
 
-    <div style={{
-      display: flex;
-      width: 100%;
-      margin-left: 100%;
-      flex-direction: column-reverse;
-      justify-content: flex-end;
-      // align-items: flex-end;
-  }}>
+    <div class="cred">
       <h6 style={{
           font-size: 2px;
           font-weight: 100;
