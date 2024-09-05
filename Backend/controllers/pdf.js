@@ -198,7 +198,7 @@ table.maintable th {
 
     .cred {
     position: absolute;
-    bottom: 40px; /* Adjust this value as needed */
+    bottom:40px; /* Adjust this value as needed */
     left: 50%;
     transform: translateX(-50%);
 }
@@ -224,15 +224,16 @@ table.maintable th {
     .credits{
   font-size: 10px;
   font-weight: 50;
+
   color: #dcd8d8 !important
-  margin-bottom: 2px; /* Adjust this value to control spacing */
-  line-height: 1.2; /* Adjust this value to control line spacing */
+  margin-bottom: 0px; /* Adjust this value to control spacing */
+  line-height: 1.1; /* Adjust this value to control line spacing */
 }
 .div-analysis-report {
     color: red;
     font-size: 16px;
     font-weight: bold;
-    margin: 15px 0 ;
+    margin: 5px 0 ;
 }
   </style>
 
