@@ -146,7 +146,7 @@ table.maintable th {
     }
 
     .spacing {
-      // margin-bottom: 10px;
+      margin-bottom: 2px;
     }
 
     .column p {
@@ -196,13 +196,29 @@ table.maintable th {
     left: 50%;
     transform: translateX(-50%);
 }
+    .bottom th{
+    text-align:center
+    }
+
+    .data-details maintable {
+  margin-top: 20px;
+  table-layout: auto; /* Enable auto-width based on content */
+}
+
+.bottom th, .bottom td {
+
+  flex-grow: 1; /* Distribute space equally based on text */
+}
+  .bottom{
+    table-layout:auto;
+  }
 
   </style>
 
   <div class="report-card">
     <div class="header-box">
       <div style="font-size: 12px; font-weight: bold; gap: 5">
-        <ul style={{display:flex; flex-direction : row}}>
+        <ul style={{display:flex; flex-direction : row }}>
           <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
           <li class="spacing">Ministry of Education</li>
           <li class="spacing">${data?.university || "Najran University"}</li>
@@ -307,7 +323,7 @@ table.maintable th {
       </table>
     </div>
     <div class="data-details maintable" style="margin-top: 20px;">
-      <table class="bottom">
+      <table class="bottom" >
         <tr>
 
 
