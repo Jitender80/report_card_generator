@@ -610,7 +610,7 @@ async function getDbData(req, res) {
   const dbData = {
     college: data.college,
     university: data.university,
-    name: data.className,
+    name: data.nameOfCourse,
 
     level: data.level,
 

@@ -35,7 +35,7 @@ exports.createClass = async (req, res) => {
   const {
     college,
     univerity,
-    className,
+
     level,
     nameOfCourse,
     courseCode,
@@ -51,7 +51,7 @@ exports.createClass = async (req, res) => {
   const newClass = new Class({
     user: id,
     college,
-    className,
+
     univerity,
     level,
     nameOfCourse,
