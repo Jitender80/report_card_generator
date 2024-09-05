@@ -33,18 +33,23 @@ async function generateReportCardPDF(dbData) {
   const data = dbData;
 
   // data.logo =
-    // "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
+  // "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
 
-    const reportCardHtml = ` <style>
- .report-card {
-        width: 1000px; /* Adjusted for landscape */
-        height: 90%; /* Adjusted for content height */
-        padding: 10px 20px; /* Reduced padding */
+  const reportCardHtml = ` <style>
+    .report-card {
+
+        width: 1000px; 
+    
+        height: 90%; 
+    
+        padding: 10px 20px;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
+        // gap:20px;
         background-color: #b8d3ef;
-        border: 8px solid #000; /* Corrected border style */
+        border: 8px solid #000;
         -webkit-print-color-adjust: exact;
       }
 
@@ -57,10 +62,10 @@ async function generateReportCardPDF(dbData) {
       }
 
       .report-card th, .report-card td {
-        border: 2px solid #000; /* Add border to table cells */
-        padding: 4px; /* Reduced padding */
-        text-align: left; /* Align text to the left */
-        font-size: 12px; /* Reduced font size */
+        border: 2px solid #000;
+        padding: 4px; 
+        text-align: left; 
+        font-size: 12px; 
       }
 
       .report-card th {
@@ -69,15 +74,16 @@ async function generateReportCardPDF(dbData) {
         font-weight: bold;
       }
  .header-box, .info-box {
-        margin-bottom: 10px; /* Reduced margin */
+
+
         text-align: center;
         background-color: #fff;
         border: 1px solid #000;
-        height: 80px; /* Reduced height */
+        height: 80px; 
         display:flex;
         flex-direction: row;
         justify-content: space-between;
-  padding:0 20px;
+        padding:0 10px;
         align-items: center;
       }
 
@@ -159,8 +165,8 @@ table.maintable th {
       width: 40px;
     }
       .comments{
-      //  display: block; /* Ensures each comment is on a separate line */
-  // margin-bottom: 5px; /
+
+
 
   text-align: center;
       }
@@ -212,6 +218,8 @@ table.maintable th {
   .bottom{
     table-layout:auto;
   }
+    .items-table{
+    margin-top:20px }
 
   </style>
 
@@ -229,6 +237,7 @@ table.maintable th {
       <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px; ">
     
     </div>
+    
 
 
     <div class="info-box back">
@@ -256,7 +265,7 @@ table.maintable th {
         ${data.items
           .map((item, index) => {
             let comments = "";
-        
+
             if (item.numberOfItems > 0) {
               if (item.category === "Poor (Bad) Questions") {
                 comments = `
@@ -300,7 +309,9 @@ table.maintable th {
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems}</td>
+                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
+                    item.numberOfItems
+                  }</td>
                   <td class="white comments">${comments}</td>
                 </tr>
               `;
@@ -310,10 +321,14 @@ table.maintable th {
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
                   <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
-                    ${item.items.map((subItem) => `<span class="spac">${subItem}</span>`).join(", ")}
+                    ${item.items
+                      .map((subItem) => `<span class="spac">${subItem}</span>`)
+                      .join(", ")}
                   </td>
-                  <td class="items">${item.numberOfItems > 0 ? item.numberOfItems : " "}</td>
-                  <td>${item.percentage> 0 ? item.percentage : " "}</td>
+                  <td class="items">${
+                    item.numberOfItems > 0 ? item.numberOfItems : " "
+                  }</td>
+                  <td>${item.percentage > 0 ? item.percentage : " "}</td>
                   <td class="comments">${comments}</td>
                 </tr>
               `;
@@ -371,52 +386,54 @@ table.maintable th {
     </div>
 
     <div class="cred">
-      <h6 style={{
-          font-size: 2px;
-          font-weight: 100;
-          margin-bottom: 2px; /* Adjust this value to control spacing */
-          line-height: 1.2; /* Adjust this value to control line spacing */
-      }}>
-          Prepared By: Dr Siraj Khan<br>
-          (PhD, MDS Pediatric Dentistry)
-      </h6>
+     <h6 style={{
+  font-size: 2px;
+  font-weight: 50;
+  color: #d9d7d7;
+  margin-bottom: 2px; /* Adjust this value to control spacing */
+  line-height: 1.2; /* Adjust this value to control line spacing */
+}}>
+  Prepared By: Dr Siraj Khan<br>
+  PhD, MDS Pediatric Dentistry
+</h6>
+
   </div>
   
 
   </div>
   `;
-  var options = { format: 'Letter' };
+  var options = { format: "Letter" };
 
   const file = { content: reportCardHtml };
 
   try {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.setContent(reportCardHtml, { waitUntil: 'networkidle0' });
-  
+    await page.setContent(reportCardHtml, { waitUntil: "networkidle0" });
+
     const pdfBuffer = await page.pdf({
-      format: 'A4',
+      format: "A4",
       landscape: true, // Set the orientation to landscape
       printBackground: true,
       margin: {
         // top: '10mm',
-        right: '10mm',
+        right: "10mm",
         // bottom: '10mm',
-        left: '10mm'
-      }
+        left: "10mm",
+      },
     });
-  
+
     await browser.close();
-  
+
     const pdfPath = path.join(
       __dirname,
       "../reports",
       `${data?.name?.replace(/\s+/g, "_")}_ReportCard.pdf`
     );
-  
+
     // Ensure the directory exists
     fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
-  
+
     fs.writeFileSync(pdfPath, pdfBuffer);
     console.log(`PDF generated: ${pdfPath}`);
     return pdfPath;
