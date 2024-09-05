@@ -35,7 +35,12 @@ const App = () => {
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
-        toast.loading("Waking up server...");
+        toast.loading("Waking up server...",{
+          position: "top-center",
+          autoClose: false,
+          hideProgressBar: false,
+          progressStyle: { backgroundColor: "#00ff00" },
+        });
         const response = await axios.get(`${BASE_URL}/wake-up`);
         if (response.status === 200) {
           setActive(true);

@@ -1,73 +1,73 @@
 import React, { useState } from "react";
 import axios from "axios";
+import BASE_URL from "../lib/db";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentClassId } from "../../redux/slice/classSlice";
+
 type Props = {
   onClassIdChange: (id: string) => void;
 };
-import BASE_URL from "../lib/db"
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentClassId } from '../../redux/slice/classSlice';
 
-
-const Class = ({ onClassIdChange }: any) => {
+const  Class = ({ onClassIdChange }: Props) => {
   const dispatch = useDispatch();
   const currentClassId = useSelector((state) => state.class.currentClassId);
 
-  
   const [classData, setClassData] = useState({
     level: 0,
-    className: "",
     nameOfCourse: "",
     courseCode: "",
     creditHours: "",
     courseCoordinator: "",
     semester: "",
-    academicYear:0 ,
-
-
-
-
-
-
+    academicYear: 0,
   });
-  const handleChange = (e: any) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setClassData({ ...classData, [name]: value });
-    // setting the class id in the parent component
   };
-  const handleSubmit = async (e: any) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { level, nameOfCourse, courseCode, creditHours, semester } = classData;
+    if (!level || !nameOfCourse || !courseCode || !creditHours || !semester) {
+      toast.error("Please fill all fields before submitting!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+      });
+      return;
+    }
     toast.loading("Creating class...");
 
-    const userId = localStorage.getItem('user'); // Get user ID from local storage
-
-    console.log("🚀 ~ handleSubmit ~ userId:", userId)
+    const userId = localStorage.getItem("user");
     if (!userId) {
       alert("User ID not found. Please log in again.");
       return;
     }
-    e.preventDefault();
-    console.log(classData);
-    // onClassIdChange("loading");
-    // TODO: make a post request to create a class
-    const response = await axios.post(`${BASE_URL}/createClass/${userId}`, classData);
 
-    dispatch(setCurrentClassId(response.data.data));
-    if(response.status === 201){
-      toast.dismiss()
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/createClass/${userId}`,
+        classData
+      );
 
-      // console.log(response.data._id);
-      // alert("Class created successfully");
+      dispatch(setCurrentClassId(response.data.data));
 
-      onClassIdChange(response.data._id);
-      toast.success("Class create successfully")
+      if (response.status === 201) {
+        toast.dismiss();
+        onClassIdChange(response.data._id);
+        toast.success("Class created successfully");
+      }
+    } catch (error) {
+      console.error("Error creating class:", error);
+      toast.error("Failed to create class. Please try again later.");
+    } finally {
+      toast.dismiss();
     }
-
-    toast.dismiss()
-
-    // for testing--
-    // onClassIdChange("111");
-    
   };
+
   const generateYearOptions = () => {
     const startYear = 2015;
     const numberOfYears = 20;
@@ -85,13 +85,12 @@ const Class = ({ onClassIdChange }: any) => {
 
     return options;
   };
+
   return (
-    <div className="flex justify-center items-center mb-12 border rounded-md overflow-hidden border-black ">
+    <div className="flex justify-center items-center  mb-12 border-2  border-black  m-2  mx-5 rounded-md overflow-hidden  flex-1 w-11/12 ">
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-2 p-4 justify-center items-center border rounded shadow-lg w-full overflow-y-true
-        bg-yellow-100
-        "
+        className="grid grid-cols-2 gap-8 p-4 justify-center items-center border rounded shadow-lg w-full bg-yellow-200"
       >
         <label className="flex flex-col" htmlFor="level">
           Level:
@@ -100,19 +99,10 @@ const Class = ({ onClassIdChange }: any) => {
             name="level"
             value={classData.level}
             onChange={handleChange}
-            className=" p-2 border rounded"
+            className="p-2 border  border-black  m-2  mx-5 rounded-md "
           />
         </label>
-        <label className="flex flex-col" htmlFor="className">
-     ClassName
-          <input
-            type="text"
-            name="className"
-            value={classData.className}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
-        </label>
+
         <label className="flex flex-col">
           Name of Course:
           <input
@@ -120,9 +110,10 @@ const Class = ({ onClassIdChange }: any) => {
             name="nameOfCourse"
             value={classData.nameOfCourse}
             onChange={handleChange}
-            className=" p-2 border rounded"
+            className="p-4 border  border-black  m-2  mx-5 rounded-md"
           />
         </label>
+
         <label className="flex flex-col">
           Course Code:
           <input
@@ -130,29 +121,21 @@ const Class = ({ onClassIdChange }: any) => {
             name="courseCode"
             value={classData.courseCode}
             onChange={handleChange}
-            className=" p-2 border rounded"
+            className="p-4 border  border-black  m-2  mx-5 rounded-md"
           />
         </label>
+
         <label className="flex flex-col">
-          creditHours:
+          Credit Hours:
           <input
             type="text"
             name="creditHours"
             value={classData.creditHours}
             onChange={handleChange}
-            className=" p-2 border rounded"
+            className="p-4 border  border-black  m-2  mx-5 rounded-md"
           />
         </label>
-        {/* <label className="flex flex-col">
-          Semester:
-          <input
-            type="text"
-            name="semester"
-            value={classData.semester}
-            onChange={handleChange}
-            className=" p-2 border rounded"
-          />
-        </label> */}
+
         <label className="flex flex-col">
           Semester:
           <input
@@ -160,49 +143,23 @@ const Class = ({ onClassIdChange }: any) => {
             name="semester"
             value={classData.semester}
             onChange={handleChange}
-            className=" p-2 border rounded"
+            className="p-4 border  border-black  m-2  mx-5 rounded-md"
           />
         </label>
+
         <label className="flex flex-col">
           Academic Year:
           <select
-          name="academicYear"
-          value={classData.academicYear}
-          onChange={handleChange}
-          className="p-2 border rounded"
-        >
-          <option value="">Select Academic Year</option>
-          {generateYearOptions()}
-        </select>
+            name="academicYear"
+            value={classData.academicYear}
+            onChange={handleChange}
+            className="p-2 border rounded"
+          >
+            <option value="">Select Academic Year</option>
+            {generateYearOptions()}
+          </select>
         </label>
-        {/* <label className="flex flex-col gap-5 justify-between">
-        Gender:
-          <div className="
-          flex flex-row gap-5">
-          <label>
-          <input
-            type="radio"
-            name="coordinatorGender"
-            value="Male"
-            checked={classData.coordinatorGender === "Male"}
-            onChange={handleChange}
-            className="p-2 border rounded"
-          />
-          Male
-          </label>
-          <label>
-          <input
-            type="radio"
-            name="coordinatorGender"
-            value="Female"
-            checked={classData.coordinatorGender === "Female"}
-            onChange={handleChange}
-            className="p-2 border rounded"
-          />
-          Female
-          </label>
-            </div>
-        </label> */}
+
         <label className="flex flex-col">
           Course coordinator:
           <input
@@ -210,19 +167,15 @@ const Class = ({ onClassIdChange }: any) => {
             name="courseCoordinator"
             value={classData.courseCoordinator}
             onChange={handleChange}
-            className="p-2 border rounded"
+            className="p-4 border  border-black  m-2  mx-5 rounded-md"
           />
         </label>
-     
-       
-  
-       
 
         <button
           type="submit"
           className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 col-span-2"
         >
-          submit
+          Submit
         </button>
       </form>
     </div>
