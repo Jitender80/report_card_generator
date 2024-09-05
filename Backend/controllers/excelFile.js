@@ -397,7 +397,7 @@ async function calculateResult(id) {
           if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30 ) {
             return {
               questionNumber: questionNumber,
-              category: " Difficult Question",
+              category: "Difficult Question",
               disc_index: item.disc_index,
               correctAnswersPercentage: item.correctAnswersPercentage,
             }}

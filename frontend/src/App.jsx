@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -29,16 +29,21 @@ const ProtectedLayout = () => {
 };
 
 const App = () => {
+  const [active ,setActive] = useState(false);
+
+
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
         toast.loading("Waking up server...");
         const response = await axios.get(`${BASE_URL}/wake-up`);
         if (response.status === 200) {
+          setActive(true);
           toast.dismiss();
           toast.success(response.data.message);
         }
       } catch (error) {
+        setActive(false)
         toast.dismiss();
         toast.error("Error waking up server| Refresh to try again");
       }
@@ -50,20 +55,23 @@ const App = () => {
     <>
       <Router basename="/">
         <Layout>
-          <Routes initialRoute="/">
+
+          <Routes initialRoute="/" >
             <Route path="" element={<Home />} />
             <Route path="login" element={<Login/>} /> 
             <Route path="signup" element={<Signup/>} /> 
-            
-            <Route
-              path="/*"
-              element={<AuthRoute element={ProtectedLayout} />}
-            >
+              {active &&(
+
+                <Route  
+                path="/*"
+                element={<AuthRoute element={ProtectedLayout} />}
+                >
               <Route path="itemanalysis" element={<ItemAnalysis />} />
               <Route path="studentTable" element={<StudentTable />} />
               <Route path="check-report" element={<CheckReports />} />
               <Route path="instructors" element={<InstructorsList />} />
             </Route>
+            )}  
           </Routes>
         </Layout>
       </Router>
