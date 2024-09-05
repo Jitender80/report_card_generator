@@ -228,7 +228,12 @@ table.maintable th {
   margin-bottom: 2px; /* Adjust this value to control spacing */
   line-height: 1.2; /* Adjust this value to control line spacing */
 }
-
+.div-analysis-report {
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+}
   </style>
 
   <div class="report-card">
@@ -260,6 +265,9 @@ table.maintable th {
         <p>Course Coordinator : ${data.courseCoordinator}</p>
       </div>
     </div>
+
+<div class="div-analysis-report">Item Analysis Report</div>
+
     <div class="items-table">
       <table class="maintable">
         <tr>
