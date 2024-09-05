@@ -50,7 +50,7 @@ async function generateReportCardPDF(dbData) {
         // gap:20px;
         background-color: #b8d3ef;
         border: 8px solid #000;
-        -webkit-print-color-adjust: exact;
+        // -webkit-print-color-adjust: exact;
       }
 
       .report-card table {
@@ -221,6 +221,14 @@ table.maintable th {
     .items-table{
     margin-top:20px }
 
+    .credits{
+  font-size: 10px;
+  font-weight: 50;
+  color: #dcd8d8 !important
+  margin-bottom: 2px; /* Adjust this value to control spacing */
+  line-height: 1.2; /* Adjust this value to control line spacing */
+}
+
   </style>
 
   <div class="report-card">
@@ -386,16 +394,11 @@ table.maintable th {
     </div>
 
     <div class="cred">
-     <h6 style={{
-  font-size: 2px;
-  font-weight: 50;
-  color: #d9d7d7;
-  margin-bottom: 2px; /* Adjust this value to control spacing */
-  line-height: 1.2; /* Adjust this value to control line spacing */
-}}>
+  <h6 class ="credits">
   Prepared By: Dr Siraj Khan<br>
   PhD, MDS Pediatric Dentistry
 </h6>
+
 
   </div>
   
