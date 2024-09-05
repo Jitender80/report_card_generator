@@ -232,7 +232,7 @@ table.maintable th {
     color: red;
     font-size: 16px;
     font-weight: bold;
-    margin: 5px 0;
+    margin: 15px 0 ;
 }
   </style>
 
