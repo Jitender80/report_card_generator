@@ -148,7 +148,7 @@ const ItemAnalysis: React.FC = () => {
       )}
 
       {!isClassSubmitted && savedCollegeDetails && (
-        <div className="mb-5 mt-10 w-full max-w-[80%] flex flex-col justify-center items-center ">
+        <div className="mb-5 mt-10 w-full  flex flex-col justify-center items-center ">
           <Class onClassIdChange={handleClassIdChange} />
         </div>
       )}

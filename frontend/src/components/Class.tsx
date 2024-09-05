@@ -87,7 +87,8 @@ const  Class = ({ onClassIdChange }: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center  mb-12 border-2  border-black  m-2  mx-5 rounded-md overflow-hidden  flex-1 w-11/12 ">
+    <div className="flex justify-center items-center  mb-12 border-2  border-black  m-2  mx-5 
+    rounded-md overflow-hidden  flex-1 w-full ">
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-2 gap-8 p-4 justify-center items-center border rounded shadow-lg w-full bg-yellow-200"
@@ -128,7 +129,7 @@ const  Class = ({ onClassIdChange }: Props) => {
         <label className="flex flex-col">
           Credit Hours:
           <input
-            type="number"
+            type="text"
             name="creditHours"
             value={classData.creditHours}
             onChange={handleChange}
