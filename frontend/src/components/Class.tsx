@@ -30,8 +30,8 @@ const  Class = ({ onClassIdChange }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { level, nameOfCourse, courseCode, creditHours, semester } = classData;
-    if (!level || !nameOfCourse || !courseCode || !creditHours || !semester) {
+    const { level, nameOfCourse, courseCode, creditHours, semester , academicYear} = classData;
+    if (!level || !nameOfCourse || !courseCode || !creditHours || !semester || academicYear ===0 ) {
       toast.error("Please fill all fields before submitting!", {
         position: "top-center",
         autoClose: 2000,
