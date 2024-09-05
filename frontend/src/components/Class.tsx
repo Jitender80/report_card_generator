@@ -128,7 +128,7 @@ const  Class = ({ onClassIdChange }: Props) => {
         <label className="flex flex-col">
           Credit Hours:
           <input
-            type="text"
+            type="number"
             name="creditHours"
             value={classData.creditHours}
             onChange={handleChange}
@@ -139,7 +139,7 @@ const  Class = ({ onClassIdChange }: Props) => {
         <label className="flex flex-col">
           Semester:
           <input
-            type="text"
+type="text"
             name="semester"
             value={classData.semester}
             onChange={handleChange}
@@ -150,6 +150,7 @@ const  Class = ({ onClassIdChange }: Props) => {
         <label className="flex flex-col">
           Academic Year:
           <select
+          type="number"
             name="academicYear"
             value={classData.academicYear}
             onChange={handleChange}
