@@ -129,6 +129,7 @@ async function generateReportCardPDF(dbData) {
 table.maintable {
   background-color: white;
   height:60%
+  border: 2px solid black;
   
 }
 
@@ -282,7 +283,7 @@ font-size: 16px;
         <p>Credit Hours : ${data.creditHours}</p>
       </div>
       <div class="column">
-        <>Course Code : ${data.courses.code}
+        <p>Course Code : ${data.courses.code}</p>
         <span style="margin-left: 2px;">(${data.gender})</span>
         </p>
         <p>Semester : ${data.semester}</p>
@@ -349,10 +350,10 @@ font-size: 16px;
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 14px; font-weight: 600; text-align: center;">KR20 = ${
+                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 600; text-align: center;">KR20 = ${
                     item.numberOfItems
                   }</td>
-                  <td class="white comments" style=" background-color: #f4e2dd;">${comments}</td>
+                  <td class="white comments" style=" font-size: 12px; background-color: #f4e2dd;">${comments}</td>
                 </tr>
               `;
             } else {
