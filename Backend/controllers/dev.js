@@ -14,3 +14,22 @@ exports.deleteAllData = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete data' });
   }
 };
+
+
+exports.deleteData = async (req, res) => {
+
+  try {
+    const classId = req.params.id;
+    const deletedClass = await Class.findByIdAndDelete(classId);
+
+    if (!deletedClass) {
+      return res.status(404).json({ error: 'Class not found' });
+    }
+
+    res.json({ message: 'Class deleted successfully' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+}

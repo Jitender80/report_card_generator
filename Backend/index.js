@@ -13,7 +13,7 @@ const { uploadFile,  getstudentData,  createClass, getFinalResult, handleCollege
 const mongoose = require('mongoose');
 const cors = require("cors");
 
-const { deleteAllData } = require("./controllers/dev");
+const { deleteAllData, deleteData } = require("./controllers/dev");
 const connectDB = require("./db");
 const { generate, generateReportCardPDF, generatePdf, getDbData } = require("./controllers/pdf");
 const { getGrades } = require("./controllers/grading");
@@ -118,6 +118,7 @@ app.get('/calculate/:id', getFinalResult)
 app.get('/pdfData/:id', getDbData)
 app.get('/generate/:id', generatePdf);
 
+app.delete('/delete-class/:id',deleteData)
 
 
 app.listen(port, () => {
