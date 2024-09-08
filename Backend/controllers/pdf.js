@@ -283,7 +283,7 @@ font-size: 16px;
         <p>Credit Hours : ${data.creditHours}</p>
       </div>
       <div class="column">
-        <p>Course Code : ${data.courses.code}</p>
+        <p>Course Code : ${data.courses.code}
         <span style="margin-left: 2px;">(${data.gender})</span>
         </p>
         <p>Semester : ${data.semester}</p>
