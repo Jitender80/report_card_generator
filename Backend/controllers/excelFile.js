@@ -453,6 +453,7 @@ async function getResultData(id) {
     const classData = await Class.findById(id).populate("students")
 
 
+    // console.log("🚀 ~ getResultData ~ classData:", classData)
 
 
 
@@ -469,24 +470,25 @@ async function getResultData(id) {
     };
 
     classData.questionAnalysis.forEach((item) => {
-      if (questionTypes[item.category]) {
+      if (item && item.category && questionTypes[item.category]) {
         const questionNumber = parseInt(item.questionNumber.replace('Q', ''), 10);
         questionTypes[item.category].push(questionNumber);
       }
     });
-    // console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
-
+    console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
     classData.questionSummary = questionTypes;
-    await classData.save()
+    const res = await classData.save()
+    
 
 
 
 
-    return questionTypes;
+    return res.questionSummary
 
   } catch (error) {
     console.log(error.message);
   }
+
 };
 
 
@@ -506,11 +508,14 @@ exports.getFinalResult = async (req, res) => {
     console.log(cal, "---121")
     const resdata = await getResultData(id);
     console.log(resdata, "505")
+
+
+ 
     const grades = await getGrades(id)
     console.log(grades, "507")
 
 
-    if(!cal || !resdata || !grades){
+    if(!cal || resdata  == null || !grades){
       return res.status(500).json({ message: "Internal server error" });
     } 
     res.status(200).json({ message: "Result calculated successfully", calculateResult: cal,
