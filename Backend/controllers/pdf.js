@@ -48,7 +48,7 @@ async function generateReportCardPDF(dbData) {
         flex-direction: column;
         justify-content: center;
         // gap:10px;
-        background-color: #b8d3ef;
+        background-color: #cbeff5;
         border: 6px solid #1C4A7A;
         
         // -webkit-print-color-adjust: exact;
@@ -388,7 +388,7 @@ font-size: 16px;
           .join("")}
       </table>
     </div>
-    <div class="data-details maint" style="margin-top: 10px;">
+    <div class="data-details maint" style="margin-top: 15px;">
       <table class="bottom" >
         <tr>
 
