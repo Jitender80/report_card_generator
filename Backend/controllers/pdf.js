@@ -282,7 +282,9 @@ font-size: 16px;
         <p>Credit Hours : ${data.creditHours}</p>
       </div>
       <div class="column">
-        <p>Course Code : ${data.courses.code}</p>
+        <>Course Code : ${data.courses.code}
+        <span style="margin-left: 2px;">(${data.gender})</span>
+        </p>
         <p>Semester : ${data.semester}</p>
         <p>Course Coordinator : ${data.courseCoordinator}</p>
       </div>
@@ -528,6 +530,7 @@ async function generatePdf(req, res) {
       college: data.college,
       university: data.university,
       name: data.nameOfCourse,
+      gender: data.gender,  
 
       level: data.level,
 

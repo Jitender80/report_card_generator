@@ -42,8 +42,10 @@ exports.createClass = async (req, res) => {
     creditHours,
     semester,
     academicYear,
+    gender,
 
     courseCoordinator,
+
 
   } = req.body;
   console.log("🚀 ~ exports.createClass= ~ req.body:", req.body)
@@ -59,6 +61,7 @@ exports.createClass = async (req, res) => {
     creditHours,
     semester,
     academicYear,
+    gender,
 
     courseCoordinator,
 

@@ -6,6 +6,7 @@ const classSchema = new mongoose.Schema({
    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User schema
   university : {type: String, required: false}, 
   level:{type: Number, required: false},
+  gender:{type: String, required: false},
 
   nameOfCourse:{type:String, required:false},
   courseCode: { type: String, required: false },

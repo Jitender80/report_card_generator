@@ -87,7 +87,7 @@ const  Class = ({ onClassIdChange }: Props) => {
     courseCoordinator: "",
     semester: "",
     academicYear: 0,
-    gender: ""
+    gender: "male"
   });
 
   const [filteredCourseCodes, setFilteredCourseCodes] = useState([]);
