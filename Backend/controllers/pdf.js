@@ -47,51 +47,59 @@ async function generateReportCardPDF(dbData) {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        // gap:20px;
+        gap:10px;
         background-color: #b8d3ef;
-        border: 8px solid #000;
+        border: 6px solid #1C4A7A;
+        
         // -webkit-print-color-adjust: exact;
       }
 
       .report-card table {
-        width: 100%; /* Adjusted to take full width */
-        height: auto /* Adjusted for content height */
-        border: 2px solid #000;
+        width: 100%;
+        height: auto;
+        border: 2px solid black; /* Add this line to set the border color to black */
         border-spacing: 0;
+
+
+      align-self: center;
+      border-collapse: collapse; /
         align-self: center;
+
       }
+    
 
-      .report-card th, .report-card td {
-        border: 2px solid #000;
-        padding: 4px; 
-        text-align: left; 
-        font-size: 12px; 
-      }
+    report-card th, .report-card td {
+      border: 2px solid black; /* Ensure borders are visible */
+      padding: 4px;
+      text-align: left;
+      font-size: 12px;
+    }
 
-      .report-card th {
-        background-color: #D9D9D9 !important;
-        color: #000 !important;
-        font-weight: bold;
-      }
- .header-box, .info-box {
+    .report-card th {
+      background-color: #D9D9D9 !important;
+      color: #000 !important;
+      font-weight: bold;
+      border: 2px solid black;
 
+    }
 
-        text-align: center;
-        background-color: #fff;
-        border: 1px solid #000;
-        height: 80px; 
-        display:flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding:0 10px;
-        align-items: center;
-      }
-
+    .header-box, .info-box {
+      text-align: center;
+      background-color: #fff;
+      border: 1px solid #000;
+      height: 80px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
       .info-box {
         background-color: #D9D9D9;
-        border: 1px solid #000;
+        
         display: flex;
         justify-content: space-between;
+        padding: 5px 0; 5px /* Corrected padding property */
+
       }
 
       .info-box .column {
@@ -99,6 +107,7 @@ async function generateReportCardPDF(dbData) {
       }
 
       .data-details {
+      
         width: 100%;
       }
 
@@ -109,7 +118,7 @@ async function generateReportCardPDF(dbData) {
       }
 
 .data-details th {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .white {
@@ -127,6 +136,8 @@ table.maintable td {
   text-align: center;
 }
 table.maintable th {
+border: 2px solid black;
+font-size: 16px;
   text-align: center;
 }
 
@@ -206,20 +217,30 @@ table.maintable th {
     text-align:center
     }
 
-    .data-details maintable {
-  margin-top: 20px;
-  table-layout: auto; /* Enable auto-width based on content */
+    .data-details  {
+      border:2px solid #000;
+      margin-top: 20px;
+      
+
+
 }
 
 .bottom th, .bottom td {
 
-  flex-grow: 1; /* Distribute space equally based on text */
+  flex-grow: 1; 
+
 }
   .bottom{
-    table-layout:auto;
+    
+
   }
     .items-table{
-    margin-top:20px }
+    margin-top: 0px 
+    border: 2px solid black;
+
+
+
+    }
 
     .credits{
   font-size: 10px;
@@ -233,7 +254,7 @@ table.maintable th {
     color: red;
     font-size: 16px;
     font-weight: bold;
-    margin: 5px 0 ;
+    margin: 20px 0 0px 0;
 }
   </style>
 
@@ -326,10 +347,10 @@ table.maintable th {
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 16px; font-weight: 600; text-align: center;">KR20 = ${
+                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 14px; font-weight: 600; text-align: center;">KR20 = ${
                     item.numberOfItems
                   }</td>
-                  <td class="white comments">${comments}</td>
+                  <td class="white comments" style=" background-color: #f4e2dd;">${comments}</td>
                 </tr>
               `;
             } else {
@@ -354,13 +375,13 @@ table.maintable th {
           .join("")}
       </table>
     </div>
-    <div class="data-details maintable" style="margin-top: 20px;">
+    <div class="data-details maint" style="margin-top: 10px;">
       <table class="bottom" >
         <tr>
 
 
-          <th>Students Attended</th>
-          <th>Students Pass</th>
+          <th  style="width: 15%;">Students Attended</th>
+          <th  style="width: 15%;">Students Pass</th>
           <th>A+</th>
           <th>A</th>
           <th>B+</th>
