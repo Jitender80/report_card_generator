@@ -47,7 +47,7 @@ async function generateReportCardPDF(dbData) {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap:10px;
+        // gap:10px;
         background-color: #b8d3ef;
         border: 6px solid #1C4A7A;
         
@@ -57,7 +57,7 @@ async function generateReportCardPDF(dbData) {
       .report-card table {
         width: 100%;
         height: auto;
-        border: 2px solid black; /* Add this line to set the border color to black */
+        border: 2px solid #000; /* Add this line to set the border color to black */
         border-spacing: 0;
 
 
@@ -79,7 +79,7 @@ async function generateReportCardPDF(dbData) {
       background-color: #D9D9D9 !important;
       color: #000 !important;
       font-weight: bold;
-      border: 2px solid black;
+      border: 2px solid #000;
 
     }
 
@@ -122,14 +122,14 @@ async function generateReportCardPDF(dbData) {
 }
 
 .white {
-  background-color: #D9D9D9;
+  background-color: #e7e4e4;
 }
 
 
 table.maintable {
   background-color: white;
   height:60%
-  border: 2px solid black;
+  border: 2px solid #000;
   
 }
 
@@ -137,7 +137,7 @@ table.maintable td {
   text-align: center;
 }
 table.maintable th {
-border: 2px solid black;
+border: 2px solid #000;
 font-size: 16px;
   text-align: center;
 }
@@ -247,7 +247,7 @@ font-size: 16px;
   font-size: 10px;
   font-weight: 50;
 
-  color: #dcd8d8 !important
+  color: #e7e4e4 !important
   margin-bottom: 0px; /* Adjust this value to control spacing */
   line-height: 1.1; /* Adjust this value to control line spacing */
 }
@@ -282,9 +282,19 @@ font-size: 16px;
         <p>Level : ${data.level}</p>
         <p>Credit Hours : ${data.creditHours}</p>
       </div>
-      <div class="column">
-        <p>Course Code : ${data.courses.code}
-        <span style="margin-left: 2px;">(${data.gender})</span>
+      <div class="column"
+      >
+      <div  style={{
+      display: "flex",
+      flexDirection: "row",
+        alignItems: "center"
+      }}>
+
+         <p style={{ margin: 0 }}>
+    Course Code: ${data.courses.code}
+    <span style={{ marginLeft: "2px" }}>(${data.gender})</span>
+  </p>
+        </div>
         </p>
         <p>Semester : ${data.semester}</p>
         <p>Course Coordinator : ${data.courseCoordinator}</p>
@@ -350,10 +360,10 @@ font-size: 16px;
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 600; text-align: center;">KR20 = ${
+                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 500; text-align: center;">KR20 = ${
                     item.numberOfItems
                   }</td>
-                  <td class="white comments" style=" font-size: 12px; background-color: #f4e2dd;">${comments}</td>
+                  <td class="white comments" style=" font-size: 12px; background-color: #f4e2dd font-weight: 500;">${comments}</td>
                 </tr>
               `;
             } else {
