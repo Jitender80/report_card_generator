@@ -374,7 +374,11 @@ font-size: 16px;
   </p>
         </div>
         </p>
-        <p>Semester : ${data.semester}</p>
+        <p  style="
+        
+        ">Semester : ${data.semester}
+        <span>(${data.academicYear})</span>
+        </p>
         <p>Course Coordinator : ${data.courseCoordinator}</p>
       </div>
     </div>
@@ -764,6 +768,7 @@ async function getDbData(req, res) {
     college: data.college,
     university: data.university,
     name: data.nameOfCourse,
+    academicYear: data.academicYear,
 
     level: data.level,
 
