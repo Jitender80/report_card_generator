@@ -458,12 +458,13 @@ font-size: 16px;
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td style="word-wrap: break-word; min-width: 160px; " 
-                  >
-                    
-             
-              ${item.items.map(subItem => `<span>${subItem}</span>`).join('')}
-                  </td>
+                       <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
+
+    ${item.items
+      .map((subItem) => `<span class="spac">${subItem}</span>`)
+      .join(",")}
+
+</td>
                   <td class="items">${
                     item.numberOfItems > 0 ? item.numberOfItems : " "
                   }</td>
