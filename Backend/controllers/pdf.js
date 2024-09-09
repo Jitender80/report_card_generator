@@ -447,10 +447,10 @@ font-size: 16px;
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color:#f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 300; text-align: center;">KR20 = ${
+                  <td colspan="3" style="white-space: nowrap; background-color:#f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 600; text-align: center;">KR20 = ${
                     item.numberOfItems
                   }</td>
-                  <td class=" comments" style=" font-size: 12px; background-color:#f4e2dd; font-weight: 300;">${comments}</td>
+                  <td class=" comments" style=" font-size: 12px; background-color:#f4e2dd; font-weight: 600;">${comments}</td>
                 </tr>
               `;
             } else {
