@@ -211,7 +211,7 @@ table.maintable {
 
 table.maintable td {
   text-align: center;
-  font-size : ${data.courses.studentsAttended > 120 ? "10px" : "12px"   }
+  font-size : ${data.courses.studentsAttended > 120 ? "7px" : "12px"   }
  
 }
 table.maintable th {
@@ -393,10 +393,10 @@ font-size: 16px;
         </tr>
         ${data.items
           .map((item, index) => {
-            let formattedString = "";
-            if (item.items) {
-              formattedString = formatNumberRanges(Object.values(item.items));
-            }
+            // let formattedString = "";
+            // if (item.items) {
+            //   formattedString = formatNumberRanges(Object.values(item.items));
+            // }
 
             let comments = "";
          
@@ -462,7 +462,7 @@ font-size: 16px;
                   >
                     
              
-    ${formattedString}
+              ${item.items.map(subItem => `<span>${subItem}</span>`).join('')}
                   </td>
                   <td class="items">${
                     item.numberOfItems > 0 ? item.numberOfItems : " "
