@@ -370,7 +370,7 @@ font-size: 16px;
 
          <p style={{ margin: 0 }}>
     Course Code: ${data.courses.code}
-    <span style={{ marginLeft: "2px" }}>(${data.gender})</span>
+    <span style={{ marginLeft: "2px" }}>(${data.gender.toUpperCase()})</span>
   </p>
         </div>
         </p>
@@ -447,10 +447,10 @@ font-size: 16px;
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 300; text-align: center;">KR20 = ${
+                  <td colspan="3" style="white-space: nowrap; background-color:#f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 300; text-align: center;">KR20 = ${
                     item.numberOfItems
                   }</td>
-                  <td class="white comments" style=" font-size: 12px; background-color: #f4e2dd font-weight: 300;">${comments}</td>
+                  <td class=" comments" style=" font-size: 12px; background-color:#f4e2dd; font-weight: 300;">${comments}</td>
                 </tr>
               `;
             } else {
