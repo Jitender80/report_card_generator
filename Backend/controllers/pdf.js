@@ -28,9 +28,80 @@ function getReliabilityDescription(score) {
     return "Questionable Reliability . The test should not contribute heavily to the course grade, and it needs revision";
   }
 }
+function parseInputString(input) {
+  let numbers = [];
+  let parts = input.split(' ').map(part => part.trim());
+
+  parts.forEach(part => {
+      if (part.includes('-')) {
+          let [start, end] = part.split('-').map(Number);
+          for (let i = start; i <= end; i++) {
+              numbers.push(i);
+          }
+      } else {
+          numbers.push(Number(part));
+      }
+  });
+
+  return numbers;
+}
+
+
+function parseInputString(input) {
+  let numbers = [];
+  let parts = input.split(',').map(part => part.trim());
+
+  parts.forEach(part => {
+      if (part.includes('-')) {
+          let [start, end] = part.split('-').map(Number);
+          for (let i = start; i <= end; i++) {
+              numbers.push(i);
+          }
+      } else {
+          numbers.push(Number(part));
+      }
+  });
+
+  return numbers;
+}
+
+
+function formatNumberRanges(numbers) {
+  // Sort the numbers
+  numbers.sort((a, b) => a - b);
+
+  let ranges = [];
+  let start = numbers[0];
+  let end = numbers[0];
+
+  for (let i = 1; i < numbers.length; i++) {
+    if (numbers[i] === end + 1) {
+      end = numbers[i];
+    } else {
+      if (start === end) {
+        ranges.push(`${start}`);
+      } else {
+        ranges.push(`${start}-${end}`);
+      }
+      start = numbers[i];
+      end = numbers[i];
+    }
+  }
+
+  // Add the last range
+  if (start === end) {
+    ranges.push(`${start}`);
+  } else {
+    ranges.push(`${start}-${end}`);
+  }
+
+  return ranges.join(", ");
+}
 
 async function generateReportCardPDF(dbData) {
   const data = dbData;
+
+
 
   // data.logo =
   // "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
@@ -48,7 +119,7 @@ async function generateReportCardPDF(dbData) {
         flex-direction: column;
         justify-content: center;
         // gap:10px;
-        background-color: #cbeff5;
+        background-color: #b8d3ef;
         border: 6px solid #1C4A7A;
         
         // -webkit-print-color-adjust: exact;
@@ -315,7 +386,16 @@ font-size: 16px;
         </tr>
         ${data.items
           .map((item, index) => {
+            let formattedString = "";
+            if (item.items) {
+              formattedString = formatNumberRanges(Object.values(item.items));
+            }
+            console.log(formattedString);
             let comments = "";
+         
+            
+            // const numbers = parseInputString(item.items);
+            // const result = findRanges(numbers).joim(", ");
 
             if (item.numberOfItems > 0) {
               if (item.category === "Poor (Bad) Questions") {
@@ -360,10 +440,10 @@ font-size: 16px;
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 500; text-align: center;">KR20 = ${
+                  <td colspan="3" style="white-space: nowrap; background-color: #f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 300; text-align: center;">KR20 = ${
                     item.numberOfItems
                   }</td>
-                  <td class="white comments" style=" font-size: 12px; background-color: #f4e2dd font-weight: 500;">${comments}</td>
+                  <td class="white comments" style=" font-size: 12px; background-color: #f4e2dd font-weight: 300;">${comments}</td>
                 </tr>
               `;
             } else {
@@ -372,9 +452,9 @@ font-size: 16px;
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
                   <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
-                    ${item.items
-                      .map((subItem) => `<span class="spac">${subItem}</span>`)
-                      .join(", ")}
+                    
+             
+    ${formattedString}
                   </td>
                   <td class="items">${
                     item.numberOfItems > 0 ? item.numberOfItems : " "
@@ -388,7 +468,7 @@ font-size: 16px;
           .join("")}
       </table>
     </div>
-    <div class="data-details maint" style="margin-top: 15px;">
+    <div class="data-details maint" style="margin-top: 10px;">
       <table class="bottom" >
         <tr>
 
