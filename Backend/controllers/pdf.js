@@ -78,10 +78,12 @@ function formatNumberRanges(numbers) {
     if (numbers[i] === end + 1) {
       end = numbers[i];
     } else {
-      if (start === end) {
-        ranges.push(`${start}`);
-      } else {
+      if (end - start >= 2) {
         ranges.push(`${start}-${end}`);
+      } else {
+        for (let j = start; j <= end; j++) {
+          ranges.push(`${j}`);
+        }
       }
       start = numbers[i];
       end = numbers[i];
@@ -89,10 +91,12 @@ function formatNumberRanges(numbers) {
   }
 
   // Add the last range
-  if (start === end) {
-    ranges.push(`${start}`);
-  } else {
+  if (end - start >= 2) {
     ranges.push(`${start}-${end}`);
+  } else {
+    for (let j = start; j <= end; j++) {
+      ranges.push(`${j}`);
+    }
   }
 
   return ranges.join(", ");
@@ -183,8 +187,8 @@ async function generateReportCardPDF(dbData) {
       }
 
       .data-details td {
-        font-size: 12px; /* Reduced font size */
-        font-weight: 600;
+        font-size: 10px; /* Reduced font size */
+        font-weight: 400;
         text-align: center;
       }
 
@@ -201,11 +205,14 @@ table.maintable {
   background-color: white;
   height:60%
   border: 2px solid #000;
+
   
 }
 
 table.maintable td {
   text-align: center;
+  font-size : ${data.courses.studentsAttended > 120 ? "10px" : "12px"   }
+ 
 }
 table.maintable th {
 border: 2px solid #000;
@@ -378,11 +385,11 @@ font-size: 16px;
       <table class="maintable">
         <tr>
           <th class="white" style="width: 5%;">S.No.</th>
-          <th class="white" style="width: 15%;">Item Category</th>
-          <th style="width: 25%;">Question No</th>
-          <th style="width: 5%;">Total Questions</th>
-          <th class="per" style="width: 5%;">%</th>
-          <th style="width: 40%;">Comments/Recommendation</th>
+          <th class="white" style="width: 12%;">Item Category</th>
+          <th style="width: 35%;">Question No</th>
+          <th style="width: 6%;">Total Questions</th>
+          <th class="per" style="width: 7%;">%</th>
+          <th style="width: 35%;">Comments/Recommendation</th>
         </tr>
         ${data.items
           .map((item, index) => {
@@ -390,7 +397,7 @@ font-size: 16px;
             if (item.items) {
               formattedString = formatNumberRanges(Object.values(item.items));
             }
-            console.log(formattedString);
+
             let comments = "";
          
             
@@ -451,7 +458,8 @@ font-size: 16px;
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
+                  <td style="word-wrap: break-word; min-width: 160px; " 
+                  >
                     
              
     ${formattedString}
