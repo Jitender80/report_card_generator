@@ -269,7 +269,7 @@ font-size: 16px;
 
     .column p {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: "bold";
       text-align: center;
     }
 
@@ -357,6 +357,10 @@ font-size: 16px;
     font-weight: bold;
     margin: 20px 0 0px 0;
 }
+
+.row p{
+  font-weight: 600;
+}
   </style>
 
   <div class="report-card">
@@ -377,14 +381,16 @@ font-size: 16px;
 
 
   
- <div class="info-box back" style="padding: 20px; background-color:#e7e4e4; border: 1px solid #000; border-radius: 5px;">
+
+  
+    <div class="info-box back" style="padding: 20px; background-color:#e7e4e4; border: 1px solid #000; border-radius: 5px;">
     <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align:center">
-      <p style="margin: 0; padding: 3px 0;">Course Name: ${data.name}</p>
+      <p style="margin: 0; padding: 3px 0 0 ;">Course Name: ${data.name}</p>
       <p style="margin: 0; padding: 3px 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data.gender.toUpperCase()})</span></p>
       <p style="margin: 0; padding: 3px 0;">Credit Hours: ${data.creditHours}</p>
     </div>
-    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px;">
-      <p style="margin: 0; padding: 3px 0;">Semester: ${data.semester}</p>
+    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align:center;">
+      <p style="margin: 0; padding: 3px 0;">Semester: ${data.semester}<span>( ${data.academicYear})</span></p>
       <p style="margin: 0; padding: 3px 0;">Course Coordinator: ${data.courseCoordinator}</p>
       <p style="margin: 0; padding: 3px 0;">Level: ${data.level}</p>
     </div>
@@ -475,7 +481,7 @@ font-size: 16px;
 
     ${item.items
               .map((subItem) => `<span class="spac">${subItem}</span>`)
-              .join(",")}
+              .join(", ")}
 
 </td>
                   <td class="items">${item.numberOfItems > 0 ? item.numberOfItems : " "
