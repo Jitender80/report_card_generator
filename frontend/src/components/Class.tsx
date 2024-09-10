@@ -90,6 +90,7 @@ const  Class = ({ onClassIdChange }: Props) => {
     courseCoordinator: "",
     semester: "",
     academicYear: 0,
+    department: "", 
     gender: "male"
   });
 
@@ -116,7 +117,8 @@ const  Class = ({ onClassIdChange }: Props) => {
           nameOfCourse: selectedCourse.nameOfCourse,
           courseCode: selectedCourse.courseCode,
           creditHours: selectedCourse.creditHours,
-          semester: selectedCourse.semester
+          semester: selectedCourse.semester,
+          department: selectedCourse.department
         });
       }
     }
@@ -130,7 +132,8 @@ const  Class = ({ onClassIdChange }: Props) => {
         nameOfCourse: selectedCourse.nameOfCourse,
         courseCode: selectedCourse.courseCode,
         creditHours: selectedCourse.creditHours,
-        semester: selectedCourse.semester
+        semester: selectedCourse.semester,
+        department: selectedCourse.department
       });
       setFilteredCourseCodes([]);
     }
