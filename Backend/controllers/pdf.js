@@ -171,14 +171,33 @@ async function generateReportCardPDF(dbData) {
       justify-content: space-between;
       align-items: center;
     }
-      .info-box {
-        background-color: #D9D9D9;
-        
-        display: flex;
-        justify-content: space-between;
-        padding: 5px 0; 5px /* Corrected padding property */
+     .info-box {
+    padding: 20px;
+    background-color: #f9f9f9;
+    flex-direction: column;
+      // justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .row {
+    display: flex;
+  width: 100%;
 
-      }
+    flex-direction: row;
+    // justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .column {
+    flex: 1;
+    flex-direction: row;
+      justify-content: space-between;
+
+    padding: 10px;
+  }
+  .column p {
+    margin: 0;
+    padding: 5px 0;
+  }
 
       .info-box .column {
         width: 48%;
@@ -357,23 +376,22 @@ font-size: 16px;
     
 
 
-    <div class="info-box back">
-   <div class="column">
-    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-      <p>Course Name: ${data.name}</p>
-       <p style="margin: 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data.gender.toUpperCase()})</span></p>
-      <p>Credit Hours: ${data.creditHours}</p>
+  
+ <div class="info-box back" style="padding: 20px; background-color:#e7e4e4; border: 1px solid #000; border-radius: 5px;">
+    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align:center">
+      <p style="margin: 0; padding: 3px 0;">Course Name: ${data.name}</p>
+      <p style="margin: 0; padding: 3px 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data.gender.toUpperCase()})</span></p>
+      <p style="margin: 0; padding: 3px 0;">Credit Hours: ${data.creditHours}</p>
     </div>
-    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-      <p>Semester: ${data.semester}</p>
-      <p>Level: ${data.level}</p>
-      <p>Course Coordinator: ${data.courseCoordinator}</p>
+    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px;">
+      <p style="margin: 0; padding: 3px 0;">Semester: ${data.semester}</p>
+      <p style="margin: 0; padding: 3px 0;">Course Coordinator: ${data.courseCoordinator}</p>
+      <p style="margin: 0; padding: 3px 0;">Level: ${data.level}</p>
     </div>
-    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-      <p>Department: ${data.department}</p>
+    <div class="row" style="display: flex; flex-direction: row; justify-content: center;">
+      <p style="margin: 0; padding: 3px 0;">Department: ${data.department}</p>
     </div>
   </div>
-    </div>
 
 <div class="div-analysis-report">Item Analysis Report</div>
 
@@ -626,6 +644,7 @@ async function generatePdf(req, res) {
       name: data.nameOfCourse,
       gender: data.gender,
       academicYear: data.academicYear,
+      department: data.department,
 
       level: data.level,
 
