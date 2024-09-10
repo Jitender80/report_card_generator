@@ -136,18 +136,18 @@ async function generateReportCardPDF(dbData) {
         width: 100%;
         height: auto;
         border: 2px solid #000; /* Add this line to set the border color to black */
-        border-spacing: 0;
+
 
 
       align-self: center;
-      border-collapse: collapse; /
+
         align-self: center;
 
       }
     
 
     report-card th, .report-card td {
-      border: 2px solid black; /* Ensure borders are visible */
+      border: 2px solid #000; /* Ensure borders are visible */
       padding: 4px;
       text-align: left;
       font-size: 12px;
@@ -387,7 +387,7 @@ font-size: 16px;
     <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align:center">
       <p style="margin: 0; padding: 3px 0 0 ;">Course Name: ${data.name}</p>
       <p style="margin: 0; padding: 3px 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data.gender.toUpperCase()})</span></p>
-      <p style="margin: 0; padding: 3px 0;">Credit Hours: ${data.creditHours}</p>
+      <p style="margin: 0 ; padding: 3px 0;">Credit Hours: ${data.creditHours}</p>
     </div>
     <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align:center;">
       <p style="margin: 0; padding: 3px 0;">Semester: ${data.semester}<span>( ${data.academicYear})</span></p>
