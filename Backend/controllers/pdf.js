@@ -103,7 +103,10 @@ function formatNumberRanges(numbers) {
 }
 
 async function generateReportCardPDF(dbData) {
+  console.log("🚀 ~ generateReportCardPDF ~ dbData:", dbData.academicYear);
   const data = dbData;
+
+
 
 
 
@@ -635,6 +638,7 @@ async function generatePdf(req, res) {
       university: data.university,
       name: data.nameOfCourse,
       gender: data.gender,  
+      academicYear: data.academicYear,
 
       level: data.level,
 
@@ -764,6 +768,8 @@ async function getDbData(req, res) {
   let failedCount = +data.FinalGrade.F.number;
   let totalStudents = passedCount + failedCount;
 
+
+  
   const dbData = {
     college: data.college,
     university: data.university,
