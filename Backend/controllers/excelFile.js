@@ -43,16 +43,18 @@ exports.createClass = async (req, res) => {
     semester,
     academicYear,
     gender,
+    department,
 
     courseCoordinator,
 
 
   } = req.body;
-  console.log("🚀 ~ exports.createClass= ~ req.body:", req.body)
+  // console.log("🚀 ~ exports.createClass= ~ req.body:", req.body)
 
   const newClass = new Class({
     user: id,
     college,
+    department,
 
     univerity,
     level,

@@ -33,14 +33,14 @@ function parseInputString(input) {
   let parts = input.split(' ').map(part => part.trim());
 
   parts.forEach(part => {
-      if (part.includes('-')) {
-          let [start, end] = part.split('-').map(Number);
-          for (let i = start; i <= end; i++) {
-              numbers.push(i);
-          }
-      } else {
-          numbers.push(Number(part));
+    if (part.includes('-')) {
+      let [start, end] = part.split('-').map(Number);
+      for (let i = start; i <= end; i++) {
+        numbers.push(i);
       }
+    } else {
+      numbers.push(Number(part));
+    }
   });
 
   return numbers;
@@ -52,14 +52,14 @@ function parseInputString(input) {
   let parts = input.split(',').map(part => part.trim());
 
   parts.forEach(part => {
-      if (part.includes('-')) {
-          let [start, end] = part.split('-').map(Number);
-          for (let i = start; i <= end; i++) {
-              numbers.push(i);
-          }
-      } else {
-          numbers.push(Number(part));
+    if (part.includes('-')) {
+      let [start, end] = part.split('-').map(Number);
+      for (let i = start; i <= end; i++) {
+        numbers.push(i);
       }
+    } else {
+      numbers.push(Number(part));
+    }
   });
 
   return numbers;
@@ -214,7 +214,7 @@ table.maintable {
 
 table.maintable td {
   text-align: center;
-  font-size : ${data.courses.studentsAttended > 120 ? "7px" : "12px"   }
+  font-size : ${data.courses.studentsAttended > 120 ? "7px" : "12px"}
  
 }
 table.maintable th {
@@ -358,32 +358,21 @@ font-size: 16px;
 
 
     <div class="info-box back">
-      <div class="column">
-        <p>Course Name : ${data.name}</p> 
-        <p>Level : ${data.level}</p>
-        <p>Credit Hours : ${data.creditHours}</p>
-      </div>
-      <div class="column"
-      >
-      <div  style={{
-      display: "flex",
-      flexDirection: "row",
-        alignItems: "center"
-      }}>
-
-         <p style={{ margin: 0 }}>
-    Course Code: ${data.courses.code}
-    <span style={{ marginLeft: "2px" }}>(${data.gender.toUpperCase()})</span>
-  </p>
-        </div>
-        </p>
-        <p  style="
-        
-        ">Semester : ${data.semester}
-        <span>(${data.academicYear})</span>
-        </p>
-        <p>Course Coordinator : ${data.courseCoordinator}</p>
-      </div>
+   <div class="column">
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <p>Course Name: ${data.name}</p>
+       <p style="margin: 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data.gender.toUpperCase()})</span></p>
+      <p>Credit Hours: ${data.creditHours}</p>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <p>Semester: ${data.semester}</p>
+      <p>Level: ${data.level}</p>
+      <p>Course Coordinator: ${data.courseCoordinator}</p>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <p>Department: ${data.department}</p>
+    </div>
+  </div>
     </div>
 
 <div class="div-analysis-report">Item Analysis Report</div>
@@ -399,89 +388,87 @@ font-size: 16px;
           <th style="width: 35%;">Comments/Recommendation</th>
         </tr>
         ${data.items
-          .map((item, index) => {
-            // let formattedString = "";
-            // if (item.items) {
-            //   formattedString = formatNumberRanges(Object.values(item.items));
-            // }
+      .map((item, index) => {
+        // let formattedString = "";
+        // if (item.items) {
+        //   formattedString = formatNumberRanges(Object.values(item.items));
+        // }
 
-            let comments = "";
-         
-            
-            // const numbers = parseInputString(item.items);
-            // const result = findRanges(numbers).joim(", ");
+        let comments = "";
 
-            if (item.numberOfItems > 0) {
-              if (item.category === "Poor (Bad) Questions") {
-                comments = `
+
+        // const numbers = parseInputString(item.items);
+        // const result = findRanges(numbers).joim(", ");
+
+        if (item.numberOfItems > 0) {
+          if (item.category === "Poor (Bad) Questions") {
+            comments = `
                   <div>● Discrimination value of this items are negative in value.</div>
                   <div>● Discrimination value of this items are less than 0.20</div>
                   <div>● All the items should be rejected.</div>
                 `;
-              } else if (item.category === "Very Difficult Question") {
-                comments = `
+          } else if (item.category === "Very Difficult Question") {
+            comments = `
                   <div>● Keys of these items are needed to be checked.</div>
                   <div>● Items should be rejected.</div>
                 `;
-              } else if (item.category === "Difficult Question") {
-                comments = `
+          } else if (item.category === "Difficult Question") {
+            comments = `
                   <div>● Key of this item is also needed to be checked.</div>
                 `;
-              } else if (item.category === "Good Question") {
-                comments = `
+          } else if (item.category === "Good Question") {
+            comments = `
                   <div>● Discrimination value of first raw items is accepted good.</div>
                   <div>● Items could be stored in question bank for further use.</div>
                 `;
-              } else if (item.category === "Easy Question") {
-                comments = `
+          } else if (item.category === "Easy Question") {
+            comments = `
                   <div>● Item should be revised before re-use.</div>
                 `;
-              } else if (item.category === "Very Easy Question") {
-                comments = `
+          } else if (item.category === "Very Easy Question") {
+            comments = `
                   <div>● Items should be rejected or needed to be revised.</div>
                 `;
-              } else {
-                comments = `
+          } else {
+            comments = `
                   <div>● No specific comments available.</div>
                 `;
-              }
-              if (item.category == "Reliability") {
-                comments = getReliabilityDescription(item.numberOfItems);
-              }
-            }
-            if (item.category === "Reliability") {
-              return `
+          }
+          if (item.category == "Reliability") {
+            comments = getReliabilityDescription(item.numberOfItems);
+          }
+        }
+        if (item.category === "Reliability") {
+          return `
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
-                  <td colspan="3" style="white-space: nowrap; background-color:#f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 600; text-align: center;">KR20 = ${
-                    item.numberOfItems
-                  }</td>
+                  <td colspan="3" style="white-space: nowrap; background-color:#f4e2dd; min-width: 160px; max-width: 160px; font-size: 12px; font-weight: 600; text-align: center;">KR20 = ${item.numberOfItems
+            }</td>
                   <td class=" comments" style=" font-size: 12px; background-color:#f4e2dd; font-weight: 600;">${comments}</td>
                 </tr>
               `;
-            } else {
-              return `
+        } else {
+          return `
                 <tr>
                   <td class="white">${index + 1}</td>
                   <td class="white">${item.category}</td>
                        <td style="word-wrap: break-word; min-width: 160px; max-width: 160px;">
 
     ${item.items
-      .map((subItem) => `<span class="spac">${subItem}</span>`)
-      .join(",")}
+              .map((subItem) => `<span class="spac">${subItem}</span>`)
+              .join(",")}
 
 </td>
-                  <td class="items">${
-                    item.numberOfItems > 0 ? item.numberOfItems : " "
-                  }</td>
+                  <td class="items">${item.numberOfItems > 0 ? item.numberOfItems : " "
+            }</td>
                   <td>${item.percentage > 0 ? item.percentage : " "}</td>
                   <td class="comments">${comments}</td>
                 </tr>
               `;
-            }
-          })
-          .join("")}
+        }
+      })
+      .join("")}
       </table>
     </div>
     <div class="data-details maint" style="margin-top: 10px;">
@@ -637,7 +624,7 @@ async function generatePdf(req, res) {
       college: data.college,
       university: data.university,
       name: data.nameOfCourse,
-      gender: data.gender,  
+      gender: data.gender,
       academicYear: data.academicYear,
 
       level: data.level,
@@ -769,7 +756,7 @@ async function getDbData(req, res) {
   let totalStudents = passedCount + failedCount;
 
 
-  
+
   const dbData = {
     college: data.college,
     university: data.university,
