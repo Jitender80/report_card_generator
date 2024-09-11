@@ -87,91 +87,39 @@ const StudentTable = () => {
   }
 
   return (
-    <div className=" flex-1 h-screen w-full   overflow-x-auto overflow-y-auto ">
+    <div className="flex-1 h-screen w-full overflow-x-auto overflow-y-auto">
+    <div className="flex flex-col justify-center items-center m-20 gap-10">
+      <h2 className="text-2xl font-semibold">Download PDF</h2>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded"
+        onClick={() => {
+          window.open(`${BASE_URL}/generate/${currentClassId}`);
+        }}
+      >
+        Download
+      </button>
+      <i className="text-sm text-gray-600">
+        If download not working, please refresh the page and try again.
+      </i>
+    </div>
 
-      <div className="flex flex-col justify-center items-center m-20 gap-10">
-
-        <h2 className="text-2xl">Download PDF</h2>
-        <button
-
-          className="bg-blue-500 hover:bg-blue-700 space-x-3 text-white font-bold py-2 px-4 rounded"
-
-          onClick={() => { window.open(`${BASE_URL}/generate/${currentClassId}`) }}
-        >
-          Download
-
-
-        </button>
-
-        <i>
-          if download not working, please refresh the page and try again
-        </i>
+    <div className="flex flex-col justify-center items-center bg-blue-200 p-10 rounded-lg shadow-md">
+      <div
+        onClick={() => handlePress(currentClassId)}
+        className="text-2xl bg-green-500 hover:bg-green-700 text-white rounded-md p-2 m-2 cursor-pointer"
+      >
+        Show PDF
       </div>
 
-      <div className="flex flex-col justify-center items-center bg-blue-200 ">
+      <h2 className="text-red-600 text-xl text-center mt-4">
+        This PDF is only for data verification. Kindly ignore the formatting. Instead, download the PDF to view.
+      </h2>
 
-        <div onClick={() => handlePress(currentClassId)} className="
-            text-2xl bg-green-500 rounded-md p-2 m-2 cursor-pointer
-            ">
-          Show PDF
-        </div>
-
-
-    <h2 className="text-red-600 text-xl">THis Pdf is only for data verification , Kindly ignore the formatting ,Instead Download the pdf to view</h2>
-
-        <div className="h-full py-20 mb-20 " >
-
-          {pdf && <ReportCard data={pdf} />}
-        </div>
-
-
-      </div>
-
-
-
-
-      <div className="mt-10 border-zinc-700 border-1">
-
-
-        {/* <table className="min-w-full bg-white border-red-100 border-2 ">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">ID Number</th>
-            <th className="py-2 px-4 border-b">Blank Count</th>
-            <th className="py-2 px-4 border-b">Correct Count</th>
-            <th className="py-2 px-4 border-b">Percentage</th>
-            <th className="py-2 px-4 border-b">Score</th>
-
-          </tr>
-        </thead>
-        <tbody className="overflow-y-auto p-5">
-          {Object.entries(students).map((student, index) => (
-            // <div>
-            //   {console.log(
-            //     ".🚀 ~ file: StudentTable.tsx ~ line 78 ~ Object.entries(students).map ~ student",
-            //     student[1]?.name
-            //   )}
-            // </div>
-            <tr key={index} >
-              <td className="py-2 px-4 border-b">
-                {student[1]?.name || "name"}
-              </td>
-              <td className="py-2 px-4 border-b">{student[1]?.idNumber}</td>
-              <td className="py-2 px-4 border-b">{student[1]?.blankCount}</td>
-              <td className="py-2 px-4 border-b">{student[1]?.correctCount}</td>
-              <td className="py-2 px-4 border-b">{student[1]?.percentage}</td>
-              <td className="py-2 px-4 border-b">{student[1]?.score}</td>
-              <td className="py-2 px-4 border-b">
-
-              </td>
-
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
+      <div className="h-full py-20 mb-20 w-full flex justify-center">
+        {pdf && <ReportCard data={pdf} />}
       </div>
     </div>
+  </div>
   );
 };
 

@@ -199,10 +199,12 @@ const  Class = ({ onClassIdChange }: Props) => {
   };
 
   return (
+
+    
     <div className="flex justify-center items-center mb-12 border-2 border-black m-2 mx-5 rounded-md overflow-hidden flex-1 w-full h-screen">
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-8 p-8 py-20 justify-center h-full items-center border rounded shadow-lg w-full bg-yellow-200"
+      className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 py-20 justify-center h-full items-center border rounded shadow-lg w-full bg-yellow-200"
     >
         <label className="flex flex-col" htmlFor="level">
           Level:
@@ -211,7 +213,7 @@ const  Class = ({ onClassIdChange }: Props) => {
             name="level"
             value={classData.level}
             onChange={handleChange}
-            className="p-2 border  border-black  m-2  mx-5 rounded-md "
+            className="p-2 border  border-black  m-2  mx-5 rounded-md"
           />
         </label>
 
@@ -264,7 +266,7 @@ const  Class = ({ onClassIdChange }: Props) => {
         <label className="flex flex-col">
           Semester:
           <input
-type="text"
+            type="text"
             name="semester"
             value={classData.semester}
             onChange={handleChange}
@@ -275,7 +277,7 @@ type="text"
         <label className="flex flex-col">
           Academic Year:
           <select
-          type="number"
+            type="number"
             name="academicYear"
             value={classData.academicYear}
             onChange={handleChange}
