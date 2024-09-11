@@ -114,105 +114,91 @@ async function generateReportCardPDF(dbData) {
   // "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
 
   const reportCardHtml = ` <style>
-    .report-card {
+   .report-card {
+  width: 1000px;
+  height: 90%;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #b8d3ef;
+  border: 6px solid #1C4A7A;
+}
 
-        width: 1000px; 
-    
-        height: 90%; 
-    
-        padding: 10px 20px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        // gap:10px;
-        background-color: #b8d3ef;
-        border: 6px solid #1C4A7A;
-        
-        // -webkit-print-color-adjust: exact;
-      }
-
-      .report-card table {
-        width: 100%;
-        height: auto;
-        border: 2px solid #000; /* Add this line to set the border color to black */
-
-
-
-      align-self: center;
-
-        align-self: center;
-
-      }
-    
-
-    report-card th, .report-card td {
-      border: 2px solid #000; /* Ensure borders are visible */
-      padding: 4px;
-      text-align: left;
-      font-size: 12px;
-    }
-
-    .report-card th {
-      background-color: #D9D9D9 !important;
-      color: #000 !important;
-      font-weight: bold;
-      border: 2px solid #000;
-
-    }
-
-    .header-box, .info-box {
-      text-align: center;
-      background-color: #fff;
-      border: 1px solid #000;
-      height: 80px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-     .info-box {
-    padding: 20px;
-    background-color: #f9f9f9;
-    flex-direction: column;
-      // justify-content: space-between;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  .row {
-    display: flex;
+.report-card table {
   width: 100%;
+  height: auto;
+border-collapse: collapse;
+  border: 2px solid #000; /* Add this line to set the border color to black */
+  align-self: center;
+}
 
-    flex-direction: row;
-    // justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .column {
-    flex: 1;
-    flex-direction: row;
-      justify-content: space-between;
+.report-card th, .report-card td {
+  border: 2px solid #000; /* Ensure borders are visible */
+  padding: 4px;
+  text-align: left;
+  font-size: 12px;
+}
 
-    padding: 10px;
-  }
-  .column p {
-    margin: 0;
-    padding: 5px 0;
-  }
+.report-card th {
+  background-color: #D9D9D9 !important;
+  color: #000 !important;
+  font-weight: bold;
+  border: 2px solid #000;
+}
 
-      .info-box .column {
-        width: 48%;
-      }
+.header-box, .info-box {
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #000;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
-      .data-details {
-      
-        width: 100%;
-      }
+.info-box {
+  padding: 20px;
+  background-color: #f9f9f9;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+border-collapse: collapse;
+}
 
-      .data-details td {
-        font-size: 10px; /* Reduced font size */
-        font-weight: 400;
-        text-align: center;
-      }
+.row {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+.column {
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.column p {
+  margin: 0;
+  padding: 5px 0;
+}
+
+.info-box .column {
+  width: 48%;
+}
+
+.data-details {
+  width: 100%;
+}
+
+.data-details td {
+  font-size: 10px; /* Reduced font size */
+  font-weight: 400;
+  text-align: center;
+}
 
 .data-details th {
   font-size: 16px;
@@ -222,175 +208,159 @@ async function generateReportCardPDF(dbData) {
   background-color: #e7e4e4;
 }
 
-
 table.maintable {
   background-color: white;
-  height:60%
+  height: 60%;
   border: 2px solid #000;
-
-  
+border-collapse: collapse;
 }
 
 table.maintable td {
   text-align: center;
-  font-size : ${data.courses.studentsAttended > 120 ? "7px" : "12px"}
- 
+  font-size: 12px; /* Adjusted font size */
 }
+
 table.maintable th {
-border: 2px solid #000;
-font-size: 16px;
+  border: 2px solid #000;
+border-collapse: collapse;
+  font-size: 16px;
   text-align: center;
 }
 
+ul {
+  list-style-type: none;
+}
 
-    ul {
-      list-style-type: none;
-    }
+.bottom {
+  width: 90%;
+}
 
-    .bottom {
-      width: 90%;
-    }
+.bottom tr td {
+  background-color: #fff;
+}
 
-    .bottom tr td {
-      background-color: #fff;
-    }
+.roww {
+  background-color: #fff;
+}
 
-    .roww {
-      background-color: #fff;
-    }
+.spac {
+  margin: 0px 1px 0 1px;
+}
 
-    .spac {
-      margin: 0px 1px 0 1px;
-    }
+.spacing {
+  margin-bottom: 2px;
+}
 
-    .spacing {
-      margin-bottom: 2px;
-    }
-
-    .column p {
-      font-size: 14px;
-      font-weight: "bold";
-      text-align: center;
-    }
-
-    .per {
-      width: 40px;
-    }
-      .comments{
-
-
-
+.column p {
+  font-size: 14px;
+  font-weight: bold; /* Corrected font-weight */
   text-align: center;
-      }
-      .items{
+}
 
+.per {
+  width: 40px;
+}
+
+.comments {
   text-align: center;
-      }
-  .arabic-text {
+}
+
+.items {
+  text-align: center;
+}
+
+.arabic-text {
   font-family: 'Amiri', serif;
   color: rgba(0, 0, 0, 0.5); /* Adjust the transparency as needed */
 }
-  .litt{
 
+.litt {
   font-family: 'Amiri', serif;
   color: rgba(0, 0, 0, 0.5); /* Adjust the transparency as needed */
 }
-  .comments div {
+
+.comments div {
   display: block; /* Ensures each comment is on a separate line */
   margin-bottom: 2px; /* Adds space between comments */
 }
-  .roww td{
-    text-align:center
-  
-  }
-    .rowe td{
-      text-align:center;
-      padding:2px 0px 5px 10px;
-      }
 
-    .cred {
-    position: absolute;
-    bottom:40px; /* Adjust this value as needed */
-    left: 50%;
-    transform: translateX(-50%);
+.roww td {
+  text-align: center;
 }
-    .bottom th{
-    text-align:center
-    }
 
-    .data-details  {
-      border:2px solid #000;
-      margin-top: 20px;
-      
+.rowe td {
+  text-align: center;
+  padding: 2px 0px 5px 10px;
+}
 
+.cred {
+  position: absolute;
+  bottom: 40px; /* Adjust this value as needed */
+  left: 50%;
+  transform: translateX(-50%);
+}
 
+.bottom th {
+  text-align: center;
+}
+
+.data-details {
+  border: 2px solid #000;
+border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .bottom th, .bottom td {
-
-  flex-grow: 1; 
-
+  flex-grow: 1;
 }
-  .bottom{
-    
 
-  }
-    .items-table{
-    margin-top: 0px 
-    border: 2px solid black;
+.items-table {
+  margin-top: 0px;
+  border: 2px solid black;
+}
 
-
-
-    }
-
-    .credits{
+.credits {
   font-size: 10px;
   font-weight: 50;
-
-  color: #e7e4e4 !important
+  color: #e7e4e4 !important;
   margin-bottom: 0px; /* Adjust this value to control spacing */
   line-height: 1.1; /* Adjust this value to control line spacing */
 }
+
 .div-analysis-report {
-    color: red;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 20px 0 0px 0;
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 20px 0 0px 0;
 }
 
-.row p{
+.row p {
   font-weight: 600;
 }
   </style>
 
-  <div class="report-card">
-    <div class="header-box">
-      <div style="font-size: 12px; font-weight: bold; gap: 5">
-        <ul style={{display:flex; flex-direction : row }}>
-          <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
-          <li class="spacing">Ministry of Education</li>
-          <li class="spacing">${data?.university || "Najran University"}</li>
-          <li class="spacing">Faculty of Dentistry</li>
-        </ul>
-      </div>
-      <img src="https://res.cloudinary.com/dkijovd6p/image/upload/v1725480428/t50opxpqoofrimbd3yxi.png" alt="University Logo" style="width: 75px; height: 75px; ">
-      <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px; ">
-    
+<div class="report-card">
+  <div class="header-box">
+    <div style="font-size: 12px; font-weight: bold; gap: 5px;">
+      <ul style="display: flex; flex-direction: column;">
+        <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
+        <li class="spacing">Ministry of Education</li>
+        <li class="spacing">${data?.university || "Najran University"}</li>
+        <li class="spacing">Faculty of Dentistry</li>
+      </ul>
     </div>
-    
+    <img src="https://res.cloudinary.com/dkijovd6p/image/upload/v1725480428/t50opxpqoofrimbd3yxi.png" alt="University Logo" style="width: 75px; height: 75px;">
+    <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px;">
+  </div>
 
-
-  
-
-  
-    <div class="info-box back" style="padding: 20px; background-color:#e7e4e4; border: 1px solid #000; border-radius: 5px;">
-    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align:center">
-      <p style="margin: 0; padding: 3px 0 0 ;">Course Name: ${data.name}</p>
+  <div class="info-box back" style="padding: 20px; background-color: #e7e4e4; border: 1px solid #000; border-radius: 5px;">
+    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align: center;">
+      <p style="margin: 0; padding: 3px 0 0;">Course Name: ${data.name}</p>
       <p style="margin: 0; padding: 3px 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data.gender.toUpperCase()})</span></p>
-      <p style="margin: 0 ; padding: 3px 0;">Credit Hours: ${data.creditHours}</p>
+      <p style="margin: 0; padding: 3px 0;">Credit Hours: ${data.creditHours}</p>
     </div>
-    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align:center;">
-      <p style="margin: 0; padding: 3px 0;">Semester: ${data.semester}<span>( ${data.academicYear})</span></p>
+    <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align: center;">
+      <p style="margin: 0; padding: 3px 0;">Semester: ${data.semester} <span>(${data.academicYear})</span></p>
       <p style="margin: 0; padding: 3px 0;">Course Coordinator: ${data.courseCoordinator}</p>
       <p style="margin: 0; padding: 3px 0;">Level: ${data.level}</p>
     </div>
