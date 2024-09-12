@@ -392,28 +392,28 @@ async function calculateResult(id) {
           disc_index: item.disc_index,
           correctAnswersPercentage: item.correctAnswersPercentage,
         }}
-        if (item.disc_index >= 0.2 && item.correctAnswersPercentage >=0 && item.correctAnswersPercentage <= 20) {
+        if (item.disc_index >= 0.2 && item.correctAnswersPercentage >=0 && item.correctAnswersPercentage <= 20.99) {
           return {
             questionNumber: questionNumber,
             category: "Very Difficult Question",
             disc_index: item.disc_index,
             correctAnswersPercentage: item.correctAnswersPercentage,
           }}
-          if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30 ) {
+          if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30.99 ) {
             return {
               questionNumber: questionNumber,
               category: "Difficult Question",
               disc_index: item.disc_index,
               correctAnswersPercentage: item.correctAnswersPercentage,
             }}
-            if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70) {
+            if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70.99) {
               return {
                 questionNumber: questionNumber,
                 category: "Good Question",
                 questionNumber: questionNumber,
                 correctAnswersPercentage: item.correctAnswersPercentage,
               }}
-              if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80) {
+              if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80.99) {
                 return {
                   questionNumber: questionNumber,
                   category: "Easy Question",
