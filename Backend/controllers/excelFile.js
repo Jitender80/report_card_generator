@@ -50,6 +50,10 @@ exports.createClass = async (req, res) => {
 
   } = req.body;
   // console.log("🚀 ~ exports.createClass= ~ req.body:", req.body)
+  const existingClass = await Class.findOne({ courseCode, gender });
+    if (existingClass) {
+      return res.status(401).json({ error: "Class with this course code and gender already exists" });
+    }
 
   const newClass = new Class({
     user: id,

@@ -165,6 +165,12 @@ const  Class = ({ onClassIdChange }: Props) => {
         classData
       );
 
+      if(response.status === 401) {
+
+        toast.error("This Course with this code already exists in the database");
+        return;
+      }
+
       dispatch(setCurrentClassId(response.data.data));
 
       if (response.status === 201) {

@@ -19,6 +19,7 @@ const { generate, generateReportCardPDF, generatePdf, getDbData } = require("./c
 const { getGrades } = require("./controllers/grading");
 const { getReportsByRoleAndEmail } = require("./controllers/get.controllers");
 const User = require("./models/usermodel");
+const { generateFinalReport } = require("./controllers/finalReport");
 
 
 const app = express();
@@ -119,6 +120,9 @@ app.get('/pdfData/:id', getDbData)
 app.get('/generate/:id', generatePdf);
 
 app.delete('/delete-class/:id',deleteData)
+
+
+app.post('/finalReportCard', generateFinalReport);
 
 
 app.listen(port, () => {

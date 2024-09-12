@@ -21,6 +21,7 @@ const CheckReports = () => {
   useEffect(() => {
     const getReports = async () => {
       try {
+        toast.loading('Loading reports...');
         const response = await axios.get(`${BASE_URL}/getReportsByRoleAndEmail?email=${searchmain ? searchmain : usermail}&role=teacher`);
         console.log(response?.data?.reports);
 
@@ -33,6 +34,7 @@ const CheckReports = () => {
         });
 
         setReports(sortedReports);
+        toast.dismiss();
       } catch (error) {
         console.log(error);
       }
@@ -65,6 +67,7 @@ const CheckReports = () => {
   };
   return (
     <>
+    
       <h4 className='py-2'>
         {
           role === "admin" ? "Admin mail :" : "Intructor mail :"
@@ -97,7 +100,7 @@ const CheckReports = () => {
               <tbody className="bg-white">
                 {reports.map((report: any, index: number) => (
                   <tr key={index} className={index % 2 === 0 ? "bg-gray-100 " : ""}
-                    onClick={() => handleReportRoute(report._id)}
+                    // onClick={() => handleReportRoute(report._id)}
                   >
                     <td className="px-6 py-4 text-center">{index + 1}</td>
                     <td className="px-6 py-4 text-center">{report?.courseCode}</td>
