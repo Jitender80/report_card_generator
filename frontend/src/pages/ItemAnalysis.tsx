@@ -104,12 +104,12 @@ const ItemAnalysis: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-0 ">
+    <div className="flex flex-col items-center justify-center mt-20 ">
       {!isClassSubmitted && !savedCollegeDetails && (
         <form
           onSubmit={handleCollegeSubmit}
           className="border  border-gray-600 p-2 rounded-lg w-11/12 flex flex-row gap-4
-    justify-around
+    justify-center
     items-center
   
           "
@@ -153,8 +153,13 @@ const ItemAnalysis: React.FC = () => {
         </div>
       )}
       {isClassSubmitted && (
-        <div>
-          <div className="flex items-center space-x-2">
+        <div className="
+        border border-gray-600 p-2 rounded-lg w-11/12 flex flex-col gap-4
+        justify-center
+        items-center
+        mt-20
+        ">
+<div className="flex flex-col items-center justify-center h-full bg-gray-100">
             <svg
               className="w-6 h-6 text-blue-500"
               fill="none"
@@ -169,25 +174,25 @@ const ItemAnalysis: React.FC = () => {
                 d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M16 12l-4-4m0 0l-4 4m4-4v12"
               ></path>
             </svg>
-            <span className="text-xl font-semibold">
+            <span className="text-3xl font-semibold">
               Upload the report card PDF
             </span>
           </div>
           <input
-            id="file-upload"
-            placeholder="Upload the report card PDF"
-            type="file"
-            className="mt-4 p-2 border border-gray-300 rounded-lg"
-            onChange={handleFileChange}
-          />
-          <Button
-            variant="outline"
-            color="primary"
-            onClick={handleUpload}
-            className="mt-4"
-          >
-            Upload
-          </Button>
+    id="file-upload"
+    placeholder="Upload the report card PDF"
+    type="file"
+    className="mt-32 p-4 w-3/4 max-w-lg border border-gray-300 rounded-lg text-lg bg-white shadow-md"
+    onChange={handleFileChange}
+  />
+  <Button
+    variant="outline"
+    color="primary"
+    onClick={handleUpload}
+    className="mt-8 px-10 py-4 text-lg font-semibold border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+  >
+    Upload
+  </Button>
         </div>
       )}
     </div>
