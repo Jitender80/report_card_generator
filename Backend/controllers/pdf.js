@@ -356,7 +356,7 @@ border-collapse: collapse;
   <div class="info-box back" style="padding: 15px; background-color: #e7e4e4; border: 1px solid #000; border-radius: 5px;">
     <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align: center;">
       <p style="margin: 0; padding: 3px;">Course Name: ${data.name}</p>
-      <p style="margin: 0; padding: 3px 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data.gender.toUpperCase()})</span></p>
+      <p style="margin: 0; padding: 3px 0;">Course Code: ${data.courses.code} <span style="margin-left: 2px;">(${data?.gender?.toUpperCase()})</span></p>
       <p style="margin: 0; padding: 3px 0;">Credit Hours: ${data.creditHours}</p>
     </div>
     <div class="row" style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 10px; text-align: left; padding-left:-15px">
@@ -596,7 +596,18 @@ async function generatePdf(req, res) {
         )}%`
       );
     });
+    const updateData = {
+      questionAnalysisData: {}
+    };
 
+    result.forEach((item) => {
+      updateData.questionAnalysisData[item.category] = {
+        number: item.numberOfItems,
+        percentage: item.percentage
+      };
+    });
+
+    await Class.findByIdAndUpdate(id, updateData, { new: true });
     result.push({
       category: "Reliability",
       numberOfItems: data.kr20.toFixed(2), // Replace "value" with the actual KR2 value
