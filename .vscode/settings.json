@@ -1,4 +1,7 @@
-// {
+{
+    "pieces.cloudCapabilities": "Blended",
+    "pieces.telemetry": true
+} // {
 //     "peacock.color": "#dd0531",
 //     "workbench.colorCustomizations": {
 //         "activityBar.activeBackground": "#d9cbce",
