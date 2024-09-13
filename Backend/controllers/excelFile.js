@@ -50,7 +50,7 @@ exports.createClass = async (req, res) => {
 
   } = req.body;
   // console.log("🚀 ~ exports.createClass= ~ req.body:", req.body)
-  const existingClass = await Class.findOne({ courseCode, gender });
+  const existingClass = await Class.findOne({ courseCode, gender, academicYear });
     if (existingClass) {
       return res.status(401).json({ error: "Class with this course code and gender already exists" });
     }
@@ -474,22 +474,38 @@ async function getResultData(id) {
       "Easy Question": [],
       "Very Easy Question": [],
     };
-
+    
     classData.questionAnalysis.forEach((item) => {
       if (item && item.category && questionTypes[item.category]) {
         const questionNumber = parseInt(item.questionNumber.replace('Q', ''), 10);
         questionTypes[item.category].push(questionNumber);
       }
     });
-    console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes)
-    classData.questionSummary = questionTypes;
-    const res = await classData.save()
+    const totalQuestions = classData.questionAnalysis.length;
+const questionAnalysisData = {};
+
+Object.keys(questionTypes).forEach((category) => {
+  const numberOfItems = questionTypes[category].length;
+  const percentage = (numberOfItems / totalQuestions) * 100;
+  questionAnalysisData[category] = {
+    number: numberOfItems,
+    percentage: percentage.toFixed(2) // Format percentage to 2 decimal places
+  };
+});
     
+    console.log("🚀 ~ exports.getResultData= ~ questionTypes:", questionTypes);
+    
+    classData.questionSummary = questionTypes;
+    classData.questionAnalysisData = questionAnalysisData;
 
-
-
-
-    return res.questionSummary
+    try {
+      const res = await classData.save();
+      console.log("🚀 ~ getResultData ~ res:", res);
+    } catch (error) {
+      console.error("Error saving class data:", error);
+    }
+    
+    return classData.questionSummary;
 
   } catch (error) {
     console.log(error.message);
@@ -514,6 +530,7 @@ exports.getFinalResult = async (req, res) => {
     console.log(cal, "---121")
     const resdata = await getResultData(id);
     console.log(resdata, "505")
+
 
 
  

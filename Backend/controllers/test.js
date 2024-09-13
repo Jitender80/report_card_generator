@@ -100,25 +100,25 @@ const data = {
         disc_index: item.disc_index,
         correctAnswersPercentage: item.correctAnswersPercentage
       });
-    } else if (item.disc_index >= 0.2 && item.correctAnswersPercentage >= 0 && item.correctAnswersPercentage <= 20) {
+    } else if (item.disc_index >= 0.2 && item.correctAnswersPercentage >= 0 && item.correctAnswersPercentage <= 20.99) {
       categorizedQuestions["Very Difficult Question"].push({
         questionNumber: questionNumber,
         disc_index: item.disc_index,
         correctAnswersPercentage: item.correctAnswersPercentage
       });
-    } else if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30) {
+    } else if (item.correctAnswersPercentage >= 21 && item.correctAnswersPercentage <= 30.99) {
       categorizedQuestions["Difficult Question"].push({
         questionNumber: questionNumber,
         disc_index: item.disc_index,
         correctAnswersPercentage: item.correctAnswersPercentage
       });
-    } else if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70) {
+    } else if (item.correctAnswersPercentage >= 31 && item.correctAnswersPercentage <= 70.99) {
       categorizedQuestions["Good Question"].push({
         questionNumber: questionNumber,
         disc_index: item.disc_index,
         correctAnswersPercentage: item.correctAnswersPercentage
       });
-    } else if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80) {
+    } else if (item.correctAnswersPercentage >= 71 && item.correctAnswersPercentage <= 80.99) {
       categorizedQuestions["Easy Question"].push({
         questionNumber: questionNumber,
         disc_index: item.disc_index,

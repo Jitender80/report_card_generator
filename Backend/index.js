@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const fs = require('fs');
+const path = require('path');
+const cron = require('node-cron');
 const multer = require("multer");
 const path = require("path");
 const xlsx = require("xlsx");
@@ -123,7 +125,33 @@ app.delete('/delete-class/:id',deleteData)
 
 
 app.post('/finalReportCard', generateFinalReport);
+const folderPath = path.join(__dirname, './uploads');
 
+const deleteFiles = () => {
+  fs.readdir(folderPath, (err, files) => {
+    if (err) {
+      console.error(`Error reading directory: ${err.message}`);
+      return;
+    }
+
+    files.forEach((file) => {
+      const filePath = path.join(folderPath, file);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Error deleting file ${file}: ${err.message}`);
+        } else {
+          console.log(`Deleted file: ${file}`);
+        }
+      });
+    });
+  });
+};
+
+// Schedule the cron job to run every day at midnight
+cron.schedule('0 0 * * *', () => {
+  console.log('Running cron job to delete files...');
+  deleteFiles();
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const Student = require("./student");
+const { number } = require("mathjs");
 
 const classSchema = new mongoose.Schema({
   college : {type: String, required: false},
    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User schema
   university : {type: String, required: false}, 
   level:{type: Number, required: false},
-  gender:{type: String, required: false},
+  gender:{type: String, required: false, default: "male"},
   department:{type: String, required: false},
 
   nameOfCourse:{type:String, required:false},
@@ -61,6 +62,33 @@ const classSchema = new mongoose.Schema({
     "Easy Question": [Number],
     "Very Easy Question": [Number],
   },
+
+  questionAnalysisData: {
+    "Poor (Bad) Questions": {
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
+    "Very Difficult Question": {
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
+    "Difficult Question": {
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
+    "Good Question": {
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
+    "Easy Question": {
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
+    "Very Easy Question":{
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
+  }
 });
 
 const Class = mongoose.model("Class", classSchema);

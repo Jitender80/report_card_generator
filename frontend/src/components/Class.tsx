@@ -167,7 +167,11 @@ const  Class = ({ onClassIdChange }: Props) => {
 
       if(response.status === 401) {
 
-        toast.error("This Course with this code already exists in the database");
+        toast.error("This Course with this code already exists in the database",{
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true
+        });
         return;
       }
 
