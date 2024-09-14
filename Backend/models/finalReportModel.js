@@ -5,32 +5,32 @@ const { title } = require("process");
 
 const finalReportSchema = new mongoose.Schema({
   semester: { type: String, required: true },
-  year: { type: Number, required: true },
+  year: { type: String, required: true },
   gender: { type: String, required: true },
   course_Observations: {
 
     "GOOD": [
-        {
+      {
 
-          course_code: { type: String, required: true },
-          course_name: { type: String, required: true },
-          gender: { type: String, required: true },
-        }
-      ],
+        course_code: { type: String, required: true },
+        course_name: { type: String, required: true },
+        gender: { type: String, required: true },
+      }
+    ],
 
 
     "AVERAGE": [
-        {
+      {
 
-          course_code: { type: String, required: true },
-          course_name: { type: String, required: true },
-          gender: { type: String, required: true },
-        }
-      ],
+        course_code: { type: String, required: true },
+        course_name: { type: String, required: true },
+        gender: { type: String, required: true },
+      }
+    ],
 
 
     "POOR":
-    [
+      [
         {
 
           course_code: { type: String, required: true },
@@ -38,8 +38,8 @@ const finalReportSchema = new mongoose.Schema({
           gender: { type: String, required: true },
         }
       ]
-    },
-    
+  },
+
 
 
 
@@ -47,43 +47,43 @@ const finalReportSchema = new mongoose.Schema({
 
 
     {
-        level: { type: String, required: true },  
-        classId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Class", required: true }],
+      level: { type: String, required: true },
+      classId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Class", required: true }],
 
-        levelAverage: {
-          "Poor (Bad) Questions": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Very Difficult Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Difficult Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Good Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Easy Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Very Easy Question":{
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Total Accepted":{
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Total Rejected":{
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-        }
+      levelAverage: {
+        "Poor (Bad) Questions": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Very Difficult Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Difficult Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Good Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Easy Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Very Easy Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Total Accepted": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Total Rejected": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+      }
 
     },
 
@@ -93,49 +93,49 @@ const finalReportSchema = new mongoose.Schema({
 
 
     {
-        CourseName: { type: String, required: true },  
-        classId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Class", required: true }],
+      CourseName: { type: String, required: true },
+      classId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Class", required: true }],
 
-        levelAverage: {
-          "Poor (Bad) Questions": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Very Difficult Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Difficult Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Good Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Easy Question": {
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Very Easy Question":{
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Total Accepted":{
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-          "Total Rejected":{
-            number  : { type: Number },
-            percentage: { type: Number },
-          },
-        }
+      levelAverage: {
+        "Poor (Bad) Questions": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Very Difficult Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Difficult Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Good Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Easy Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Very Easy Question": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Total Accepted": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+        "Total Rejected": {
+          number: { type: Number },
+          percentage: { type: Number },
+        },
+      }
 
     },
 
   ],
 
-  
+
 
 });
 
@@ -191,7 +191,7 @@ finalReportSchema.pre('save', async function (next) {
 
   const calculateAverages = async (table, averageField) => {
     for (const entry of table) {
-      const classIds = entry.classId.map(id => mongoose.Types.ObjectId(id));
+      const classIds = entry.classId.map(id => new mongoose.Types.ObjectId(id));
 
       // Fetch all Class documents for the respective classIds
       const classes = await mongoose.model('Class').find({
