@@ -5,7 +5,7 @@ const Class = require('../models/excelmodel');
 
 
 exports.generateFinalReport = async (req, res) => {
-    const { academicYear, courseCode, semester } = req.body;
+    const { academicYear,  semester } = req.body;
 
     try {
 
@@ -13,7 +13,7 @@ exports.generateFinalReport = async (req, res) => {
             {
               $project: {
                 academicYear: academicYear,
-                courseCode: courseCode,
+
                 semester: semester,
                 // Add any additional fields you need here
               }
