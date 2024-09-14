@@ -275,13 +275,18 @@ const  Class = ({ onClassIdChange }: Props) => {
 
         <label className="flex flex-col">
           Semester:
-          <input
-            type="text"
-            name="semester"
-            value={classData.semester}
-            onChange={handleChange}
-            className="p-4 border  border-black  m-2  mx-5 rounded-md"
-          />
+       
+            <select id="semester"      name="semester"   value={classData.semester}     onChange={handleChange}  className="p-4 border  border-black  m-2  mx-5 rounded-md" >
+        <option value="">--Select Semester--</option>
+        <option value="First Semester">First semester</option>
+        <option value="Second Semester">Second semester</option>
+        <option value="Third Semester">Third semester</option>
+        <option value="Fourth Semester">Fourth semester</option>
+        <option value="Fifth Semester">Fifth semester</option>
+        <option value="Sixth Semester">Sixth semester</option>
+        <option value="Seventh Semester">Seventh semester</option>
+        <option value="Eighth Semester">Eighth semester</option>
+      </select>
         </label>
 
         <label className="flex flex-col">

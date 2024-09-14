@@ -5,9 +5,20 @@ const Class = require('../models/excelmodel');
 
 
 exports.generateFinalReport = async (req, res) => {
-
+    const { academicYear,  semester } = req.body;
 
     try {
+
+        const classes = await Class.aggregate([
+            {
+              $project: {
+                academicYear: academicYear,
+
+                semester: semester,
+                // Add any additional fields you need here
+              }
+            }
+          ]);
         
 
 
