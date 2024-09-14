@@ -88,9 +88,51 @@ const classSchema = new mongoose.Schema({
       number  : { type: Number },
       percentage: { type: Number },
     },
+    "Total Accepted":{
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
+    "Total Rejected":{
+      number  : { type: Number },
+      percentage: { type: Number },
+    },
   }
+});
+classSchema.pre('save', function(next) {
+  const questionAnalysisData = this.questionAnalysisData;
+
+  // Calculate Total Accepted
+  const totalAcceptedNumber = 
+    (questionAnalysisData["Difficult Question"].number || 0) +
+    (questionAnalysisData["Good Question"].number || 0) +
+    (questionAnalysisData["Easy Question"].number || 0);
+
+  const totalAcceptedPercentage = 
+    (questionAnalysisData["Difficult Question"].percentage || 0) +
+    (questionAnalysisData["Good Question"].percentage || 0) +
+    (questionAnalysisData["Easy Question"].percentage || 0);
+
+  // Calculate Total Rejected
+  const totalRejectedNumber = 
+    (questionAnalysisData["Poor (Bad) Questions"].number || 0) +
+    (questionAnalysisData["Very Difficult Question"].number || 0) +
+    (questionAnalysisData["Very Easy Question"].number || 0);
+
+  const totalRejectedPercentage = 
+    (questionAnalysisData["Poor (Bad) Questions"].percentage || 0) +
+    (questionAnalysisData["Very Difficult Question"].percentage || 0) +
+    (questionAnalysisData["Very Easy Question"].percentage || 0);
+
+  // Set the calculated values
+  this.questionAnalysisData["Total Accepted"].number = totalAcceptedNumber;
+  this.questionAnalysisData["Total Accepted"].percentage = totalAcceptedPercentage;
+  this.questionAnalysisData["Total Rejected"].number = totalRejectedNumber;
+  this.questionAnalysisData["Total Rejected"].percentage = totalRejectedPercentage;
+
+  next();
 });
 
 const Class = mongoose.model("Class", classSchema);
 
 module.exports = Class;
+  

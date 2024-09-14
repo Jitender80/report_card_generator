@@ -18,7 +18,9 @@ exports.generateFinalReport = async (req, res) => {
                 // Add any additional fields you need here
               }
             }
-          ]);
+          ])
+
+          
         
 
 
