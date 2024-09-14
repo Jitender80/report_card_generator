@@ -295,7 +295,7 @@ ul {
 
 .cred {
   position: absolute;
-  bottom: 40px; /* Adjust this value as needed */
+  bottom: 10px; /* Adjust this value as needed */
   left: 50%;
   transform: translateX(-50%);
 }
@@ -322,7 +322,7 @@ border-collapse: collapse;
 .credits {
   font-size: 10px;
   font-weight: 50;
-  color: #e7e4e4 !important;
+  color: #000 !important;
   margin-bottom: 0px; /* Adjust this value to control spacing */
   line-height: 1.1; /* Adjust this value to control line spacing */
 }
