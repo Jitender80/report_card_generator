@@ -17,7 +17,9 @@ const Home: React.FC = () => {
         >Item Analysis (KR20)</li>
         <li className="bg-blue-500 text-white p-6  text-2xl border border-black rounded-md">Learning Outcome  Menasurement</li>
 
-        <li className="bg-blue-500 text-white p-6  text-2xl border border-black rounded-md">Statistical Analysis</li>
+        <li 
+        onClick={()=> navigate("/finalReport")}
+        className="bg-blue-500 text-white p-6  text-2xl border border-black rounded-md">Statistical Analysis</li>
       </ul>
     
     </div>

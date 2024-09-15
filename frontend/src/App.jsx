@@ -20,6 +20,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import CheckReports from "./pages/CheckReports";
 import InstructorsList from "./pages/InstructorsList";
+import FinalReport from "./pages/FinalReport";
 const ProtectedLayout = () => {
   return (
     <div>
@@ -75,6 +76,7 @@ const App = () => {
               <Route path="studentTable" element={<StudentTable />} />
               <Route path="check-report" element={<CheckReports />} />
               <Route path="instructors" element={<InstructorsList />} />
+              <Route path="finalReport" element={<FinalReport/>} />
             </Route>
             )}  
           </Routes>

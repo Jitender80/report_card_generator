@@ -312,11 +312,16 @@ border-collapse: collapse;
 
 .bottom th, .bottom td {
   flex-grow: 1;
+  border: 1px solid ##c7bebe; /* Thin gray border for internal lines */
 }
 
 .items-table {
   margin-top: 0px;
   border: 2px solid black;
+    border-collapse: collapse;
+}
+    .items-table th, .items-table td {
+  border: 1px solid ##c7bebe; /* Thin gray border for internal lines */
 }
 
 .credits {

@@ -17,11 +17,11 @@ const cors = require("cors");
 
 const { deleteAllData, deleteData } = require("./controllers/dev");
 const connectDB = require("./db");
-const { generate, generateReportCardPDF, generatePdf, getDbData } = require("./controllers/pdf");
+const { generate, generatePdf, getDbData } = require("./controllers/pdf");
 const { getGrades } = require("./controllers/grading");
 const { getReportsByRoleAndEmail } = require("./controllers/get.controllers");
 const User = require("./models/usermodel");
-const { generateFinalReport } = require("./controllers/finalReport");
+const { generateFinalReport, previewReportCard,generateReportCardPDF } = require("./controllers/finalReport");
 
 
 const app = express();
@@ -125,6 +125,10 @@ app.delete('/delete-class/:id',deleteData)
 
 
 app.post('/finalReportCard', generateFinalReport);
+app.post('/previewReportCard', previewReportCard);
+
+app.get('/generateReportCardPDF', generateReportCardPDF);
+
 const folderPath = path.join(__dirname, './uploads');
 
 const deleteFiles = () => {

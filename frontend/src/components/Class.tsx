@@ -167,11 +167,21 @@ const  Class = ({ onClassIdChange }: Props) => {
 
       if(response.status === 401) {
 
-        toast.error("This Course with this code already exists in the database",{
+        toast.error("This Course with this code already exists in the database", {
           position: "top-center",
           autoClose: 2000,
+          theme: "colored",
           hideProgressBar: true
         });
+      
+        // Delay the execution of the subsequent code by 2 seconds (2000 milliseconds)
+        setTimeout(() => {
+          // Perform the action you want to execute after the toast is shown
+          // For example, you can redirect the user or reset a form
+          // console.log("Toast has been shown for 2 seconds. Performing subsequent action...");
+          // Add your subsequent action here
+        }, 2000);
+
         return;
       }
 
