@@ -21,7 +21,7 @@ const { generate, generatePdf, getDbData } = require("./controllers/pdf");
 const { getGrades } = require("./controllers/grading");
 const { getReportsByRoleAndEmail } = require("./controllers/get.controllers");
 const User = require("./models/usermodel");
-const { generateFinalReport, generateReportCardPDF } = require("./controllers/finalReport");
+const { generateFinalReport, generateReportCardPDF, previewReportCard } = require("./controllers/finalReport");
 
 
 const app = express();
@@ -125,7 +125,7 @@ app.delete('/delete-class/:id',deleteData)
 
 
 app.post('/finalReportCard', generateFinalReport);
-// app.post('/previewReportCard', previewReportCard);
+app.post('/previewReportCard', previewReportCard);
 
 app.get('/generateReportCardPDF', generateReportCardPDF);
 

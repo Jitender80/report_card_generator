@@ -13,6 +13,7 @@ const StudentTable = () => {
   const [loading, setLoading] = useState(true);
 
  const currentClassId = useSelector((state) => state.class.currentClassId);
+
  
   console.log("🚀 ~ StudentTable ~ currentClassId:", currentClassId)
   const fetchStudents = async () => {
