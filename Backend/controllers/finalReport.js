@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 const Student = require('../models/student');
 const Class = require('../models/excelmodel');
 const FinalReport = require('../models/finalReportModel');
+const path = require('path');
+const Handlebars = require('handlebars');
 
-const path = require("path");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
+
 
 exports.generateFinalReport = async (req, res) => {
     const { academicYear, semester } = req.body;
@@ -125,7 +127,7 @@ exports.generateFinalReport = async (req, res) => {
 ////**************************************************************************************************** */
 
 ////**************************************************************************************************** */
-const data = {
+const dummydata = {
 
     "semester": "First Semester",
     "year": "2015-16",
@@ -593,82 +595,64 @@ const data = {
 
 
 };
-const templates = [
-    
-
-    (data) => `
+const template1 = Handlebars.compile(`
+    <div class="page">
       <h1>Welcome to Your Report Card</h1>
       <p>This report card provides a comprehensive overview of your academic performance.</p>
-    `,
-    (data) => `
-      <h2>Table 1: Course Observations</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Course Code</th>
-            <th>Course Name</th>
-            <th>Gender</th>
-            <th>Observation</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${Object.entries(data.course_Observations).map(([observation, courses]) => 
-            courses.map(course => `
-              <tr>
-                <td>${course.course_code}</td>
-                <td>${course.course_name}</td>
-                <td>${course.gender}</td>
-                <td>${observation}</td>
-              </tr>
-            `).join('')
-          ).join('')}
-        </tbody>
-      </table>
-    `,
-    (data) => `
-    <h2>Table 2: Level Averages</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Level</th>
-          <th>Question Type</th>
-          <th>Number</th>
-          <th>Percentage</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${data.levelTable.map(level => 
-          Object.entries(level.levelAverage).map(([questionType, stats]) => `
-            <tr>
-              <td>${level.level}</td>
-              <td>${questionType}</td>
-              <td>${stats.number}</td>
-              <td>${stats.percentage}%</td>
-            </tr>
-          `).join('')
-        ).join('')}
-      </tbody>
-    </table>
-  `,
-  (data) => `
-    <h2>Summary</h2>
-    <p>Overall Grade: ${data.semester}</p>
-    <p>Year: ${data.year}</p>
-    <p>Gender: ${data.gender}</p>
-  `,
-];
+      {{#each data.courses}}
+        <h2>Course: {{this.name}}</h2>
+        <table>
+          </table>
+      {{/each}}
+    </div>
+  `);
+const template2 = Handlebars.compile(`
+    <div class="page">
+      <h1>Welcome to Your Report Card</h1>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      <p>This report card provides a csswwsomprehensive overview of your academic performance.</p>
+      {{#each data.courses}}
+        <h2>Course: {{this.name}}</h2>
+        <table>
+          </table>
+      {{/each}}
+    </div>
+  `);
+  
+  const templates = [
+    template1,
+    template2
+    // ... other templates
+  ];
+  
 
 function generateReportCardHTML(data) {
     return `
       <style>
         body {
-        background-color: #f0f0f0;
-
           font-family: Arial, sans-serif;
         }
         .report-card {
           width: 100%;
+          height: 900px;
           margin: 0 auto;
+          border: 6px solid #1C4A7A;
+          padding: 20px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          background-color: #b8d3ef;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
         .page {
           page-break-after: always;
@@ -691,7 +675,7 @@ function generateReportCardHTML(data) {
           text-align: center;
         }
       </style>
-      <div class="report-card">
+      <div class="">
         ${templates.map(template => `
           <div class="page">
             ${template(data)}
@@ -701,7 +685,6 @@ function generateReportCardHTML(data) {
     `;
   }
 
-
 // Example usage for web preview
 
 
@@ -710,48 +693,76 @@ exports.previewReportCard = async (req, res) => {
     // const { data, templates } = req.body;
 
 
-    const reportCardHtml = generateReportCardHTML(data, templates);
+    const reportCardHtml = generateReportCardHTML(dummydata, templates);
     res.send(reportCardHtml);
 
 }
 
 
-exports.generateReportCardPDF = async(req, res)=> {
-    // console.log("🚀 ~ generateReportCardPDF ~ dbData:", dbData.academicYear);
-    const data = data;
 
-    const reportCardHtml = generateReportCardHTML(data, templates);
-
-    try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setContent(reportCardHtml, { waitUntil: "networkidle0" });
-
-        const pdfBuffer = await page.pdf({
-            format: "A4",
-            landscape: true,
-            printBackground: true,
-            margin: {
-                right: "10mm",
-                left: "10mm",
-            },
-        });
-
-        await browser.close();
-
-        const pdfPath = path.join(
-            __dirname,
-            "../reports",
-            `${data?.name?.replace(/\s+/g, "_")}_ReportCard.pdf`
-        );
-
-        fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
-        fs.writeFileSync(pdfPath, pdfBuffer);
-        console.log(`PDF generated: ${pdfPath}`);
-        return pdfPath;
-    } catch (err) {
-        console.error("Error generating PDF:", err);
+async function mergePdfBuffers(pdfBuffers) {
+    const { default: PDFMerger } = await import('pdf-merger-js');
+    const merger = new PDFMerger();
+    for (const buffer of pdfBuffers) {
+      merger.add(buffer);
     }
-}
+    return await merger.saveAsBuffer();
+  }
 
-// Uncomment the following line to preview in a web page
+  exports.generateReportCardPDF = async (req, res) => {
+    const dbData = dummydata; // Assuming data is already in the correct format
+  
+    try {
+      const browser = await puppeteer.launch();
+      const pdfPages = [];
+  
+      for (const template of templates) {
+        const page = await browser.newPage();
+        await page.setContent(template(dbData), { waitUntil: 'networkidle0' });
+  
+        // Customize layout and styling as needed
+        await page.evaluate(() => {
+          // Apply CSS styles or modify DOM elements
+          document.body.style.backgroundColor = '#f0f0f0';
+          const h1 = document.querySelector('h1');
+          if (h1) {
+            h1.style.textAlign = 'center';
+          }
+          // ... other customizations
+        });
+  
+        const pdfBuffer = await page.pdf({
+          format: 'A4',
+          landscape: true,
+          printBackground: true,
+          margin: {
+            top: '20mm',
+            right: '10mm',
+            bottom: '20mm',
+            left: '10mm'
+          },
+        });
+        pdfPages.push(pdfBuffer);
+        await page.close();
+      }
+  
+      await browser.close();
+  
+      const mergedPdfBuffer = await mergePdfBuffers(pdfPages);
+
+    const pdfPath = path.join(
+      __dirname,
+      "../reports",
+      `${dbData?.name?.replace(/\s+/g, "_")}_ReportCard.pdf`
+    );
+
+    fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
+    fs.writeFileSync(pdfPath, mergedPdfBuffer);
+
+    console.log(`PDF generated: ${pdfPath}`);
+    res.sendFile(pdfPath);
+  } catch (err) {
+    console.error("Error generating PDF:", err);
+    res.status(500).send("Error generating PDF");
+  }
+};

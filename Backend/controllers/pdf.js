@@ -556,7 +556,7 @@ border-collapse: collapse;
     const pdfPath = path.join(
       __dirname,
       "../reports",
-      `${data?.name?.replace(/\s+/g, "_")}_ReportCard.pdf`
+      `${data?.name?.replace(/\s+/g, "")}ReportCard.pdf`
     );
 
     // Ensure the directory exists

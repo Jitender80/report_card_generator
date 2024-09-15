@@ -21,7 +21,7 @@ export default function FinalReport() {
   const handleDownload = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${BASE_URL}/generateReportCardPDF`);
+      const response = await axios.get(`${BASE_URL}/generateReportCardPDF`);
 
     } catch (error) {
       console.error('Error generating preview:', error);
@@ -35,6 +35,11 @@ export default function FinalReport() {
         <Button onClick={handleDownload}>
           Download Report
         </Button>
+        {previewHtml && (
+        <div className="preview-modal">
+          <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
+        </div>
+      )}
       </div>
 
       <form onSubmit={handleSubmit}>
