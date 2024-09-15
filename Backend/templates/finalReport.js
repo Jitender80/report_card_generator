@@ -77,9 +77,9 @@ function template2(data) {
     return data.levelTable
         .map(
             (levelData) => `
-      <div style="page-break-after: always;  width:100%;height:90vh; max-width: 794px; max-height: 1122px; padding: 20px; box-sizing: border-box;">
-        <div 
-          style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 20px; margin: 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+      <div style="page-break-after: always;  width:100%;height:90vh; max-width: 794px; max-height: 1122px; padding: 5px; box-sizing: border-box;">
+        <div style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 10px; margin: 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
           <div style="display: flex; justify-content: space-between; align-items: center; background-color:#fff; border:2px solid #000;
             padding: 10px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
             <div style="font-size: 12px; font-weight: bold; gap: 5px;">
@@ -93,7 +93,8 @@ function template2(data) {
             <img src="https://res.cloudinary.com/dkijovd6p/image/upload/v1725480428/t50opxpqoofrimbd3yxi.png" alt="University Logo" style="width: 75px; height: 75px;">
             <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px;">
           </div>
-          <table class="leveltable" style="width: 100%; border-collapse: collapse; border:2px solid #000">
+
+          <table class="leveltable" style="width: 100%; border-collapse: collapse; border:2px solid #000; background-color:#fff">
             <thead>
               <tr>
                 <th colspan="35">Level ${levelData.level}</th>
@@ -105,46 +106,44 @@ function template2(data) {
                 <th>N</th>
                 <th colspan="30">Course Title & Course Code</th>
                 <th>${"  "}</th>
-                <th>Difficult</th>
-                <th>Good</th>
-                <th>Easy</th>
-                <th>Total</th>
-                <th>Accepted</th>
-                <th>Very Easy</th>
-                <th>Very Difficult</th>
-                <th>Bad</th>
-                <th>Total Rejected</th>
-                <th>KR 20</th>
+             <th>Difficult Question</th>
+<th>Good Question</th>
+<th>Easy Question</th>
+<th>Total Accepted</th>
+<th>Very Easy Question</th>
+<th>Very Difficult Question</th>
+<th>Poor (Bad) Questions</th>
+<th>Total Rejected</th>
+<th>KR 20</th>
               </tr>
-              ${Object.entries(levelData.levelAverage)
+              ${levelData.classId
                 .map(
-                  ([key, value], index) => `
+                  (classData, classIndex) => `
                     <tr>
-                      <td rowspan="2">${index + 1}</td>
-                      <td colspan="30" rowspan="2">${key}</td>
-                      <td rowspan="2"> 1</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
+                      <td rowspan="2">${classIndex + 1}</td>
+                      <td colspan="30" rowspan="2">${classData.nameOfCourse}</td>
+                      <td > N</td>
+                      <td>${classData.questionAnalysisData['Difficult Question']?.number || '0'}</td>
+                      <td>${classData.questionAnalysisData['Good Question']?.number || ''}</td>
+                      <td>${classData.questionAnalysisData['Easy Question']?.number || ''}</td>
+                      <td>${classData.questionAnalysisData['Total Accepted']?.number || ''}</td>
+                      <td>${classData.questionAnalysisData['Very Easy Question']?.number || ''}</td>
+                      <td>${classData.questionAnalysisData['Very Difficult Question']?.number || ''}</td>
+                      <td>${classData.questionAnalysisData['Poor (Bad) Questions']?.number || ''}</td>
+                      <td>${classData.questionAnalysisData['Total Rejected']?.number || ''}</td>
+                      <td>${classData.kr20.toFixed(2) || ''}</td>
                     </tr>
                     <tr>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
-                      <td>${value.number}</td>
-                      <td>${value.percentage}%</td>
+                    <td > %</td>
+                      <td>${classData.questionAnalysisData['Difficult Question']?.percentage || '0'}%</td>
+                      <td>${classData.questionAnalysisData['Good Question']?.percentage || ''}%</td>
+                      <td>${classData.questionAnalysisData['Easy Question']?.percentage || ''}%</td>
+                      <td>${classData.questionAnalysisData['Total Accepted']?.percentage || ''}%</td>
+                      <td>${classData.questionAnalysisData['Very Easy Question']?.percentage || ''}%</td>
+                      <td>${classData.questionAnalysisData['Very Difficult Question']?.percentage || ''}%</td>
+                      <td>${classData.questionAnalysisData['Poor (Bad) Questions']?.percentage || ''}%</td>
+                      <td>${classData.questionAnalysisData['Total Rejected']?.percentage || ''}%</td>
+                      <td>${classData.kr20.toFixed(2) || ''}%</td>
                     </tr>
                   `
                 )

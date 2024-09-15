@@ -132,9 +132,9 @@ exports.getFinalReport = async (req, res) => {
 
   
   try {
-    const latestReport = await finalReportModel.find({}).sort({ createdAt: -1 }).limit(1)  .populate({
+    const latestReport = await finalReportModel.find({}).sort({ createdAt: -1 }).limit(1).populate({
       path: 'levelTable.classId',
-      select: 'nameOfCourse questionSummary' // Only include name and questionSummary
+      select: 'nameOfCourse questionAnalysisData kr20' // Only include name and questionSummary
     });
     // Find the latest report for the specified class
     // const latestReport = await FinalReport.findOne({ 'levelTable.classId': classId })

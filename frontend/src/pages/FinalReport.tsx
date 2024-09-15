@@ -46,7 +46,7 @@ export default function FinalReport() {
 
     {!previewHtml && <div className="text-lg font-semibold mt-5">Loading...</div>}
 
-    <div className="px-10 py-5 bg-blue-200 mt-5 w-full max-w-4xl rounded shadow-md">
+    <div className="px-5 py-5 bg-blue-200 mt-5 w-full  rounded shadow-md">
       <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
     </div>
   </div>
