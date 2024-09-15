@@ -54,12 +54,12 @@ function template1(data) {
 
 
 
-        <div style="font-size: 12px;
+      <div style="font-size: 12px;
          font-weight: bold; gap: 5px; border:1px solid #000;
     flex: 1; display: flex;
     height: 80%;
           display:grid; grid-template-columns: repeat(2, 1fr); background-color:#fff;
-           grid-column-gap: 10px; padding-horizontal:5px">
+           grid-column-gap: 10px; padding-horizontal:5px; position: relative;">
     <ul style="display: flex; flex-direction: column; list-style-type: disc;">
         <li style="margin-bottom: 5px;"> <h2 style="color: blue;">Good Exams (KR20 > 0.80)</h2></li>
         ${data?.course_Observations?.GOOD?.map(
