@@ -9,12 +9,103 @@ const puppeteer = require("puppeteer");
 
 const { PDFDocument } = require("pdf-lib");
 const dummydata = require("../assets/dummy");
+const finalReportModel = require("../models/finalReportModel");
+const { template1, template2 } = require("../templates/finalReport");
 
 exports.generateFinalReport = async (req, res) => {
   const { academicYear, semester } = req.body;
 
   try {
-    // ... (your existing code to fetch classes and process data)
+
+    // const classes = await Class.aggregate([
+    //   {
+    //     $project: {
+    //       academicYear: academicYear,
+
+    //       semester: semester,
+    //       // Add any additional fields you need here
+    //     }
+    //   }
+    // ])
+    const classes = await Class.find({ academicYear, semester });
+    console.log("🚀 ~ exports.generateFinalReport= ~ classes:", classes)
+
+    const finalReportData = {
+      semester,
+      year: academicYear,
+      gender: 'all', // You can modify this as needed
+      course_Observations: {
+        GOOD: [],
+        AVERAGE: [],
+        POOR: []
+      },
+      levelTable: [],
+      CourseNameTable: []
+    };
+
+    // Process the classes to populate levelTable and CourseNameTable
+    const levelMap = new Map();
+    const courseMap = new Map();
+
+    classes.forEach(classDoc => {
+      // Process levelTable
+      const level = classDoc.level;
+      if (!levelMap.has(level)) {
+        levelMap.set(level, {
+          level,
+          classId: [],
+          levelAverage: {
+            "Poor (Bad) Questions": { number: 0, percentage: 0 },
+            "Very Difficult Question": { number: 0, percentage: 0 },
+            "Difficult Question": { number: 0, percentage: 0 },
+            "Good Question": { number: 0, percentage: 0 },
+            "Easy Question": { number: 0, percentage: 0 },
+            "Very Easy Question": { number: 0, percentage: 0 },
+            "Total Accepted": { number: 0, percentage: 0 },
+            "Total Rejected": { number: 0, percentage: 0 }
+          }
+        });
+      }
+      levelMap.get(level).classId.push(classDoc._id);
+
+      // Process CourseNameTable
+      const courseName = classDoc.nameOfCourse;
+      if (!courseMap.has(courseName)) {
+        courseMap.set(courseName, {
+          CourseName: courseName,
+          classId: [],
+          levelAverage: {
+            "Poor (Bad) Questions": { number: 0, percentage: 0 },
+            "Very Difficult Question": { number: 0, percentage: 0 },
+            "Difficult Question": { number: 0, percentage: 0 },
+            "Good Question": { number: 0, percentage: 0 },
+            "Easy Question": { number: 0, percentage: 0 },
+            "Very Easy Question": { number: 0, percentage: 0 },
+            "Total Accepted": { number: 0, percentage: 0 },
+            "Total Rejected": { number: 0, percentage: 0 }
+          }
+        });
+      }
+      courseMap.get(courseName).classId.push(classDoc._id);
+      // Categorize based on kr20
+      const kr20 = classDoc.kr20;
+      const courseObservation = {
+        course_code: classDoc.courseCode,
+        course_name: classDoc.nameOfCourse,
+        gender: classDoc.gender
+      };
+
+      if (kr20 > 0.8) {
+        finalReportData.course_Observations.GOOD.push(courseObservation);
+      } else if (kr20 >= 0.7 && kr20 <= 0.79) {
+        finalReportData.course_Observations.AVERAGE.push(courseObservation);
+      } else if (kr20 < 0.7) {
+        finalReportData.course_Observations.POOR.push(courseObservation);
+      }
+    });
+    // Convert maps to arrays
+    finalReportData.levelTable = Array.from(levelMap.values());
+    finalReportData.CourseNameTable = Array.from(courseMap.values());
 
     // Create a new FinalReport document
     const finalReport = new FinalReport(finalReportData);
@@ -22,88 +113,47 @@ exports.generateFinalReport = async (req, res) => {
     // Save the FinalReport document to the database
     await finalReport.save();
 
-    res
-      .status(201)
-      .json({ message: "Final report generated successfully", finalReport });
+    res.status(201).json({ message: 'Final report generated successfully', finalReport });
+
+
+
+
+
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+
   }
-};
-function template1(data) {
-  return `
-      <div style="page-break-after: always; width:100%;height:100vh; flex: 1; display: flex;">
-        <div class="tablebody" 
-          style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 20px; margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-            <div style="display: flex; justify-content: space-between; align-items: center;background-color:#fff; border:2px solid #000;
-            padding: 10px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            ">
-          <div style="font-size: 12px; font-weight: bold; gap: 5px;">
-            <ul style="display: flex; flex-direction: column;">
-              <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
-              <li class="spacing">Ministry of Education</li>
-              <li class="spacing">${
-                data?.university || "Najran University"
-              }</li>
-              <li class="spacing">Faculty of Dentistry</li>
-            </ul>
-          </div>
-          <img src="https://res.cloudinary.com/dkijovd6p/image/upload/v1725480428/t50opxpqoofrimbd3yxi.png" alt="University Logo" style="width: 75px; height: 75px;">
-          <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px;">
-        </div>
-
-
-
-      <div style="font-size: 12px;
-         font-weight: bold; gap: 5px; border:1px solid #000;
-    flex: 1; display: flex;
-    height: 80%;
-          display:grid; grid-template-columns: repeat(2, 1fr); background-color:#fff;
-           grid-column-gap: 10px; padding-horizontal:5px; position: relative;">
-    <ul style="display: flex; flex-direction: column; list-style-type: disc;">
-        <li style="margin-bottom: 5px;"> <h2 style="color: blue;">Good Exams (KR20 > 0.80)</h2></li>
-        ${data?.course_Observations?.GOOD?.map(
-          (exam) =>
-            `<li style="margin-bottom: 5px;  margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
-        ).join("")}
-    </ul>
-    <ul style="display: flex; flex-direction: column; list-style-type: disc;">
-        <li style="margin-bottom: 5px;"> <h2 style="color: green;">Exam Quality where KR20 remains within the accepted range (KR20= 0.70-0.79)</h2></li>
-        ${data?.course_Observations?.AVERAGE?.map(
-          (exam) =>
-            `<li style="margin-bottom: 5px;  margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
-        ).join("")}
-    </ul>
-    <ul style="display: flex; flex-direction: column; list-style-type: disc;">
-        <li style="margin-bottom: 5px;"> <h2 style="color: red;">Exam Quality where KR20 value is below the accepted range (KR20= <0.70)</h2></li>
-        ${data?.course_Observations?.POOR?.map(
-          (exam) =>
-            `<li style="margin-bottom: 5px; margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
-        ).join("")}
-    </ul>
-</div>
-
-        </div>
-      </div>
-    `;
 }
 
-function template2(data) {
-  return `
-        <div style="page-break-after: always; height:500px;" >
-        <div class="tablebody"
-        style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 20px; margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-            <div style="display: flex; justify-content: space-between; align-items: center;background-color:#fff; border:2px solid #000;
-            padding: 10px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            height: 100%;
-            ">
-            <h1>Summary</h1>
-            <p>Total Subjects: ${data.levelTable.length}</p>
 
-        </div>
-        </div>
-    `;
+exports.getFinalReport = async (req, res) => {
+  // const { classId } = req.params;
+
+  
+  try {
+    const latestReport = await finalReportModel.find({}).sort({ createdAt: -1 }).limit(1)  .populate({
+      path: 'levelTable.classId',
+      select: 'nameOfCourse questionSummary' // Only include name and questionSummary
+    });
+    // Find the latest report for the specified class
+    // const latestReport = await FinalReport.findOne({ 'levelTable.classId': classId })
+    //   .sort({ createdAt: -1 }) // Assuming you have a createdAt field to sort by
+    //   .populate('levelTable.classId', 'nameOfCourse _id'); // Populate class details
+
+    if (!latestReport) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+
+    res.status(200).json({ latestReport });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }
+
+
+
 
 // ... (other functions)
 
@@ -117,12 +167,21 @@ function generateReportCardHTML(data) {
   return `
       <style>
 
-      tablebody{
+      .tablebody{
    width: 100%;
     height: 100%;
       
         border-collapse: collapse;
         
+      }
+
+      .leveltable {
+      background-color: #f2f2ff;
+      }
+
+      .leveltable th, td {
+      border: 1px solid #000;
+        padding: 2px; 
       }
 
 
@@ -136,14 +195,14 @@ function generateReportCardHTML(data) {
 
 
         ${templates
-          .map(
-            (template) => `
+      .map(
+        (template) => `
           <div class="page"           >
             ${template(data)}
           </div>
         `
-          )
-          .join("\n")}
+      )
+      .join("\n")}
       </div>
     `;
 }
@@ -190,7 +249,7 @@ exports.generateReportCardPDF = async (req, res) => {
 
       const pdfBuffer = await page.pdf({
         format: "A4",
-        landscape: true,
+        landscape: false,
         printBackground: true,
         margin: {
           top: "10mm",

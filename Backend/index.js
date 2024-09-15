@@ -21,7 +21,7 @@ const { generate, generatePdf, getDbData } = require("./controllers/pdf");
 const { getGrades } = require("./controllers/grading");
 const { getReportsByRoleAndEmail } = require("./controllers/get.controllers");
 const User = require("./models/usermodel");
-const { generateFinalReport, generateReportCardPDF, previewReportCard } = require("./controllers/finalReport");
+const { generateFinalReport, generateReportCardPDF, previewReportCard, getFinalReport } = require("./controllers/finalReport");
 
 
 const app = express();
@@ -130,6 +130,8 @@ app.post('/finalReportCard', generateFinalReport);
 app.post('/previewReportCard', previewReportCard);
 
 app.get('/generateReportCardPDF', generateReportCardPDF);
+
+app.get('/getFinalReport', getFinalReport);
 
 const folderPath = path.join(__dirname, './uploads');
 
