@@ -1,26 +1,25 @@
-
 function formatSemesterData(data) {
     const semesterMapping = {
-      "First Semester": "1st",
-      "Second Semester": "2nd",
-      "Third Semester": "3rd",
-      "Fourth Semester": "4th",
-      "Fifth Semester": "5th",
-      "Sixth Semester": "6th",
-      "Seventh Semester": "7th",
-      "Eighth Semester": "8th",
+        "First Semester": "1st",
+        "Second Semester": "2nd",
+        "Third Semester": "3rd",
+        "Fourth Semester": "4th",
+        "Fifth Semester": "5th",
+        "Sixth Semester": "6th",
+        "Seventh Semester": "7th",
+        "Eighth Semester": "8th",
     };
-  
+
     const semester = semesterMapping[data.semester];
     const year = data.year.split("-")[0]; // Extract the starting year
-  
+
     return `${semester} Semester, (${year} G)`;
-  }
+}
 function template1(data) {
-  return `
-        <div style="page-break-after: always; width:100%;height:100vh; flex: 1; display: flex;">
+    return `
+        <div style="page-break-after: always; width:100%;height:90vh; flex: 1; display: flex;">
           <div  
-            style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 20px; margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 10px; margin: 5px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
               <div style="display: flex; justify-content: space-between; align-items: center;background-color:#fff; border:2px solid #000;
               padding: 10px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
               ">
@@ -28,9 +27,8 @@ function template1(data) {
               <ul style="display: flex; flex-direction: column;">
                 <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
                 <li class="spacing">Ministry of Education</li>
-                <li class="spacing">${
-                  data?.university || "Najran University"
-                }</li>
+                <li class="spacing">${data?.university || "Najran University"
+        }</li>
                 <li class="spacing">Faculty of Dentistry</li>
               </ul>
             </div>
@@ -51,22 +49,22 @@ function template1(data) {
           <li style="margin-bottom: 5px;"> <h3 style="color: blue;">Good Exams (KR20 > 0.80)</h3></li>
           ${data?.course_Observations?.GOOD?.map(
             (exam) =>
-              `<li style="margin-bottom: 5px;  margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
-          ).join("")}
+                `<li style="margin-bottom: 5px;  margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
+        ).join("")}
       </ul>
       <ul style="display: flex; flex-direction: column; list-style-type: disc;">
           <li style="margin-bottom: 5px;"> <h3 style="color: green;">Exam Quality where KR20 remains within the accepted range (KR20= 0.70-0.79)</h3></li>
           ${data?.course_Observations?.AVERAGE?.map(
             (exam) =>
-              `<li style="margin-bottom: 5px;  margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
-          ).join("")}
+                `<li style="margin-bottom: 5px;  margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
+        ).join("")}
       </ul>
       <ul style="display: flex; flex-direction: column; list-style-type: disc;">
           <li style="margin-bottom: 5px;"> <h3 style="color: red;">Exam Quality where KR20 value is below the accepted range (KR20= <0.70)</h3></li>
           ${data?.course_Observations?.POOR?.map(
             (exam) =>
-              `<li style="margin-bottom: 5px; margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
-          ).join("")}
+                `<li style="margin-bottom: 5px; margin-left:10px;">${exam.course_name}, ${exam.course_code} (${exam.gender})</li>`
+        ).join("")}
       </ul>
   </div>
   
@@ -76,21 +74,19 @@ function template1(data) {
 }
 
 function template2(data) {
-  return data.levelTable
-    .map(
-      (levelData) => `
-      <div style="page-break-after: always; height:500px;">
-        <div class="tablebody" 
-          style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 20px; margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-          <div style="display: flex; justify-content: space-between; align-items: center;background-color:#fff; border:2px solid #000;
+    return data.levelTable
+        .map(
+            (levelData) => `
+      <div style="page-break-after: always;  width:100%;height:90vh; max-width: 794px; max-height: 1122px; padding: 20px; box-sizing: border-box;">
+        <div 
+          style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 20px; margin: 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+          <div style="display: flex; justify-content: space-between; align-items: center; background-color:#fff; border:2px solid #000;
             padding: 10px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
             <div style="font-size: 12px; font-weight: bold; gap: 5px;">
               <ul style="display: flex; flex-direction: column;">
                 <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
                 <li class="spacing">Ministry of Education</li>
-                <li class="spacing">${
-                  data?.university || "Najran University"
-                }</li>
+                <li class="spacing">${data?.university || "Najran University"}</li>
                 <li class="spacing">Faculty of Dentistry</li>
               </ul>
             </div>
@@ -123,34 +119,34 @@ function template2(data) {
               ${Object.entries(levelData.levelAverage)
                 .map(
                   ([key, value], index) => `
-                <tr>
-                  <td>${index + 1}</td>
-                  <td colspan="30">${key}</td>
-                  <td>  </td>
-                  ${Object.entries(levelData.levelAverage)
-                    .map(
-                      ([key, value], index) => `
-    <tr>
-      <td rowspan="2">${index + 1}</td>
-      <td colspan="30" rowspan="2">${key}</td>
-      <td rowspan="2"></td>
-      <td>${value.number}</td>
-      <td>${value.percentage}%</td>
-      <td>${value.number}</td>
-      <td>${value.percentage}%</td>
-      <td>${value.number}</td>
-      <td>${value.percentage}%</td>
-      <td>${value.number}</td>
-      <td>${value.percentage}%</td>
-      <td>${value.number}</td>
-      <td>${value.percentage}%</td>
-    </tr>
-   
-  `
-                    )
-                    .join("")}
-                </tr>
-              `
+                    <tr>
+                      <td rowspan="2">${index + 1}</td>
+                      <td colspan="30" rowspan="2">${key}</td>
+                      <td rowspan="2"> 1</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                    </tr>
+                    <tr>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                      <td>${value.number}</td>
+                      <td>${value.percentage}%</td>
+                    </tr>
+                  `
                 )
                 .join("")}
             </tbody>
@@ -158,8 +154,7 @@ function template2(data) {
         </div>
       </div>
     `
-    )
-    .join("");
+        )
+        .join("");
 }
-
 module.exports = { template1, template2 };

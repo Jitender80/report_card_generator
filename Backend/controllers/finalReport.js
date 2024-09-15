@@ -167,13 +167,7 @@ function generateReportCardHTML(data) {
   return `
       <style>
 
-      .tablebody{
-   width: 100%;
-    height: 100%;
-      
-        border-collapse: collapse;
-        
-      }
+    
 
       .leveltable {
       background-color: #f2f2ff;
@@ -187,9 +181,9 @@ function generateReportCardHTML(data) {
 
         </style>
       <div class=""
-      style=" background-color: #f2f2;  display: flex;
-        height: 100%;
-     width: 100%;
+      style=" background-color: #f2f2ff;  display: flex;
+        // height: 100%;
+    //  width: 100%;
  
       >
 
@@ -253,9 +247,9 @@ exports.generateReportCardPDF = async (req, res) => {
         printBackground: true,
         margin: {
           top: "10mm",
-          right: "10mm",
+
           bottom: "10mm",
-          left: "10mm",
+
         },
       });
       pdfPages.push(pdfBuffer);
