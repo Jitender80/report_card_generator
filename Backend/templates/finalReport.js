@@ -103,11 +103,11 @@ function template2(data) {
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Difficult Question</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Good Question</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Easy Question</th>
-    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Total Accepted</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top; background-color:#cdf1d1;">Total Accepted</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Very Easy Question</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Very Difficult Question</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Poor (Bad) Questions</th>
-    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Total Rejected</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;background-color:#f6dddd;">Total Rejected</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">KR 20</th>
   </tr>
      </thead>
@@ -122,11 +122,11 @@ function template2(data) {
                       <td style="padding: 2px;">${classData.questionAnalysisData['Difficult Question']?.number || '0'}</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Good Question']?.number || ''}</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Easy Question']?.number || ''}</td>
-                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Accepted']?.number || ''}</td>
+                      <td style="padding: 2px;background-color:#cdf1d1;">${classData.questionAnalysisData['Total Accepted']?.number || ''}</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Very Easy Question']?.number || ''}</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Very Difficult Question']?.number || ''}</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Poor (Bad) Questions']?.number || ''}</td>
-                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Rejected']?.number || ''}</td>
+                      <td style="padding: 2px;background-color:#f6dddd">${classData.questionAnalysisData['Total Rejected']?.number || ''}</td>
                       <td rowspan="2" style="padding: 2px;">${classData.kr20.toFixed(2) || ''}</td>
                     </tr>
                     <tr>
@@ -134,11 +134,11 @@ function template2(data) {
                       <td style="padding: 2px;">${classData.questionAnalysisData['Difficult Question']?.percentage || '0'}%</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Good Question']?.percentage || ''}%</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Easy Question']?.percentage || ''}%</td>
-                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Accepted']?.percentage || ''}%</td>
+                      <td style="padding: 2px;background-color:#cdf1d1; ">${classData.questionAnalysisData['Total Accepted']?.percentage || ''}%</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Very Easy Question']?.percentage || ''}%</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Very Difficult Question']?.percentage || ''}%</td>
                       <td style="padding: 2px;">${classData.questionAnalysisData['Poor (Bad) Questions']?.percentage || ''}%</td>
-                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Rejected']?.percentage || ''}%</td>
+                      <td style="padding: 2px;background-color:#f6dddd;">${classData.questionAnalysisData['Total Rejected']?.percentage || ''}%</td>
                     </tr>
                   `
                 )
