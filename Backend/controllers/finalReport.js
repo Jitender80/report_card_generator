@@ -122,13 +122,13 @@ exports.generateFinalReport = async (req, res) => {
 };
 
 exports.getFinalReport = async (req, res) => {
-  // const { classId } = req.params;
+  const { id } = req.params;
 
   try {
     const latestReport = await finalReportModel
-      .find({})
+      .findOne({_id : "66e7d16a6cf5183416a9bf81"})
       .sort({ createdAt: -1 })
-      .limit(1)
+
       .populate({
         path: "levelTable.classId",
         select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include name and questionSummary
