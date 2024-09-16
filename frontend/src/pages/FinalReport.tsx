@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '../lib/db';
 import { Button } from '../ui/button';
+import { toast } from 'react-toastify';
 
 export default function FinalReport() {
   const [data, setData] = useState({});
@@ -10,10 +11,12 @@ export default function FinalReport() {
   const [previewHtml, setPreviewHtml] = useState('');
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     try {
       const response = await axios.post(`${BASE_URL}/previewReportCard`);
       setPreviewHtml(response.data);
+      toast.success('Preview generated successfully');
     } catch (error) {
       console.error('Error generating preview:', error);
     }
@@ -47,7 +50,7 @@ export default function FinalReport() {
     {!previewHtml && <div className="text-lg font-semibold mt-5">Loading...</div>}
 
     <div className="px-5 py-5 bg-blue-200 mt-5 w-full  rounded shadow-md">
-      <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
+      <div  className="preview-container" dangerouslySetInnerHTML={{ __html: previewHtml }} />
     </div>
   </div>
   );

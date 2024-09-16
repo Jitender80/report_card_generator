@@ -175,7 +175,7 @@ function generateReportCardHTML(data) {
 
       .leveltable th, td {
       border: 1px solid #000;
-        padding: 2px; 
+
       }
 
 

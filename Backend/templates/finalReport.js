@@ -77,7 +77,7 @@ function template2(data) {
     return data.levelTable
         .map(
             (levelData) => `
-      <div style="page-break-after: always;  width:100%;height:90vh; max-width: 794px; max-height: 1122px; padding: 5px; box-sizing: border-box;">
+      <div style="page-break-after: always;  width:100%;height:90vh;  max-height: 1122px; padding: 2px; box-sizing: border-box;">
         <div style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 10px; margin: 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
 
           <div style="display: flex; justify-content: space-between; align-items: center; background-color:#fff; border:2px solid #000;
@@ -94,56 +94,51 @@ function template2(data) {
             <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px;">
           </div>
 
-          <table class="leveltable" style="width: 100%; border-collapse: collapse; border:2px solid #000; background-color:#fff">
+          <table class="leveltable"  style=" width:100%;  border-collapse: collapse; border:2px solid #000; background-color:#fff">
             <thead>
-              <tr>
-                <th colspan="35">Level ${levelData.level}</th>
-                <th colspan="65">${formatSemesterData(data)}</th>
-              </tr>
-            </thead>
+               <tr>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">N</th>
+    <th colspan="30" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Course Title & Course Code</th>
+    <th colspan="5" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">${"  "}</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Difficult Question</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Good Question</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Easy Question</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Total Accepted</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Very Easy Question</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Very Difficult Question</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Poor (Bad) Questions</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Total Rejected</th>
+    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">KR 20</th>
+  </tr>
+     </thead>
             <tbody id="tableData">
-              <tr>
-                <th>N</th>
-                <th colspan="30">Course Title & Course Code</th>
-                <th>${"  "}</th>
-             <th>Difficult Question</th>
-<th>Good Question</th>
-<th>Easy Question</th>
-<th>Total Accepted</th>
-<th>Very Easy Question</th>
-<th>Very Difficult Question</th>
-<th>Poor (Bad) Questions</th>
-<th>Total Rejected</th>
-<th>KR 20</th>
-              </tr>
               ${levelData.classId
                 .map(
                   (classData, classIndex) => `
                     <tr>
-                      <td rowspan="2">${classIndex + 1}</td>
-                      <td colspan="30" rowspan="2">${classData.nameOfCourse}</td>
-                      <td > N</td>
-                      <td>${classData.questionAnalysisData['Difficult Question']?.number || '0'}</td>
-                      <td>${classData.questionAnalysisData['Good Question']?.number || ''}</td>
-                      <td>${classData.questionAnalysisData['Easy Question']?.number || ''}</td>
-                      <td>${classData.questionAnalysisData['Total Accepted']?.number || ''}</td>
-                      <td>${classData.questionAnalysisData['Very Easy Question']?.number || ''}</td>
-                      <td>${classData.questionAnalysisData['Very Difficult Question']?.number || ''}</td>
-                      <td>${classData.questionAnalysisData['Poor (Bad) Questions']?.number || ''}</td>
-                      <td>${classData.questionAnalysisData['Total Rejected']?.number || ''}</td>
-                      <td>${classData.kr20.toFixed(2) || ''}</td>
+                      <td rowspan="2" style="padding: 10px;">${classIndex + 1}</td>
+                      <td colspan="30" rowspan="2" style="padding: 10px 5px 20px 5px;">${classData.nameOfCourse}</td>
+                      <td style="padding: 2px;" colspan="5">N</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Difficult Question']?.number || '0'}</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Good Question']?.number || ''}</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Easy Question']?.number || ''}</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Accepted']?.number || ''}</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Very Easy Question']?.number || ''}</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Very Difficult Question']?.number || ''}</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Poor (Bad) Questions']?.number || ''}</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Rejected']?.number || ''}</td>
+                      <td rowspan="2" style="padding: 2px;">${classData.kr20.toFixed(2) || ''}</td>
                     </tr>
                     <tr>
-                    <td > %</td>
-                      <td>${classData.questionAnalysisData['Difficult Question']?.percentage || '0'}%</td>
-                      <td>${classData.questionAnalysisData['Good Question']?.percentage || ''}%</td>
-                      <td>${classData.questionAnalysisData['Easy Question']?.percentage || ''}%</td>
-                      <td>${classData.questionAnalysisData['Total Accepted']?.percentage || ''}%</td>
-                      <td>${classData.questionAnalysisData['Very Easy Question']?.percentage || ''}%</td>
-                      <td>${classData.questionAnalysisData['Very Difficult Question']?.percentage || ''}%</td>
-                      <td>${classData.questionAnalysisData['Poor (Bad) Questions']?.percentage || ''}%</td>
-                      <td>${classData.questionAnalysisData['Total Rejected']?.percentage || ''}%</td>
-                      <td>${classData.kr20.toFixed(2) || ''}%</td>
+                      <td style="padding: 2px;" colspan="5" >%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Difficult Question']?.percentage || '0'}%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Good Question']?.percentage || ''}%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Easy Question']?.percentage || ''}%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Accepted']?.percentage || ''}%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Very Easy Question']?.percentage || ''}%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Very Difficult Question']?.percentage || ''}%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Poor (Bad) Questions']?.percentage || ''}%</td>
+                      <td style="padding: 2px;">${classData.questionAnalysisData['Total Rejected']?.percentage || ''}%</td>
                     </tr>
                   `
                 )
