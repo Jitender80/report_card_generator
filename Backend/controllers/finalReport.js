@@ -8,9 +8,10 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 
 const { PDFDocument } = require("pdf-lib");
-const dummydata = require("../assets/dummy");
+
 const finalReportModel = require("../models/finalReportModel");
 const { template1, template2, template3 } = require("../templates/finalReport");
+const { mergePdfBuffers } = require("../utils");
 
 exports.generateFinalReport = async (req, res) => {
   const { academicYear, semester } = req.body;
@@ -154,7 +155,7 @@ exports.getFinalReport = async (req, res) => {
   }
 };
 
-// ... (other functions)
+
 
 const templates = [template1, template2, template3];
 
@@ -219,60 +220,6 @@ const cleanFolder = (folderPath) => {
 
 const reportsFolderPath = path.join(__dirname, "../reports");
 
-exports.generateReportCardPDF = async (req, res) => {
-  cleanFolder(reportsFolderPath);
-  const { academicYear, semester } = req.body; // Assuming data retrieval from request body
-
-  try {
-    const browser = await puppeteer.launch();
-    const pdfPages = [];
-
-    // Fetch data from database (replace with your actual logic)
-    // const dbData = await Class.find({ academicYear, semester });
-    const dbData = dummydata;
-
-
-      const page = await browser.newPage();
-      const htmlContent = generateReportCardHTML(dbData);
-
-      await page.setContent(htmlContent, { waitUntil: "networkidle0" });
-
-      const pdfBuffer = await page.pdf({
-        format: "A4",
-        landscape: false,
-        printBackground: true,
-        margin: {
-          top: "10mm",
-
-          bottom: "10mm",
-        },
-      });
-      pdfPages.push(pdfBuffer);
-      await page.close();
-
-    await browser.close();
-
-    const mergedPdfBuffer = await mergePdfBuffers(pdfPages);
-    let index = 0;
-    const pdfPath = path.join(
-      __dirname,
-      "../reports",
-      `${dbData.semester?.replace(
-        /\s+/g,
-        "_"
-      )}_${Date.now()}_${index++}_ReportCard.pdf` // Use semester from request body
-    );
-
-    fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
-    fs.writeFileSync(pdfPath, mergedPdfBuffer);
-
-    console.log(`PDF generated: ${pdfPath}`);
-    res.sendFile(pdfPath);
-  } catch (err) {
-    console.error("Error generating PDF:", err);
-    res.status(500).send("Error generating PDF");
-  }
-};
 
 exports.previewReportCard = async (req, res) => {
   const {id} = req.params;
@@ -311,22 +258,67 @@ exports.previewReportCard = async (req, res) => {
     res.status(500).send("Error generating preview");
   }
 };
-async function mergePdfBuffers(pdfBuffers) {
-  const mergedPdf = await PDFDocument.create();
-  const addedPages = new Set();
 
-  for (const pdfBuffer of pdfBuffers) {
-    const pdf = await PDFDocument.load(pdfBuffer);
-    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+exports.generateReportCardPDF = async (req, res) => {
+  cleanFolder(reportsFolderPath);
 
-    copiedPages.forEach((page, index) => {
-      const pageIndex = `${pdfBuffer}-${index}`;
-      if (!addedPages.has(pageIndex)) {
-        mergedPdf.addPage(page);
-        addedPages.add(pageIndex);
-      }
+  const { id } = req.params;
+  try {
+    const browser = await puppeteer.launch();
+    const pdfPages = [];
+
+
+
+    const dbData = await finalReportModel
+    .findById(id)
+    .populate({
+      path: "levelTable.classId",
+      select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include name and questionSummary
+    })
+    .populate({
+      path: "CourseNameTable.classId",
+      select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include nameOfCourse, questionAnalysisData, and kr20
     });
-  }
 
-  return await mergedPdf.save();
-}
+
+      const page = await browser.newPage();
+      const htmlContent = generateReportCardHTML(dbData);
+
+      await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+
+      const pdfBuffer = await page.pdf({
+        format: "A4",
+        landscape: false,
+        printBackground: true,
+        margin: {
+          top: "10mm",
+
+          bottom: "10mm",
+        },
+      });
+      pdfPages.push(pdfBuffer);
+      await page.close();
+
+    await browser.close();
+
+    const mergedPdfBuffer = await mergePdfBuffers(pdfPages);
+    let index = 0;
+    const pdfPath = path.join(
+      __dirname,
+      "../reports",
+      `${dbData.semester?.replace(
+        /\s+/g,
+        "_"
+      )}_${Date.now()}_${index++}_ReportCard.pdf` // Use semester from request body
+    );
+
+    fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
+    fs.writeFileSync(pdfPath, mergedPdfBuffer);
+
+    console.log(`PDF generated: ${pdfPath}`);
+    res.status(200).sendFile(pdfPath);
+  } catch (err) {
+    console.error("Error generating PDF:", err);
+    res.status(500).send("Error generating PDF");
+  }
+};

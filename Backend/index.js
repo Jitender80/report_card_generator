@@ -127,11 +127,16 @@ app.delete('/delete-class/:id',deleteData)
 
 
 app.post('/finalReportCard', generateFinalReport);
-app.post('/previewReportCard/:id', previewReportCard);
-
-app.get('/generateReportCardPDF/:id', generateReportCardPDF);
-
 app.get('/getFinalReport/:id', getFinalReport);
+
+///**Preview */
+app.post('/previewReportCard/:id', previewReportCard);
+///**Preview */
+
+///***get final report card PDF*/
+app.get('/generateReportCardPDF/:id', generateReportCardPDF);
+///***get final report card */
+
 
 const folderPath = path.join(__dirname, './uploads');
 
