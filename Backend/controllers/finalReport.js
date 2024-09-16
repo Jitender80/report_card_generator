@@ -132,7 +132,12 @@ exports.getFinalReport = async (req, res) => {
       .populate({
         path: "levelTable.classId",
         select: "nameOfCourse questionAnalysisData kr20", // Only include name and questionSummary
+      })
+      .populate({
+        path: "CourseNameTable.classId",
+        select: "nameOfCourse questionAnalysisData kr20", // Only include nameOfCourse, questionAnalysisData, and kr20
       });
+      
     // Find the latest report for the specified class
     // const latestReport = await FinalReport.findOne({ 'levelTable.classId': classId })
     //   .sort({ createdAt: -1 }) // Assuming you have a createdAt field to sort by
@@ -166,6 +171,7 @@ function generateReportCardHTML(data) {
       .leveltable th, td {
       border: 1px solid #000;
   font-weight: bold;
+  text-align:center;
 
       }
 

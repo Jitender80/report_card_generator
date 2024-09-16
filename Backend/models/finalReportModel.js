@@ -83,6 +83,7 @@ const finalReportSchema = new mongoose.Schema({
           number: { type: Number },
           percentage: { type: Number },
         },
+        "kr20Average": { type: Number },
       }
 
     },
