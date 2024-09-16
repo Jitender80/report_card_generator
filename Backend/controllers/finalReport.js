@@ -110,11 +110,11 @@ exports.generateFinalReport = async (req, res) => {
     const finalReport = new FinalReport(finalReportData);
 
     // Save the FinalReport document to the database
-    await finalReport.save();
+    const data = await finalReport.save();
 
     res
       .status(201)
-      .json({ message: "Final report generated successfully", finalReport });
+      .json({ data});
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -275,11 +275,23 @@ exports.generateReportCardPDF = async (req, res) => {
 };
 
 exports.previewReportCard = async (req, res) => {
+  const {id} = req.params;
   try {
     // Fetch data from database (replace with your actual logic)
     // const { academicYear, semester } = req.body;
-    // const dbData = await Class.find({ academicYear, semester });
-    const data = dummydata;
+    const data = await finalReportModel
+    .find({_id : id})
+    .populate({
+      path: "levelTable.classId",
+      select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include name and questionSummary
+    })
+    .populate({
+      path: "CourseNameTable.classId",
+      select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include nameOfCourse, questionAnalysisData, and kr20
+    });
+    console.log("🚀 ~ exports.previewReportCard= ~ data:", data)
+
+    // const data = dummydata;
 
     // Ensure dbData contains the required properties
     // const data = {
