@@ -10,7 +10,7 @@ const puppeteer = require("puppeteer");
 const { PDFDocument } = require("pdf-lib");
 const dummydata = require("../assets/dummy");
 const finalReportModel = require("../models/finalReportModel");
-const { template1, template2 } = require("../templates/finalReport");
+const { template1, template2, template3 } = require("../templates/finalReport");
 
 exports.generateFinalReport = async (req, res) => {
   const { academicYear, semester } = req.body;
@@ -131,11 +131,11 @@ exports.getFinalReport = async (req, res) => {
       .limit(1)
       .populate({
         path: "levelTable.classId",
-        select: "nameOfCourse questionAnalysisData kr20", // Only include name and questionSummary
+        select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include name and questionSummary
       })
       .populate({
         path: "CourseNameTable.classId",
-        select: "nameOfCourse questionAnalysisData kr20", // Only include nameOfCourse, questionAnalysisData, and kr20
+        select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include nameOfCourse, questionAnalysisData, and kr20
       });
       
     // Find the latest report for the specified class
@@ -156,7 +156,7 @@ exports.getFinalReport = async (req, res) => {
 
 // ... (other functions)
 
-const templates = [template1, template2];
+const templates = [template1, template2, template3];
 
 function generateReportCardHTML(data) {
   return `
