@@ -126,7 +126,7 @@ exports.getFinalReport = async (req, res) => {
 
   try {
     const latestReport = await finalReportModel
-      .findOne({_id : "66e7d16a6cf5183416a9bf81"})
+      .findOne({_id : "66e887da52c5825e291366db"})
       .sort({ createdAt: -1 })
 
       .populate({
@@ -280,7 +280,7 @@ exports.previewReportCard = async (req, res) => {
     // Fetch data from database (replace with your actual logic)
     // const { academicYear, semester } = req.body;
     const data = await finalReportModel
-    .find({_id : id})
+    .findById(id)
     .populate({
       path: "levelTable.classId",
       select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include name and questionSummary
@@ -303,7 +303,7 @@ exports.previewReportCard = async (req, res) => {
     //     }))
     // };
 
-      const htmlContent = generateReportCardHTML(data);
+      const htmlContent = generateReportCardHTML(data );
 
       res.send(htmlContent);
   } catch (err) {
