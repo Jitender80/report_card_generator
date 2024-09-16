@@ -611,6 +611,43 @@ async function generatePdf(req, res) {
         percentage: item.percentage
       };
     });
+    const totalQuestions = 
+    (updateData.questionAnalysisData["Difficult Question"]?.number || 0) +
+    (updateData.questionAnalysisData["Good Question"]?.number || 0) +
+    (updateData.questionAnalysisData["Easy Question"]?.number || 0) +
+    (updateData.questionAnalysisData["Poor (Bad) Questions"]?.number || 0) +
+    (updateData.questionAnalysisData["Very Difficult Question"]?.number || 0) +
+    (updateData.questionAnalysisData["Very Easy Question"]?.number || 0);
+
+  // Calculate Total Accepted
+  const totalAcceptedNumber = 
+    (updateData.questionAnalysisData["Difficult Question"]?.number || 0) +
+    (updateData.questionAnalysisData["Good Question"]?.number || 0) +
+    (updateData.questionAnalysisData["Easy Question"]?.number || 0);
+
+  const totalAcceptedPercentage = totalQuestions > 0 ? 
+    (totalAcceptedNumber / totalQuestions) * 100 : 0;
+
+  // Calculate Total Rejected
+  const totalRejectedNumber = 
+    (updateData.questionAnalysisData["Poor (Bad) Questions"]?.number || 0) +
+    (updateData.questionAnalysisData["Very Difficult Question"]?.number || 0) +
+    (updateData.questionAnalysisData["Very Easy Question"]?.number || 0);
+
+  const totalRejectedPercentage = totalQuestions > 0 ? 
+    (totalRejectedNumber / totalQuestions) * 100 : 0;
+
+  // Set the calculated values
+  updateData.questionAnalysisData["Total Accepted"] = {
+    number: totalAcceptedNumber,
+    percentage: totalAcceptedPercentage
+  };
+  updateData.questionAnalysisData["Total Rejected"] = {
+    number: totalRejectedNumber,
+    percentage: totalRejectedPercentage
+  };
+
+  
 
     await Class.findByIdAndUpdate(id, updateData, { new: true });
     result.push({

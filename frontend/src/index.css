@@ -12,3 +12,11 @@
       transform: rotate(360deg);
     }
   }
+
+.leveltable{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #3490dc;
+    margin-top: 20px;
+}
