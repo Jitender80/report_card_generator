@@ -133,6 +133,11 @@ export default function FinalReport() {
 
   }
 
+  const handleButtonClick = () => {
+    const url = `${BASE_URL}/generateReportCardPDF/${reportId}`;
+    console.log("Opening URL:", url);
+    window.open(url, '_blank');
+  };
   console.log('reportId', reportId);
 
 
@@ -140,10 +145,9 @@ export default function FinalReport() {
     <div className="bg-blue-100 w-full h-full flex-1 overflow-y-scroll flex flex-col justify-center items-center p-5">
     <h1 className="text-3xl font-bold mb-5">Final Report</h1>
     <div className="mb-5">
-      <Button onClick={()=>  window.open(`${BASE_URL}/generateReportCardPDF/${reportId}
-        `)} className="bg-blue-500 text-white px-4 py-2 rounded font-semibold">
-        Download Report
-      </Button>
+    <Button onClick={handleButtonClick}>
+      Generate Report Card PDF
+    </Button>
     </div>
 
     <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white p-5 rounded shadow-md mb-5  flex justify-center items-center">
