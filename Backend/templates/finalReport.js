@@ -115,7 +115,7 @@ function template2(data) {
            <thead>
   <tr>
     <th colspan="35" style="background-color:#e8f1a0; text-align:center; padding: 10px;">
-      <h3 style="color: #000; font-weight:bold; font-size:18px; margin: 0;">${levelData.level}</h3>
+      <h3 style="color: #000; font-weight:bold; font-size:18px; margin: 0;"> Level ${levelData.level}</h3>
     </th>
     <th colspan="65" style="text-align:center; padding: 10px;">
       <h3 style="color:#000; font-weight:bold; font-size:18px; margin: 0;">${formatSemesterData(levelData.classId[0])}</h3>
