@@ -145,7 +145,7 @@ export default function FinalReport() {
     <div className="bg-blue-100 w-full h-full flex-1 overflow-y-scroll flex flex-col justify-center items-center p-5">
     <h1 className="text-3xl font-bold mb-5">Final Report</h1>
     <div className="mb-5">
-    <Button onClick={handleButtonClick}>
+    <Button onClick={handleButtonClick} className='bg-blue-700 p-10 m-10 text-blue-50 text-2xl'>
       Generate Report Card PDF
     </Button>
     </div>

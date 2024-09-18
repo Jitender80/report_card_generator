@@ -6,7 +6,7 @@ const path = require("path");
 const Handlebars = require("handlebars");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
-
+const archiver = require("archiver");
 const { PDFDocument } = require("pdf-lib");
 
 const finalReportModel = require("../models/finalReportModel");
@@ -281,42 +281,42 @@ exports.generateReportCardPDF = async (req, res) => {
     });
 
 
-      const page = await browser.newPage();
-      const htmlContent = generateReportCardHTML(dbData);
+    
+    if (!dbData) {
+      throw new Error('Data not found');
+    }
 
-      await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+    const page = await browser.newPage();
+    const htmlContent = generateReportCardHTML(dbData, template1);
+    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-      const pdfBuffer = await page.pdf({
-        format: "A4",
-        landscape: false,
-        printBackground: true,
-        margin: {
-          top: "10mm",
-
-          bottom: "10mm",
-        },
-      });
-      pdfPages.push(pdfBuffer);
-      await page.close();
-
+    const pdfPath = path.join(reportsFolderPath, `report-${id}.pdf`);
+    await page.pdf({ path: pdfPath, format: 'A4' });
+    await page.close();
     await browser.close();
 
-    const mergedPdfBuffer = await mergePdfBuffers(pdfPages);
-    let index = 0;
-    const pdfPath = path.join(
-      __dirname,
-      "../reports",
-      `${dbData.semester?.replace(
-        /\s+/g,
-        "_"
-      )}_${Date.now()}_${index++}_ReportCard.pdf` // Use semester from request body
-    );
+    // Create a zip file and add the single PDF to it
+    const zipFilePath = path.join(reportsFolderPath, `reports-${id}.zip`);
+    const output = fs.createWriteStream(zipFilePath);
+    const archive = archiver('zip', {
+      zlib: { level: 9 } // Sets the compression level
+    });
 
-    fs.mkdirSync(path.dirname(pdfPath), { recursive: true });
-    fs.writeFileSync(pdfPath, mergedPdfBuffer);
+    output.on('close', () => {
+      console.log(`${archive.pointer()} total bytes`);
+      console.log('archiver has been finalized and the output file descriptor has closed.');
+      res.download(zipFilePath);
+    });
 
-    console.log(`PDF generated: ${pdfPath}`);
-    res.status(200).sendFile(pdfPath);
+    archive.on('error', (err) => {
+      throw err;
+    });
+
+    archive.pipe(output);
+
+    archive.file(pdfPath, { name: `report-${id}.pdf` });
+
+    await archive.finalize();
   } catch (err) {
     console.error("Error generating PDF:", err);
     res.status(500).send("Error generating PDF");
