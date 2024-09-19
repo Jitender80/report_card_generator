@@ -260,7 +260,7 @@ exports.previewReportCard = async (req, res) => {
 };
 
 exports.generateReportCardPDF = async (req, res) => {
-  cleanFolder(reportsFolderPath);
+  // cleanFolder(reportsFolderPath);
 
   const { id } = req.params;
   try {
