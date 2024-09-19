@@ -288,7 +288,6 @@ exports.generateReportCardPDF = async (req, res) => {
     if (!dbData) {
       throw new Error('Data not found');
     }
-
     const page = await browser.newPage();
     const htmlContent = generateReportCardHTML(dbData, template1);
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
@@ -298,30 +297,16 @@ exports.generateReportCardPDF = async (req, res) => {
     await page.close();
     await browser.close();
 
-    // Create a zip file and add the single PDF to it
-    const zipFilePath = path.join(reportsFolderPath, `reports-${id}.zip`);
-    const output = fs.createWriteStream(zipFilePath);
-    const archive = archiver('zip', {
-      zlib: { level: 9 } // Sets the compression level
-    });
-
-    output.on('close', () => {
-      console.log(`${archive.pointer()} total bytes`);
-      console.log('archiver has been finalized and the output file descriptor has closed.');
-      res.download(zipFilePath);
-    });
-
-    archive.on('error', (err) => {
-      console.error("Archiver error:", err);
-      res.status(500).send("Error creating zip file");
-    });
+    // Send the PDF file one by one with a 5-second interval
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=report-${id}.pdf`);
+    const fileStream = fs.createReadStream(pdfPath);
+    fileStream.pipe(res);
 
 
-    archive.pipe(output);
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
-    archive.file(pdfPath, { name: `report-${id}.pdf` });
 
-    await archive.finalize();
   } catch (err) {
     console.error("Error generating PDF:", err);
     res.status(500).send("Error generating PDF");
