@@ -1,11 +1,12 @@
+const puppeteer = require("puppeteer");
 const mongoose = require("mongoose");
 const Student = require("../models/student");
 const Class = require("../models/excelmodel");
 const FinalReport = require("../models/finalReportModel");
 const path = require("path");
-const Handlebars = require("handlebars");
+
 const fs = require("fs");
-const puppeteer = require("puppeteer");
+
 const archiver = require("archiver");
 const { PDFDocument } = require("pdf-lib");
 
@@ -264,7 +265,10 @@ exports.generateReportCardPDF = async (req, res) => {
 
   const { id } = req.params;
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      executablePath: '/usr/bin/google-chrome',
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     const pdfPages = [];
 
 
@@ -309,8 +313,10 @@ exports.generateReportCardPDF = async (req, res) => {
     });
 
     archive.on('error', (err) => {
-      throw err;
+      console.error("Archiver error:", err);
+      res.status(500).send("Error creating zip file");
     });
+
 
     archive.pipe(output);
 
