@@ -266,7 +266,7 @@ exports.generateReportCardPDF = async (req, res) => {
   const { id } = req.params;
   try {
     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome',
+      executablePath: '/opt/chrome/chrome',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const pdfPages = [];
