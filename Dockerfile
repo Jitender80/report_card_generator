@@ -5,7 +5,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
-COPY Backend/package.json Backend/package-lock.json ./
+COPY Backend/package*.json  ./
 
 RUN npm ci
 
