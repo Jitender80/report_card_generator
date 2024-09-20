@@ -9,6 +9,6 @@ COPY Backend/package.json Backend/package-lock.json ./
 
 RUN npm ci
 
-COPY . .
+COPY Backend .
 
 CMD ["node", "index.js"]
