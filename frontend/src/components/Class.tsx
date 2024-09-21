@@ -72,9 +72,6 @@ const courseData = [
   { courseCode: '514 VDS-3', nameOfCourse: 'Comprehensive Pediatric Dentistry Clinic', creditHours: '3 (1+2)', level: 12, semester: 'Second Semester', department: 'Department of Preventive Dentistry' },
   { courseCode: '533 PDS-5', nameOfCourse: 'Comprehensive Care Clinic II', creditHours: '5 (1+4)', level: 12, semester: 'Second Semester', department: 'Department of Prosthodontics' },
   { courseCode: '541 OMS-2', nameOfCourse: 'Principles of Care of Complicated Oral Surgical Cases', creditHours: '2 (1+1)', level: 12, semester: 'Second Semester', department: 'Department of Oral and Maxillofacial Surgery and Diagnostic Sciences' },
-
-
-
 ];
 
 const  Class = ({ onClassIdChange }: Props) => {
