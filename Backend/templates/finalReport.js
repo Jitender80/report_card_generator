@@ -12,10 +12,10 @@ function formatSemesterData(data) {
     "Eighth Semester": "8th",
   };
 
-  const semester = semesterMapping[data.semester];
-  const year = data.academicYear.split("-")[0]; // Extract the starting year
+  const [startYear, endYearShort] = data.academicYear.split("-");
+  const endYear = startYear.slice(0, 2) + endYearShort; // Construct the full end year
 
-  return `${semester} Semester, (${year} G)`;
+  return `${semester} Semester, (${startYear}-${endYear})`;
 }
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
