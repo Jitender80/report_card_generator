@@ -11,7 +11,7 @@ const archiver = require("archiver");
 const { PDFDocument } = require("pdf-lib");
 
 const finalReportModel = require("../models/finalReportModel");
-const { template1, template2, template3 } = require("../templates/finalReport");
+const { template1, template2, template3, template4 } = require("../templates/finalReport");
 const { mergePdfBuffers } = require("../utils");
 
 exports.generateFinalReport = async (req, res) => {
@@ -158,7 +158,7 @@ exports.getFinalReport = async (req, res) => {
 
 
 
-const templates = [template1, template2, template3];
+const templates = [template1, template2, template3, template4];
 
 function generateReportCardHTML(data) {
   return `

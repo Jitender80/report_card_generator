@@ -161,7 +161,7 @@ finalReportSchema.pre('save', async function (next) {
       "Total Accepted": { number: 0, percentage: 0 },
       "Total Rejected": { number: 0, percentage: 0 },
     };
-
+    let totalKR20 = 0;
     // Calculate totals
     classes.forEach(classDoc => {
       const questionAnalysisData = classDoc.questionAnalysisData;
@@ -171,8 +171,8 @@ finalReportSchema.pre('save', async function (next) {
           counters[key].percentage += questionAnalysisData[key].percentage || 0;
         }
       }
+      totalKR20 += classDoc.kr20 || 0;
     });
-
     const totalEntries = classes.length;
     for (const key in counters) {
       if (totalEntries > 0) {
@@ -210,6 +210,8 @@ finalReportSchema.pre('save', async function (next) {
         "Total Rejected": { number: 0, percentage: 0 },
       };
 
+      let totalKR20 = 0;
+
       // Calculate totals
       classes.forEach(classDoc => {
         const questionAnalysisData = classDoc.questionAnalysisData;
@@ -219,6 +221,7 @@ finalReportSchema.pre('save', async function (next) {
             counters[key].percentage += questionAnalysisData[key].percentage || 0;
           }
         }
+        totalKR20 += classDoc.kr20 || 0;
       });
 
       const totalEntries = classes.length;
@@ -229,12 +232,16 @@ finalReportSchema.pre('save', async function (next) {
         }
       }
 
+      // Calculate kr20Average
+      const kr20Average = totalEntries > 0 ? totalKR20 / totalEntries : 0;
+
       // Update average field
-      entry[averageField] = counters;
+      entry[averageField] = { ...counters, kr20Average };
     }
   };
+
   await calculateAverages(finalReport.levelTable, 'levelAverage');
-  await calculateAverages(finalReport.CourseNameTable, 'courseAverage');
+  await calculateAverages(finalReport.CourseNameTable, 'levelAverage');
 
   next();
 });

@@ -1,3 +1,5 @@
+const finalReportModel = require("../models/finalReportModel");
+
 function formatSemesterData(data) {
   console.log("🚀 ~ formatSemesterData ~ data:", data);
 
@@ -104,6 +106,7 @@ function template2(data) {
       // console.log("🚀 ~ .map ~ levelData:", levelData)
 
       const kr20Average = calculateKR20Average(levelData.classId);
+ 
 
       return `
       <div style="page-break-after: always;  width:100%;height:90vh;  max-height: 1122px; padding: 2px; box-sizing: border-box;">
@@ -448,5 +451,147 @@ function template3(data) {
       `;
   }).join("");
 }
+function template4(data) {
+  let totalDifficultQuestions = 0;
+  let totalGoodQuestions = 0;
+  let totalEasyQuestions = 0;
+  let totalAccepted = 0;
+  let totalVeryEasyQuestions = 0;
+  let totalVeryDifficultQuestions = 0;
+  let totalPoorQuestions = 0;
+  let totalRejected = 0;
+  let totalKR20 = 0;
+  let levelCount = data.levelTable.length;
+  
+  // Aggregate data
+  data.levelTable.forEach(levelData => {
+      totalDifficultQuestions += levelData.levelAverage["Difficult Question"]?.number || 0;
+      totalGoodQuestions += levelData.levelAverage["Good Question"]?.number || 0;
+      totalEasyQuestions += levelData.levelAverage["Easy Question"]?.number || 0;
+      totalAccepted += levelData.levelAverage["Total Accepted"]?.number || 0;
+      totalVeryEasyQuestions += levelData.levelAverage["Very Easy Question"]?.number || 0;
+      totalVeryDifficultQuestions += levelData.levelAverage["Very Difficult Question"]?.number || 0;
+      totalPoorQuestions += levelData.levelAverage["Poor (Bad) Questions"]?.number || 0;
+      totalRejected += levelData.levelAverage["Total Rejected"]?.number || 0;
+      totalKR20 += levelData.levelAverage.kr20Average || 0;
+  });
 
-module.exports = { template1, template2, template3 };
+  // Calculate average KR 20
+let averageKR20 = totalKR20 / levelCount;
+  console.log("🚀 ~ template4 ~ levelTable:", data.levelTable[0])
+
+  
+
+  // Generate HTML
+  let summaryHTML = `
+        <div style="page-break-after: always;  width:100%;height:90vh;  max-height: 1122px; padding: 2px; box-sizing: border-box;">
+          <div style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 10px; margin: 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+  
+            <div style="display: flex; justify-content: space-between; align-items: center; background-color:#fff; border:2px solid #000;
+              padding: 10px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div style="font-size: 12px; font-weight: bold; gap: 5px; text-align: center;">
+  <ul style="display: flex; flex-direction: column; list-style-type: none; align-items: center;">
+    <li class="spacing">KINGDOM OF SAUDI ARABIA</li>
+    <li class="spacing">Ministry of Education</li>
+    <li class="spacing">${data?.university || "Najran University"}</li>
+    <li class="spacing">Faculty of Dentistry</li>
+  </ul>
+</div>
+              <img src="https://res.cloudinary.com/dkijovd6p/image/upload/v1725480428/t50opxpqoofrimbd3yxi.png" alt="University Logo" style="width: 75px; height: 75px;">
+              <img src="https://res.cloudinary.com/dkijovd6p/image/upload/t_hii/o3jtksywnmrppxs9o9yt.jpg" alt="University Logo" style="width: 125px; height: 75px;">
+            </div>
+  
+            <table class="leveltable"  style=" width:100%;  border-collapse: collapse; border:2px solid #000; background-color:#fff">
+       
+
+                    <thead>
+              <tr>
+                <th colspan="40" style="background-color:#e8f1a0; text-align:center; padding: 10px;">
+                  <h3 style="color: #000; font-weight:bold; font-size:18px; margin: 0;"> Report Summary </h3>
+                </th>
+                <th colspan="60" style="text-align:center; padding: 10px;">
+                  <h3 style="color:#000; font-weight:bold; font-size:18px; margin: 0;">  ${formatSemesterData(data?.CourseNameTable[0].classId[0])}</h3>
+                </th>
+              </tr>
+            </thead>
+    <tbody id="tableData">
+       <tr>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">N</th>
+        <th colspan="30" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Levels</th>
+        <th colspan="5" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">${"  "}</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Difficult Question</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Good Question</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Easy Question</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top; background-color:#cdf1d1;">Total Accepted</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Very Easy Question</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Very Difficult Question</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Poor (Bad) Questions</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;background-color:#f6dddd;">Total Rejected</th>
+        <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">KR 20</th>
+    </tr>
+  `;
+
+  // Iterate over each level and generate rows
+  data.levelTable.forEach((levelData, index) => {
+    console.log("🚀 ~ template4 ~ levelData", levelData)
+    summaryHTML += `
+    <tr>
+        <td style="padding: 2px;">${index + 1}</td>
+        <td colspan="30" style="padding: 2px;">${levelData.level}</td>
+        <td colspan="5" style="padding: 2px;">${"  "}</td>
+        <td style="padding: 2px;">${levelData.levelAverage["Difficult Question"].number}</td>
+        <td style="padding: 2px;">${levelData.levelAverage["Good Question"].number}</td>
+        <td style="padding: 2px;">${levelData.levelAverage["Easy Question"].number}</td>
+        <td style="padding: 2px;background-color:#cdf1d1;">${levelData.levelAverage["Total Accepted"].number}</td>
+        <td style="padding: 2px;">${levelData.levelAverage["Very Easy Question"].number}</td>
+        <td style="padding: 2px;">${levelData.levelAverage["Very Difficult Question"].number}</td>
+        <td style="padding: 2px;">${levelData.levelAverage["Poor (Bad) Questions"].number}</td>
+        <td style="padding: 2px;background-color:#f6dddd;">${levelData.levelAverage["Total Rejected"].number}</td>
+        <td style="padding: 2px;">${levelData.levelAverage.kr20Average.toFixed(2)}</td>
+    </tr>
+    `;
+});
+
+// Append summary rows
+summaryHTML += `
+    <tr>
+        <td rowspan="3" colspan="32" style="padding: 10px; font-weight: bold;">Average</td>
+        <td style="padding: 5px;" colspan="4">N</td>
+        <td style="padding: 2px;">${totalDifficultQuestions}</td>
+        <td style="padding: 2px;">${totalGoodQuestions}</td>
+        <td style="padding: 2px;">${totalEasyQuestions}</td>
+        <td style="padding: 2px;background-color:#cdf1d1;">${totalAccepted}</td>
+        <td style="padding: 2px;">${totalVeryEasyQuestions}</td>
+        <td style="padding: 2px;">${totalVeryDifficultQuestions}</td>
+        <td style="padding: 2px;">${totalPoorQuestions}</td>
+        <td style="padding: 2px;background-color:#f6dddd;">${totalRejected}</td>
+        <td rowspan="2" colspan="5" style="padding: 2px;">${averageKR20.toFixed(2)}</td>
+    </tr>
+    <tr>
+        <td style="padding: 5px;" colspan="4">%</td>
+        <td style="padding: 2px;">${(totalDifficultQuestions / levelCount).toFixed(2)}%</td>
+        <td style="padding: 2px;">${(totalGoodQuestions / levelCount).toFixed(2)}%</td>
+        <td style="padding: 2px;">${(totalEasyQuestions / levelCount).toFixed(2)}%</td>
+        <td style="padding: 2px;background-color:#cdf1d1;">${(totalAccepted / levelCount).toFixed(2)}%</td>
+        <td style="padding: 2px;">${(totalVeryEasyQuestions / levelCount).toFixed(2)}%</td>
+        <td style="padding: 2px;">${(totalVeryDifficultQuestions / levelCount).toFixed(2)}%</td>
+        <td style="padding: 2px;">${(totalPoorQuestions / levelCount).toFixed(2)}%</td>
+        <td style="padding: 2px;background-color:#f6dddd;">${(totalRejected / levelCount).toFixed(2)}%</td>
+    </tr>
+`;
+
+
+  // Close the table
+  summaryHTML += `
+     </tbody>
+            </table>
+        </div>
+    </div>
+  `;
+
+  return summaryHTML;
+}
+
+module.exports = { template4 };
+
+module.exports = { template1, template2, template3, template4 };
