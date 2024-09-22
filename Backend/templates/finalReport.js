@@ -100,7 +100,7 @@ function calculateKR20Average(classIds) {
   );
   return totalKR20 / classIds.length;
 }
-
+let isFirstTemplate2 = true;
 function template2(data) {
   const sortedLevelTable = data.levelTable.sort((a, b) => a.level - b.level);
   // console.log("🚀 ~ template2 ~ data", data.levelTable, typeof data.levelTable)
@@ -109,9 +109,16 @@ function template2(data) {
       // console.log("🚀 ~ .map ~ levelData:", levelData)
 
       const kr20Average = calculateKR20Average(levelData.classId);
-
+      const header = isFirstTemplate2 ? '<h2>Level and Course wise item analysis</h2>' : '';
+      isFirstTemplate2 = false;
       return `
+
       <div style="page-break-after: always;  width:100%;height:90vh;  max-height: 1122px; padding: 2px; box-sizing: border-box;">
+
+      <div style="display:flex; flex-direction:column; justify-content:center; text-align:center; font-weight:600; font-size:18px;margin:10px;">
+
+        ${header}
+        </div>
         <div style="flex-direction: column; justify-content: center; background-color: #b8d3ef; border: 6px solid #1C4A7A; padding: 10px; margin: 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
 
           <div style="display: flex; justify-content: space-between; align-items: center; background-color:#fff; border:2px solid #000;
