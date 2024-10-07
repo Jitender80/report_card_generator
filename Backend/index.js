@@ -166,22 +166,22 @@ cron.schedule('0 0 * * *', () => {
   deleteFiles();
 });
 
-const createBackup = (backupPath) => {
-  return new Promise((resolve, reject) => {
-    const backupDir = path.join(__dirname, backupPath);
-    const command = `mongodump --uri="mongodb+srv://testing:UOxBuZW2IC0kmuNl@cluster0.0z1ua.mongodb.net/?retryWrites=true&w=majority" --out=${backupDir}`;
+// const createBackup = (backupPath) => {
+//   return new Promise((resolve, reject) => {
+//     const backupDir = path.join(__dirname, backupPath);
+//     const command = `mongodump --uri="mongodb+srv://testing:UOxBuZW2IC0kmuNl@cluster0.0z1ua.mongodb.net/?retryWrites=true&w=majority" --out=${backupDir}`;
 
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error creating backup: ${error.message}`);
-        reject(error);
-      } else {
-        console.log(`Backup created successfully: ${stdout}`);
-        resolve(stdout);
-      }
-    });
-  });
-};
+//     exec(command, (error, stdout, stderr) => {
+//       if (error) {
+//         console.error(`Error creating backup: ${error.message}`);
+//         reject(error);
+//       } else {
+//         console.log(`Backup created successfully: ${stdout}`);
+//         resolve(stdout);
+//       }
+//     });
+//   });
+// };
 cron.schedule('0 0 * * *', async () => {
   console.log('Running cron job to delete files and create backup...');
   deleteFiles();

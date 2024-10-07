@@ -138,12 +138,12 @@ function template2(data) {
           <table class="leveltable"  style=" width:100%;  border-collapse: collapse; border:2px solid #000; background-color:#fff">
            <thead>
   <tr>
-    <th colspan="35" style="background-color:#e8f1a0; text-align:center; padding: 10px;">
+    <th colspan="32" style="background-color:#e8f1a0; text-align:center; padding: 10px;">
       <h3 style="color: #000; font-weight:bold; font-size:18px; margin: 0;"> Level ${
         levelData.level
       }</h3>
     </th>
-    <th colspan="65" style="text-align:center; padding: 10px;">
+    <th colspan="68" style="text-align:center; padding: 10px;">
       <h3 style="color:#000; font-weight:bold; font-size:18px; margin: 0;">${formatSemesterData(
         levelData.classId[0]
       )}</h3>
@@ -153,8 +153,8 @@ function template2(data) {
             <tbody id="tableData">
 
              <tr>
-    <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">N</th>
-    <th colspan="30" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Course Title & Course Code</th>
+    <th  colspan="5" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">N</th>
+    <th colspan="27" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Course Title & Course Code</th>
     <th colspan="5" style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">${"  "}</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Difficult Question</th>
     <th style="padding: 2px; word-wrap: break-word; white-space: normal; vertical-align: top;">Good Question</th>
@@ -170,10 +170,10 @@ function template2(data) {
                 .map(
                   (classData, classIndex) => `
                     <tr>
-                      <td rowspan="2" style="padding: 10px;">${
+                      <td  colspan="5" rowspan="2" style="padding: 10px;">${
                         classIndex + 1
                       }</td>
-                      <td colspan="30" rowspan="2" style="padding: 10px 5px 20px 5px;">${
+                      <td colspan="27" rowspan="2" style="padding: 10px 5px 20px 5px;">${
                         classData.nameOfCourse
                       }
                       (${capitalizeFirstLetter(classData.gender)})  
