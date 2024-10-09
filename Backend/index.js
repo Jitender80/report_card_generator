@@ -137,10 +137,16 @@ app.post('/previewReportCard/:id', previewReportCard);
 app.get('/generateReportCardPDF/:id', generateReportCardPDF);
 ///***get final report card */
 
-
+const uploadsDir = path.join(__dirname, 'uploads');
 const folderPath = path.join(__dirname, './uploads');
 
 const deleteFiles = () => {
+
+
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
   fs.readdir(folderPath, (err, files) => {
     if (err) {
       console.error(`Error reading directory: ${err.message}`);
