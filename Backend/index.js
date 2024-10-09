@@ -184,7 +184,7 @@ cron.schedule('0 0 * * *', () => {
 // };
 cron.schedule('0 0 * * *', async () => {
   console.log('Running cron job to delete files and create backup...');
-  deleteFiles();
+  // deleteFiles();
   try {
     await createBackup('./backups');
   } catch (error) {
