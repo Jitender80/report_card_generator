@@ -163,7 +163,7 @@ const deleteFiles = () => {
 // Schedule the cron job to run every day at midnight
 cron.schedule('0 0 * * *', () => {
   console.log('Running cron job to delete files...');
-  deleteFiles();
+  // deleteFiles();
 });
 
 // const createBackup = (backupPath) => {
