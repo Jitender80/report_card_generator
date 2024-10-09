@@ -161,10 +161,10 @@ const deleteFiles = () => {
 };
 
 // Schedule the cron job to run every day at midnight
-cron.schedule('0 0 * * *', () => {
-  console.log('Running cron job to delete files...');
-  // deleteFiles();
-});
+// cron.schedule('0 0 * * *', () => {
+//   console.log('Running cron job to delete files...');
+//   // deleteFiles();
+// });
 
 // const createBackup = (backupPath) => {
 //   return new Promise((resolve, reject) => {
@@ -182,15 +182,15 @@ cron.schedule('0 0 * * *', () => {
 //     });
 //   });
 // };
-cron.schedule('0 0 * * *', async () => {
-  console.log('Running cron job to delete files and create backup...');
-  // deleteFiles();
-  try {
-    await createBackup('./backups');
-  } catch (error) {
-    console.error('Error during backup creation:', error);
-  }
-});
+// cron.schedule('0 0 * * *', async () => {
+//   console.log('Running cron job to delete files and create backup...');
+//   // deleteFiles();
+//   try {
+//     await createBackup('./backups');
+//   } catch (error) {
+//     console.error('Error during backup creation:', error);
+//   }
+// });
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

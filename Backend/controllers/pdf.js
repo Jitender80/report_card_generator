@@ -746,7 +746,7 @@ async function generatePdf(req, res) {
         },
       },
     };
-    console.log("🚀 ~ generatePdf ~ dbData:", dbData);
+    // console.log("🚀 ~ generatePdf ~ dbData:", dbData);
 
     const pdfPath = await generateReportCardPDF(dbData);
 
