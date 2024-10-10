@@ -494,28 +494,28 @@ border-collapse: collapse;
 
           <td>${data.courses.studentsAttended}</td>
           <td>${data.courses.studentsPassed.number}</td>
-          <td>${data.courses.grades.APlus.number.toFixed(0)}</td>
-          <td>${data.courses.grades.A.number.toFixed(0)}</td>
-          <td>${data.courses.grades.BPlus.number.toFixed(0)}</td>
-          <td>${data.courses.grades.B.number.toFixed(0)}</td>
-          <td>${data.courses.grades.CPlus.number.toFixed(0)}</td>
-          <td>${data.courses.grades.C.number.toFixed(0)}</td>
-          <td>${data.courses.grades.DPlus.number.toFixed(0)}</td>
-          <td>${data.courses.grades.D.number.toFixed(0)}</td>
-          <td>${data.courses.grades.F.number.toFixed(0)}</td>
+          <td>${data.courses.grades.APlus.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.A.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.BPlus.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.B.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.CPlus.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.C.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.DPlus.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.D.number?.toFixed(0)}</td>
+          <td>${data.courses.grades.F.number?.toFixed(0)}</td>
         </tr>
         <tr class="rowe">
           <td colspan="1"></td>
           <td>${data.courses.studentsPassed.percentage}%</td>
-          <td>${data.courses.grades.APlus.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.A.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.BPlus.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.B.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.CPlus.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.C.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.DPlus.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.D.percentage.toFixed(0)}%</td>
-          <td>${data.courses.grades.F.percentage.toFixed(0)}%</td>
+          <td>${data.courses.grades.APlus.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.A.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.BPlus.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.B.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.CPlus.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.C.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.DPlus.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.D.percentage?.toFixed(0)}%</td>
+          <td>${data.courses.grades.F.percentage?.toFixed(0)}%</td>
         </tr>
       </table>
     </div>
@@ -606,10 +606,10 @@ async function generatePdf(req, res) {
         items,
         category,
         numberOfItems,
-        percentage: percentage.toFixed(0), // Optional: format percentage to 2 decimal places
+        percentage: percentage?.toFixed(0), // Optional: format percentage to 2 decimal places
       });
       console.log(
-        `Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage.toFixed(
+        `Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage?.toFixed(
           0
         )}%`
       );
@@ -665,7 +665,7 @@ async function generatePdf(req, res) {
     await Class.findByIdAndUpdate(id, updateData, { new: true });
     result.push({
       category: "Reliability",
-      numberOfItems: data.kr20.toFixed(2), // Replace "value" with the actual KR2 value
+      numberOfItems: data.kr20?.toFixed(2), // Replace "value" with the actual KR2 value
     });
 
     let passedCount =
@@ -706,7 +706,7 @@ async function generatePdf(req, res) {
         studentsAttended: totalStudents,
         studentsPassed: {
           number: passedCount ? passedCount : "-",
-          percentage: ((passedCount / totalStudents) * 100).toFixed(0),
+          percentage: ((passedCount / totalStudents) * 100)?.toFixed(0),
         },
         grades: {
           APlus: {
@@ -790,10 +790,10 @@ async function getDbData(req, res) {
       items,
       category,
       numberOfItems,
-      percentage: percentage.toFixed(0), // Optional: format percentage to 2 decimal places
+      percentage: percentage?.toFixed(0), // Optional: format percentage to 2 decimal places
     });
     console.log(
-      `Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage.toFixed(
+      `Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage?.toFixed(
         0
       )}%`
     );
@@ -842,7 +842,7 @@ async function getDbData(req, res) {
       studentsAttended: data.studentsAttended ? data.studentsAttended : "-",
       studentsPassed: {
         number: passedCount ? passedCount : "-",
-        percentage: ((passedCount / totalStudents) * 100).toFixed(0),
+        percentage: ((passedCount / totalStudents) * 100)?.toFixed(0),
       },
       grades: {
         APlus: {

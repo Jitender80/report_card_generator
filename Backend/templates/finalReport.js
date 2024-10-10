@@ -213,7 +213,7 @@ function template2(data) {
                           ?.number || ""
                       }</td>
                       <td rowspan="2" style="padding: 2px;">${
-                        classData?.kr20.toFixed(2) || ""
+                        classData?.kr20?.toFixed(2) || ""
                       }</td>
                     </tr>
                     <tr>
@@ -283,7 +283,7 @@ function template2(data) {
                 <td style="padding: 2px;background-color:#f6dddd;">${
                   levelData.levelAverage["Total Rejected"].number
                 }</td>
-                <td rowspan="2" colspan="5" style="padding: 2px;">${kr20Average.toFixed(
+                <td rowspan="2" colspan="5" style="padding: 2px;">${kr20Average?.toFixed(
                   2
                 )}</td>
               </tr>
@@ -421,7 +421,7 @@ function template3(data) {
                             ?.number || ""
                         }</td>
                         <td rowspan="2" style="padding: 2px;">${
-                          classData.kr20.toFixed(2) || ""
+                          classData.kr20?.toFixed(2) || ""
                         }</td>
                       </tr>
                       <tr>
@@ -491,7 +491,7 @@ function template3(data) {
                   <td style="padding: 2px;background-color:#f6dddd;">${
                     levelData.levelAverage["Total Rejected"].number
                   }</td>
-                  <td rowspan="2" colspan="5" style="padding: 2px;">${kr20Average.toFixed(
+                  <td rowspan="2" colspan="5" style="padding: 2px;">${kr20Average?.toFixed(
                     2
                   )}</td>
                 </tr>
@@ -647,18 +647,18 @@ function template4(data) {
   <td style="padding: 2px;">${levelData.levelAverage["Very Difficult Question"].number}</td>
   <td style="padding: 2px;">${levelData.levelAverage["Poor (Bad) Questions"].number}</td>
   <td style="padding: 2px;background-color:#f6dddd;">${levelData.levelAverage["Total Rejected"].number}</td>
-  <td style="padding: 2px;">${levelData.levelAverage.kr20Average.toFixed(2)}</td>
+  <td style="padding: 2px;">${levelData.levelAverage.kr20Average?.toFixed(2)}</td>
 </tr>
 <tr>
   <td colspan="5" style="padding: 2px;">%</td>
-  <td style="padding: 2px;">${((levelData.levelAverage["Difficult Question"].number / totalQuestions) * 100).toFixed(2)}%</td>
-  <td style="padding: 2px;">${((levelData.levelAverage["Good Question"].number / totalQuestions) * 100).toFixed(2)}%</td>
-  <td style="padding: 2px;">${((levelData.levelAverage["Easy Question"].number / totalQuestions) * 100).toFixed(2)}%</td>
-  <td style="padding: 2px;background-color:#cdf1d1;">${((levelData.levelAverage["Total Accepted"].number / totalQuestions) * 100).toFixed(2)}%</td>
-  <td style="padding: 2px;">${((levelData.levelAverage["Very Easy Question"].number / totalQuestions) * 100).toFixed(2)}%</td>
-  <td style="padding: 2px;">${((levelData.levelAverage["Very Difficult Question"].number / totalQuestions) * 100).toFixed(2)}%</td>
-  <td style="padding: 2px;">${((levelData.levelAverage["Poor (Bad) Questions"].number / totalQuestions) * 100).toFixed(2)}%</td>
-  <td style="padding: 2px;background-color:#f6dddd;">${((levelData.levelAverage["Total Rejected"].number / totalQuestions) * 100).toFixed(2)}%</td>
+  <td style="padding: 2px;">${((levelData.levelAverage["Difficult Question"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
+  <td style="padding: 2px;">${((levelData.levelAverage["Good Question"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
+  <td style="padding: 2px;">${((levelData.levelAverage["Easy Question"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
+  <td style="padding: 2px;background-color:#cdf1d1;">${((levelData.levelAverage["Total Accepted"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
+  <td style="padding: 2px;">${((levelData.levelAverage["Very Easy Question"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
+  <td style="padding: 2px;">${((levelData.levelAverage["Very Difficult Question"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
+  <td style="padding: 2px;">${((levelData.levelAverage["Poor (Bad) Questions"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
+  <td style="padding: 2px;background-color:#f6dddd;">${((levelData.levelAverage["Total Rejected"].number / totalQuestions) * 100)?.toFixed(2)}%</td>
   <td style="padding: 2px;"></td>
 </tr>
     `;
@@ -677,18 +677,18 @@ function template4(data) {
       <td style="padding: 2px;">${totalVeryDifficultQuestions}</td>
       <td style="padding: 2px;">${totalPoorQuestions}</td>
       <td style="padding: 2px;background-color:#f6dddd;">${totalRejected}</td>
-      <td rowspan="2" colspan="5" style="padding: 2px;" rowspan="2">${averageKR20.toFixed(2)}</td>
+      <td rowspan="2" colspan="5" style="padding: 2px;" rowspan="2">${averageKR20?.toFixed(2)}</td>
     </tr>
     <tr>
       <td style="padding: 5px;" colspan="4">%</td>
-      <td style="padding: 2px;">${(totalDifficultQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalGoodQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalEasyQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;background-color:#cdf1d1;">${(totalAccepted / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalVeryEasyQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalVeryDifficultQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalPoorQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;background-color:#f6dddd;">${(totalRejected / courseCount).toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalDifficultQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalGoodQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalEasyQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;background-color:#cdf1d1;">${(totalAccepted / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalVeryEasyQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalVeryDifficultQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalPoorQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;background-color:#f6dddd;">${(totalRejected / courseCount)?.toFixed(2)}%</td>
     </tr>
 `;
 
@@ -796,19 +796,19 @@ function  templateCourseNameTable(data) {
   <td style="padding: 2px;">${courseData.levelAverage["Very Difficult Question"].number}</td>
   <td style="padding: 2px;">${courseData.levelAverage["Poor (Bad) Questions"].number}</td>
   <td style="padding: 2px;background-color:#f6dddd;">${courseData.levelAverage["Total Rejected"].number}</td>
-  <td style="padding: 2px;">${courseData.levelAverage.kr20Average.toFixed(2)}</td>
+  <td style="padding: 2px;">${courseData.levelAverage.kr20Average?.toFixed(2)}</td>
 </tr>
 <tr>
   <td colspan="5" style="padding: 2px;">%</td>
 
-<td style="padding: 2px;">${(courseData.levelAverage["Difficult Question"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;">${(courseData.levelAverage["Good Question"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;">${(courseData.levelAverage["Easy Question"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;background-color:#cdf1d1;">${(courseData.levelAverage["Total Accepted"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;">${(courseData.levelAverage["Very Easy Question"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;">${(courseData.levelAverage["Very Difficult Question"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;">${(courseData.levelAverage["Poor (Bad) Questions"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;background-color:#f6dddd;">${(courseData.levelAverage["Total Rejected"].percentage).toFixed(2)}%</td>
+<td style="padding: 2px;">${(courseData.levelAverage["Difficult Question"].percentage)?.toFixed(2)}%</td>
+<td style="padding: 2px;">${(courseData.levelAverage["Good Question"].percentage)?.toFixed(2)}%</td>
+<td style="padding: 2px;">${(courseData.levelAverage["Easy Question"].percentage)?.toFixed(2)}%</td>
+<td style="padding: 2px;background-color:#cdf1d1;">${(courseData.levelAverage["Total Accepted"].percentage)?.toFixed(2)}%</td>
+<td style="padding: 2px;">${(courseData.levelAverage["Very Easy Question"].percentage)?.toFixed(2)}%</td>
+<td style="padding: 2px;">${(courseData.levelAverage["Very Difficult Question"].percentage)?.toFixed(2)}%</td>
+<td style="padding: 2px;">${(courseData.levelAverage["Poor (Bad) Questions"].percentage)?.toFixed(2)}%</td>
+<td style="padding: 2px;background-color:#f6dddd;">${(courseData.levelAverage["Total Rejected"].percentage)?.toFixed(2)}%</td>
 <td style="padding: 2px;"></td>
 </tr>
     `;
@@ -827,18 +827,18 @@ function  templateCourseNameTable(data) {
       <td style="padding: 2px;">${totalVeryDifficultQuestions}</td>
       <td style="padding: 2px;">${totalPoorQuestions}</td>
       <td style="padding: 2px;background-color:#f6dddd;">${totalRejected}</td>
-      <td rowspan="2" colspan="5" style="padding: 2px;">${averageKR20.toFixed(2)}</td>
+      <td rowspan="2" colspan="5" style="padding: 2px;">${averageKR20?.toFixed(2)}</td>
     </tr>
     <tr>
       <td style="padding: 5px;" colspan="4">%</td>
-      <td style="padding: 2px;">${(totalDifficultQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalGoodQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalEasyQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;background-color:#cdf1d1;">${(totalAccepted / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalVeryEasyQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalVeryDifficultQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;">${(totalPoorQuestions / courseCount).toFixed(2)}%</td>
-      <td style="padding: 2px;background-color:#f6dddd;">${(totalRejected / courseCount).toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalDifficultQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalGoodQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalEasyQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;background-color:#cdf1d1;">${(totalAccepted / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalVeryEasyQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalVeryDifficultQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;">${(totalPoorQuestions / courseCount)?.toFixed(2)}%</td>
+      <td style="padding: 2px;background-color:#f6dddd;">${(totalRejected / courseCount)?.toFixed(2)}%</td>
     </tr>
 `;
 

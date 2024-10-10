@@ -160,7 +160,7 @@ exports.uploadFile = async (req, res) => {
 
   console.log("🚀 ~ exports.uploadFile= ~ IncorrectIndexData:", IncorrectIndexData)
 
-  const correctIndexData = IncorrectIndexData.map((value) => parseFloat((100 - (value * 100)).toFixed(2)));
+  const correctIndexData = IncorrectIndexData.map((value) => parseFloat((100 - (value * 100))?.toFixed(2)));
   console.log("🚀 ~ exports.uploadFile= ~ correctIndexData:", correctIndexData)
 
 
@@ -494,7 +494,7 @@ Object.keys(questionTypes).forEach((category) => {
   const percentage = (numberOfItems / totalQuestions) * 100;
   questionAnalysisData[category] = {
     number: numberOfItems,
-    percentage: percentage.toFixed(2) // Format percentage to 2 decimal places
+    percentage: percentage?.toFixed(2) // Format percentage to 2 decimal places
   };
 });
     

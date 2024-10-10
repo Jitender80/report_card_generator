@@ -251,28 +251,28 @@ const ReportCard = ({ data }) => {
               <td>{data.courses.studentsAbsent}</td>
               <td>{data.courses.studentsAttended}</td>
               <td>{data.courses.studentsPassed.number}</td>
-              <td>{data.courses.grades.APlus.number.toFixed(0)}</td>
-              <td>{data.courses.grades.A.number.toFixed(0)}</td>
-              <td>{data.courses.grades.BPlus.number.toFixed(0)}</td>
-              <td>{data.courses.grades.B.number.toFixed(0)}</td>
-              <td>{data.courses.grades.CPlus.number.toFixed(0)}</td>
-              <td>{data.courses.grades.C.number.toFixed(0)}</td>
-              <td>{data.courses.grades.DPlus.number.toFixed(0)}</td>
-              <td>{data.courses.grades.D.number.toFixed(0)}</td>
-              <td>{data.courses.grades.F.number.toFixed(0)}</td>
+              <td>{data.courses.grades.APlus.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.A.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.BPlus.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.B.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.CPlus.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.C.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.DPlus.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.D.number?.toFixed(0)}</td>
+              <td>{data.courses.grades.F.number?.toFixed(0)}</td>
             </tr>
             <tr className="roww">
               <td colSpan="6"></td>
               <td>({data.courses.studentsPassed.percentage}%)</td>
-              <td>({data.courses.grades.APlus.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.A.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.BPlus.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.B.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.CPlus.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.C.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.DPlus.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.D.percentage.toFixed(0)}%)</td>
-              <td>({data.courses.grades.F.percentage.toFixed(0)}%)</td>
+              <td>({data.courses.grades.APlus.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.A.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.BPlus.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.B.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.CPlus.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.C.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.DPlus.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.D.percentage?.toFixed(0)}%)</td>
+              <td>({data.courses.grades.F.percentage?.toFixed(0)}%)</td>
             </tr>
           </tbody>
         </table>
