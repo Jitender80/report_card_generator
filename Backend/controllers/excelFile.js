@@ -133,8 +133,7 @@ exports.uploadFile = async (req, res) => {
   if (!file || !file.mimetype.includes('spreadsheetml') || !file.originalname.match(/\.(xls|xlsx)$/)) {
     return res.status(400).send({ message: 'Please upload a valid Excel file.' });
   }
-  
-  const workbook = xlsx.readFile(file.path);
+  const workbook = xlsx.read(file.buffer, { type: 'buffer' });
   const sheetNames = workbook.SheetNames;
 
   // Get sheets at index 0 and 2
