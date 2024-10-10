@@ -108,8 +108,19 @@ async function generateReportCardPDF(dbData) {
 
 
 
-
-
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URI
+  );
+  
+  oauth2Client.setCredentials({
+    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+  });
+  
+  const drive = google.drive({ version: 'v3', auth: oauth2Client });
+  
+ 
   // data.logo =
   // "https://th.bing.com/th/id/OIP.4lkXDSyrWbwbMaksrBRfXwHaFg?w=219&h=180&c=7&r=0&o=5&pid=1.7";
 

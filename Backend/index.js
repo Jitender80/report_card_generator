@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const cron = require('node-cron');
 const multer = require("multer");
-
+const { google } = require('googleapis');
 const xlsx = require("xlsx");
 const { uploadFile,  getstudentData,  createClass, getFinalResult, handleCollegeSubmit } = require("./controllers/excelFile");
 
@@ -22,11 +22,10 @@ const { getGrades } = require("./controllers/grading");
 const { getReportsByRoleAndEmail } = require("./controllers/get.controllers");
 const User = require("./models/usermodel");
 const { generateFinalReport, generateReportCardPDF, previewReportCard, getFinalReport } = require("./controllers/finalReport");
-
-
 const app = express();
-const port = process.env.PORT || 4000;
+const port = 4000;
 app.use(bodyParser.json());
+
 
 app.use(cors({
   origin: '*'
