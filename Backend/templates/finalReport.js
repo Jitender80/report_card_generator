@@ -213,7 +213,7 @@ function template2(data) {
                           ?.number || ""
                       }</td>
                       <td rowspan="2" style="padding: 2px;">${
-                        classData.kr20.toFixed(2) || ""
+                        classData?.kr20.toFixed(2) || ""
                       }</td>
                     </tr>
                     <tr>

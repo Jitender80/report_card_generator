@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# exit on errorset -o errexit
+# exit on error
+set -o errexit
 
 npm install
 # npm run build # uncomment if required
+
+# Install Puppeteer dependencies
+npx puppeteer browsers install chrome
 
 # Store/pull Puppeteer cache with build cache
 if [[ ! -d $PUPPETEER_CACHE_DIR ]]; then 
