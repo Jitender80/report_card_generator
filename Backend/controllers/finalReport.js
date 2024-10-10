@@ -259,12 +259,18 @@ exports.previewReportCard = async (req, res) => {
     res.status(500).send("Error generating preview");
   }
 };
-
+const ensureDirectoryExists = (directory) => {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true });
+  }
+};
 exports.generateReportCardPDF = async (req, res) => {
   // cleanFolder(reportsFolderPath);
 
   const { id } = req.params;
   try {
+
+    ensureDirectoryExists(reportsFolderPath);
     const browser = await puppeteer.launch({
       args: [
         "--disable-setuid-sandbox",
