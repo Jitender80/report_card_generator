@@ -297,8 +297,8 @@ exports.generateReportCardPDF = async (req, res) => {
     if (!dbData) {
       throw new Error('Data not found');
     }
-    const page = await browser.newPage();
     const htmlContent = generateReportCardHTML(dbData, template1);
+    const page = await browser.newPage();
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
     const pdfPath = path.join(reportsFolderPath, `report-${id}.pdf`);
