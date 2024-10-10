@@ -127,7 +127,7 @@ exports.uploadFile = async (req, res) => {
   
   const file = req.file;
   
-  // console.log("🚀 ~ exports.uploadFile= ~ file:", file)
+  console.log("🚀 ~ exports.uploadFile= ~ file:", file)
 
   // Check if the file is an Excel file
   if (!file || !file.mimetype.includes('spreadsheetml') || !file.originalname.match(/\.(xls|xlsx)$/)) {
