@@ -606,10 +606,10 @@ async function generatePdf(req, res) {
         items,
         category,
         numberOfItems,
-        percentage: percentage?.toFixed(0), // Optional: format percentage to 2 decimal places
+        percentage: percentage.toFixed(0), // Optional: format percentage to 2 decimal places
       });
       console.log(
-        `Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage?.toFixed(
+        `Category: ${category}, Number of Items: ${numberOfItems}, Percentage: ${percentage.toFixed(
           0
         )}%`
       );
@@ -665,7 +665,7 @@ async function generatePdf(req, res) {
     await Class.findByIdAndUpdate(id, updateData, { new: true });
     result.push({
       category: "Reliability",
-      numberOfItems: data.kr20?.toFixed(2), // Replace "value" with the actual KR2 value
+      numberOfItems: data.kr20.toFixed(2), // Replace "value" with the actual KR2 value
     });
 
     let passedCount =
@@ -706,7 +706,7 @@ async function generatePdf(req, res) {
         studentsAttended: totalStudents,
         studentsPassed: {
           number: passedCount ? passedCount : "-",
-          percentage: ((passedCount / totalStudents) * 100)?.toFixed(0),
+          percentage: ((passedCount / totalStudents) * 100).toFixed(0),
         },
         grades: {
           APlus: {
@@ -748,7 +748,7 @@ async function generatePdf(req, res) {
         },
       },
     };
-    // console.log("🚀 ~ generatePdf ~ dbData:", dbData);
+    console.log("🚀 ~ generatePdf ~ dbData:", dbData);
 
     const pdfPath = await generateReportCardPDF(dbData);
 

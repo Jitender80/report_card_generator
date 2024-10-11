@@ -370,7 +370,7 @@ function template3(data) {
                         <td style="padding: 2px;background-color:#f6dddd">${classData.questionAnalysisData["Total Rejected"]
               ?.number || 0
             }</td>
-                        <td rowspan="2" style="padding: 2px;">${classData.kr20 || 0
+                        <td rowspan="2" style="padding: 2px;">${classData.kr20.toFixed(2) || 0
             }</td>
                       </tr>
                       <tr>
@@ -492,7 +492,7 @@ function template4(data) {
   // Generate HTML
   let averageKR20 = totalKR20 / levelCount;
   const courseCount = data.CourseNameTable.length;
-  // console.log("🚀 ~ template4 ~ levelTable:", data.levelTable[0])
+
 
   // Generate HTML
   let summaryHTML = `
@@ -556,7 +556,7 @@ function template4(data) {
     </tr>
   `;
 
-  // Iterate over each level and generate rows
+
   data.levelTable.forEach((levelData, index) => {
     // console.log("🚀 ~ template4 ~ levelData", levelData);
     summaryHTML += `
@@ -572,7 +572,7 @@ function template4(data) {
   <td style="padding: 2px;">${levelData.levelAverage["Very Difficult Question"].number}</td>
   <td style="padding: 2px;">${levelData.levelAverage["Poor (Bad) Questions"].number}</td>
   <td style="padding: 2px;background-color:#f6dddd;">${levelData.levelAverage["Total Rejected"].number}</td>
-  <td style="padding: 2px;">${levelData.levelAverage.kr20Average.toFixed(2)}</td>
+  <td rowspan="2" style="padding: 2px"; >${levelData.levelAverage.kr20Average.toFixed(2)}</td>
 </tr>
 <tr>
   <td colspan="5" style="padding: 2px;">%</td>
@@ -584,7 +584,7 @@ function template4(data) {
   <td style="padding: 2px;">${((levelData.levelAverage["Very Difficult Question"].number / totalQuestions) * 100).toFixed(2)}%</td>
   <td style="padding: 2px;">${((levelData.levelAverage["Poor (Bad) Questions"].number / totalQuestions) * 100).toFixed(2)}%</td>
   <td style="padding: 2px;background-color:#f6dddd;">${((levelData.levelAverage["Total Rejected"].number / totalQuestions) * 100 || 0).toFixed(2)}%</td>
-  <td style="padding: 2px;"></td>
+
 </tr>
     `;
   });
@@ -602,7 +602,7 @@ function template4(data) {
       <td style="padding: 2px;">${totalVeryDifficultQuestions}</td>
       <td style="padding: 2px;">${totalPoorQuestions}</td>
       <td style="padding: 2px;background-color:#f6dddd;">${totalRejected}</td>
-      <td rowspan="2" colspan="5" style="padding: 2px;" rowspan="2">${averageKR20.toFixed(2)}</td>
+      <td rowspan="3" colspan="5" style="padding: 2px;">${averageKR20.toFixed(2)}</td>
     </tr>
     <tr>
       <td style="padding: 5px;" colspan="4">%</td>
@@ -721,7 +721,7 @@ function templateCourseNameTable(data) {
   <td style="padding: 2px;">${courseData.levelAverage["Very Difficult Question"].number}</td>
   <td style="padding: 2px;">${courseData.levelAverage["Poor (Bad) Questions"].number}</td>
   <td style="padding: 2px;background-color:#f6dddd;">${courseData.levelAverage["Total Rejected"].number}</td>
-  <td style="padding: 2px;">${courseData.levelAverage.kr20Average.toFixed(2)}</td>
+  <td rowspan="2" style="padding: 2px;">${courseData.levelAverage.kr20Average.toFixed(2)}</td>
 </tr>
 <tr>
   <td colspan="5" style="padding: 2px;">%</td>
@@ -734,7 +734,7 @@ function templateCourseNameTable(data) {
 <td style="padding: 2px;">${(courseData.levelAverage["Very Difficult Question"].percentage).toFixed(2)}%</td>
 <td style="padding: 2px;">${(courseData.levelAverage["Poor (Bad) Questions"].percentage).toFixed(2)}%</td>
 <td style="padding: 2px;background-color:#f6dddd;">${(courseData.levelAverage["Total Rejected"].percentage).toFixed(2)}%</td>
-<td style="padding: 2px;"></td>
+
 </tr>
     `;
   });
