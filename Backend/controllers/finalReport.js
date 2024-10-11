@@ -237,7 +237,6 @@ exports.previewReportCard = async (req, res) => {
       path: "CourseNameTable.classId",
       select: "nameOfCourse questionAnalysisData kr20 semester academicYear gender", // Only include nameOfCourse, questionAnalysisData, and kr20
     });
-    console.log("🚀 ~ exports.previewReportCard= ~ data:", data)
 
     // const data = dummydata;
 
@@ -259,18 +258,12 @@ exports.previewReportCard = async (req, res) => {
     res.status(500).send("Error generating preview");
   }
 };
-const ensureDirectoryExists = (directory) => {
-  if (!fs.existsSync(directory)) {
-    fs.mkdirSync(directory, { recursive: true });
-  }
-};
+
 exports.generateReportCardPDF = async (req, res) => {
   // cleanFolder(reportsFolderPath);
 
   const { id } = req.params;
   try {
-
-    ensureDirectoryExists(reportsFolderPath);
     const browser = await puppeteer.launch({
       args: [
         "--disable-setuid-sandbox",
@@ -303,8 +296,8 @@ exports.generateReportCardPDF = async (req, res) => {
     if (!dbData) {
       throw new Error('Data not found');
     }
-    const htmlContent = generateReportCardHTML(dbData, template1);
     const page = await browser.newPage();
+    const htmlContent = generateReportCardHTML(dbData, template1);
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
     const pdfPath = path.join(reportsFolderPath, `report-${id}.pdf`);

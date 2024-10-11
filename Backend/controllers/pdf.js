@@ -801,7 +801,7 @@ async function getDbData(req, res) {
 
   result.push({
     category: "Reliability",
-    numberOfItems: data?.kr20, // Replace "value" with the actual KR2 value
+    numberOfItems: data?.kr20.toFixed(2), // Replace "value" with the actual KR2 value
   });
 
   let passedCount =
