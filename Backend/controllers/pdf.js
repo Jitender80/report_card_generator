@@ -604,7 +604,7 @@ const getContainerStats = async () => {
   return stats;
 };
 const reportsFolderPath = path.join(__dirname, '../reports');
-app.delete('/clean-reports', async (req, res) => {
+const deleteAll =()=>{
   try {
     // Ensure the reports folder exists
     await fse.ensureDir(reportsFolderPath);
@@ -635,7 +635,7 @@ app.delete('/clean-reports', async (req, res) => {
     console.error('Error cleaning reports folder:', error);
     res.status(500).send('Failed to clean reports folder.');
   }
-});
+}
 async function generatePdf(req, res) {
   try {
     const { id } = req.params;
@@ -944,4 +944,4 @@ async function getDbData(req, res) {
   });
 }
 
-module.exports = { generatePdf, getDbData };
+module.exports = { generatePdf, getDbData ,deleteAll};

@@ -17,7 +17,7 @@ const cors = require("cors");
 
 const { deleteAllData, deleteData } = require("./controllers/dev");
 const connectDB = require("./db");
-const { generate, generatePdf, getDbData } = require("./controllers/pdf");
+const { generate, generatePdf, getDbData, deleteAll } = require("./controllers/pdf");
 const { getGrades } = require("./controllers/grading");
 const { getReportsByRoleAndEmail } = require("./controllers/get.controllers");
 const User = require("./models/usermodel");
@@ -135,6 +135,8 @@ app.post('/previewReportCard/:id', previewReportCard);
 
 ///***get final report card PDF*/
 app.get('/generateReportCardPDF/:id', generateReportCardPDF);
+
+app.delete('/delete-all-data', deleteAll);
 ///***get final report card */
 
 const uploadsDir = path.join(__dirname, 'uploads');
