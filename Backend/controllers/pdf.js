@@ -2,6 +2,9 @@
 const path = require("path");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
+const fse = require('fs-extra');
+const path = require('path');
+const Docker = require('dockerode');
 
 const Class = require("../models/excelmodel");
 
@@ -583,7 +586,56 @@ border-collapse: collapse;
     return { error: err.message };
   }
 }
+const docker = new Docker();
+const getContainerStats = async () => {
+  const containers = await docker.listContainers();
+  const stats = await Promise.all(containers.map(async (containerInfo) => {
+    const container = docker.getContainer(containerInfo.Id);
+    const statsStream = await container.stats({ stream: false });
+    return {
+      id: containerInfo.Id,
+      name: containerInfo.Names[0],
+      cpuUsage: statsStream.cpu_stats.cpu_usage.total_usage,
+      memoryUsage: statsStream.memory_stats.usage,
+      memoryLimit: statsStream.memory_stats.limit,
+      networkIO: statsStream.networks,
+    };
+  }));
+  return stats;
+};
+const reportsFolderPath = path.join(__dirname, '../reports');
+app.delete('/clean-reports', async (req, res) => {
+  try {
+    // Ensure the reports folder exists
+    await fse.ensureDir(reportsFolderPath);
 
+    // Get stats before cleaning
+    const statsBefore = await getFolderStats(reportsFolderPath);
+
+    // Get container stats before cleaning
+    const containerStatsBefore = await getContainerStats();
+
+    // Empty the reports folder
+    await fse.emptyDir(reportsFolderPath);
+
+    // Get stats after cleaning
+    const statsAfter = await getFolderStats(reportsFolderPath);
+
+    // Get container stats after cleaning
+    const containerStatsAfter = await getContainerStats();
+
+    res.status(200).json({
+      message: 'Reports folder cleaned successfully.',
+      statsBefore,
+      statsAfter,
+      containerStatsBefore,
+      containerStatsAfter
+    });
+  } catch (error) {
+    console.error('Error cleaning reports folder:', error);
+    res.status(500).send('Failed to clean reports folder.');
+  }
+});
 async function generatePdf(req, res) {
   try {
     const { id } = req.params;
