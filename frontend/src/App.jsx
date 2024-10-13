@@ -42,7 +42,7 @@ const App = () => {
           hideProgressBar: false,
           progressStyle: { backgroundColor: "#00ff00" },
         });
-        const response = await axios.get(`${BASE_URL}/wake-up`);
+        const response = await axios.get(`http://localhost:3000/wake-up`);
         if (response.status === 200) {
           setActive(true);
           toast.dismiss();
@@ -51,7 +51,7 @@ const App = () => {
       } catch (error) {
         setActive(false)
         toast.dismiss();
-        toast.error("Error waking up server| Refresh to try again");
+        toast.error(`Error waking up server| Refresh to try again | ${error.message}`);
       }
     };
 

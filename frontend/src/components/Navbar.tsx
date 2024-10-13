@@ -16,7 +16,9 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-blue-700 px-4 py-2 flex flex-row justify-between items-center">
       <div className="container flex flex-row justify-start items-center gap-5">
+        <Link to="/">
         <h1 className="text-white text-2xl">Report Card</h1>
+        </Link>
         <h2 className="text-white text-sm">Upload the report card PDF</h2>
       </div>
 

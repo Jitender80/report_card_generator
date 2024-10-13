@@ -38,6 +38,7 @@ connectDB();
 app.get("/", (req, res) => {
   res.json({ message: "pong working" });
 });
+
 app.get('/wake-up', async (req, res) => {
   try {
     // Perform any necessary operations to wake up the server
